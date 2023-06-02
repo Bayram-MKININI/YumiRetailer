@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:parentTag="net.noliaware.yumi_retailer.feature_profile.presentation.views.VoucherCountView">
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/title_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/omnes_semibold_regular"
+        android:textColor="@color/grey_2"
+        android:textSize="14sp"
+        tools:text="Coupons disponibles" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/count_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rectangle_rounded_yellow"
+        android:fontFamily="@font/omnes_semibold_regular"
+        android:gravity="center"
+        android:includeFontPadding="false"
+        android:minWidth="22dp"
+        android:minHeight="22dp"
+        android:paddingHorizontal="4dp"
+        android:paddingVertical="2dp"
+        android:textColor="@color/grey_2"
+        android:textSize="12sp"
+        tools:text="0" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/gain_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/omnes_regular"
+        android:textColor="@color/grey_2"
+        android:textSize="13sp"
+        android:visibility="gone" />
+</merge>

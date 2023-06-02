@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<net.noliaware.yumi_retailer.feature_profile.presentation.views.ProductCategoriesView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/my_products_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/omnes_semibold_regular"
+        android:text="@string/my_products"
+        android:textColor="@color/colorPrimary"
+        android:textSize="19sp" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:overScrollMode="never" />
+
+</net.noliaware.yumi_retailer.feature_profile.presentation.views.ProductCategoriesView>

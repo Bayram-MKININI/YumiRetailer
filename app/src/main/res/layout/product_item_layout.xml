@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<net.noliaware.yumi_retailer.feature_profile.presentation.views.ProductListItemView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/mail_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/rectangle_rounded_grey1">
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/title_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/omnes_semibold_regular"
+        android:textColor="@color/grey_2"
+        android:textSize="20sp" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/start_date_label_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/omnes_regular"
+        android:text="@string/start_date"
+        android:textColor="@color/grey_2"
+        android:textSize="14sp" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/start_date_separator_image_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layerType="software"
+        android:src="@drawable/dotted_line" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/start_date_value_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/omnes_semibold_regular"
+        android:textColor="@color/grey_2"
+        android:textSize="13sp" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/expiry_date_label_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/omnes_regular"
+        android:text="@string/expiry_date"
+        android:textColor="@color/grey_2"
+        android:textSize="14sp" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/expiry_date_separator_image_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:layerType="software"
+        android:src="@drawable/dotted_line" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/expiry_date_value_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/omnes_semibold_regular"
+        android:textColor="@color/grey_2"
+        android:textSize="13sp" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/price_label_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/omnes_regular"
+        android:text="@string/value"
+        android:textColor="@color/grey_2"
+        android:textSize="14sp" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/price_separator_image_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:layerType="software"
+        android:src="@drawable/dotted_line" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/price_value_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/omnes_semibold_regular"
+        android:textColor="@color/grey_2"
+        android:textSize="13sp" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/planned_label_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/omnes_regular"
+        android:text="@string/planned_value"
+        android:textColor="@color/grey_2"
+        android:textSize="14sp" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/planned_separator_image_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:layerType="software"
+        android:src="@drawable/dotted_line" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/planned_value_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/omnes_semibold_regular"
+        android:textColor="@color/grey_2"
+        android:textSize="13sp" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/used_label_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/omnes_regular"
+        android:text="@string/validated_value"
+        android:textColor="@color/grey_2"
+        android:textSize="14sp" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/used_separator_image_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:layerType="software"
+        android:src="@drawable/dotted_line" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/used_value_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/omnes_semibold_regular"
+        android:textColor="@color/grey_2"
+        android:textSize="13sp" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/cancelled_label_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/omnes_regular"
+        android:text="@string/cancelled_value"
+        android:textColor="@color/grey_2"
+        android:textSize="14sp" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/cancelled_separator_image_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:layerType="software"
+        android:src="@drawable/dotted_line" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/cancelled_value_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/omnes_semibold_regular"
+        android:textColor="@color/grey_2"
+        android:textSize="13sp" />
+
+</net.noliaware.yumi_retailer.feature_profile.presentation.views.ProductListItemView>

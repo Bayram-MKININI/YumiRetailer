@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<net.noliaware.yumi_retailer.feature_profile.presentation.views.VoucherItemView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mail_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/rectangle_rounded_grey1">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/highlight_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="10dp"
+        android:paddingVertical="5dp"
+        app:divider="@drawable/empty_divider_2dp"
+        app:showDividers="middle">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/highlight_description_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/omnes_medium"
+            android:text="@string/valid_until"
+            android:textColor="@android:color/white"
+            tools:text="Valable jusqu'au 07 nov. 2023" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/highlight_value_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/omnes_semibold_regular"
+            android:textColor="@android:color/white" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/title_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/omnes_semibold_regular"
+        android:textColor="@color/grey_2"
+        android:textSize="20sp" />
+</net.noliaware.yumi_retailer.feature_profile.presentation.views.VoucherItemView>

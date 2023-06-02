@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<net.noliaware.yumi_retailer.feature_scan.presentation.views.ScanView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/coordinator_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <View
+        android:id="@+id/header_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary" />
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/home_icon_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:cardBackgroundColor="@color/colorPrimaryLight"
+        app:cardCornerRadius="25dp"
+        app:cardElevation="16dp"
+        app:cardPreventCornerOverlap="false">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:adjustViewBounds="true"
+            android:padding="12dp"
+            android:src="@drawable/ic_home_on" />
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/title_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/omnes_semibold_regular"
+        android:text="@string/scan"
+        android:textColor="@android:color/white"
+        android:textSize="22sp" />
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/scan_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/button_rounded_primary"
+        android:elevation="16dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingHorizontal="20dp"
+        android:paddingVertical="10dp">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/scan_image_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:src="@drawable/ic_voucher" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/scan_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:fontFamily="@font/omnes_semibold_regular"
+            android:text="@string/scan_voucher"
+            android:textColor="@android:color/white"
+            android:textSize="18sp" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</net.noliaware.yumi_retailer.feature_scan.presentation.views.ScanView>
