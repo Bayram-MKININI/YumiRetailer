@@ -4,10 +4,12 @@ import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import net.noliaware.yumi_retailer.R
+import net.noliaware.yumi_retailer.commun.HOURS_TIME_FORMAT
+import net.noliaware.yumi_retailer.commun.SHORT_DATE_FORMAT
 import net.noliaware.yumi_retailer.commun.presentation.adapters.ItemViewHolder
 import net.noliaware.yumi_retailer.commun.util.inflate
-import net.noliaware.yumi_retailer.commun.util.parseTimeString
-import net.noliaware.yumi_retailer.commun.util.parseToShortDate
+import net.noliaware.yumi_retailer.commun.util.parseDateToFormat
+import net.noliaware.yumi_retailer.commun.util.parseTimeToFormat
 import net.noliaware.yumi_retailer.feature_profile.domain.model.Voucher
 import net.noliaware.yumi_retailer.feature_profile.domain.model.VoucherListType
 import net.noliaware.yumi_retailer.feature_profile.domain.model.VoucherListType.AVAILABLE
@@ -49,11 +51,11 @@ class VoucherAdapter(
             else -> ""
         },
         highlightValue = when (voucherListType) {
-            AVAILABLE -> parseToShortDate(voucher.voucherExpiryDate)
+            AVAILABLE -> voucher.voucherExpiryDate?.parseDateToFormat(SHORT_DATE_FORMAT).orEmpty()
             USED, CANCELLED -> holder.heldItemView.context.getString(
                 R.string.date_time,
-                parseToShortDate(voucher.voucherUseDate),
-                parseTimeString(voucher.voucherUseTime)
+                voucher.voucherUseDate?.parseDateToFormat(SHORT_DATE_FORMAT),
+                voucher.voucherUseTime?.parseTimeToFormat(HOURS_TIME_FORMAT)
             )
             else -> ""
         }

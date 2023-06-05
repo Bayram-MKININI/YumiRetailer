@@ -42,10 +42,13 @@ import kotlinx.coroutines.flow.FlowCollector
 import net.noliaware.yumi_retailer.BuildConfig
 import net.noliaware.yumi_retailer.R
 import net.noliaware.yumi_retailer.commun.APP_VERSION
+import net.noliaware.yumi_retailer.commun.DATE_SOURCE_FORMAT
 import net.noliaware.yumi_retailer.commun.DEVICE_ID
 import net.noliaware.yumi_retailer.commun.LOGIN
+import net.noliaware.yumi_retailer.commun.MINUTES_TIME_FORMAT
 import net.noliaware.yumi_retailer.commun.SESSION_ID
 import net.noliaware.yumi_retailer.commun.SESSION_TOKEN
+import net.noliaware.yumi_retailer.commun.TIME_SOURCE_FORMAT
 import net.noliaware.yumi_retailer.commun.data.remote.dto.AppMessageDTO
 import net.noliaware.yumi_retailer.commun.data.remote.dto.ErrorDTO
 import net.noliaware.yumi_retailer.commun.data.remote.dto.SessionDTO
@@ -123,31 +126,32 @@ fun handlePaginatedListErrorIfAny(
     return errorType
 }
 
-fun parseToShortDate(dateStr: String?) = dateStr?.let {
-    val sourceFormatter = SimpleDateFormat("yyyy-MM-dd", Locale.FRANCE)
-    val date = sourceFormatter.parse(dateStr)
-    val destFormatter = SimpleDateFormat("dd LLL yyyy", Locale.FRANCE)
-    destFormatter.format(date)
-}.orEmpty()
+fun String.parseDateToFormat(
+    destFormat: String
+) = parseDateStringToFormat(this, DATE_SOURCE_FORMAT, destFormat).orEmpty()
 
-fun parseToLongDate(dateStr: String?) = dateStr?.let {
-    val sourceFormatter = SimpleDateFormat("yyyy-MM-dd", Locale.FRANCE)
-    val date = sourceFormatter.parse(dateStr)
-    val destFormatter = SimpleDateFormat("dd LLLL yyyy", Locale.FRANCE)
-    destFormatter.format(date)
-}.orEmpty()
+fun String.parseTimeToFormat(
+    destFormat: String
+) = parseDateStringToFormat(this, TIME_SOURCE_FORMAT, destFormat).orEmpty()
 
-fun parseTimeString(dateStr: String?) = dateStr?.let {
-    val sourceFormatter = SimpleDateFormat("HH:mm:ss", Locale.FRANCE)
-    val date = sourceFormatter.parse(dateStr)
-    val destFormatter = SimpleDateFormat("HH:mm", Locale.FRANCE)
-    destFormatter.format(date)
-}.orEmpty()
+private fun parseDateStringToFormat(
+    sourceDate: String,
+    sourceFormat: String,
+    destFormat: String
+): String? {
+    val sourceFormatter = SimpleDateFormat(sourceFormat, Locale.FRANCE)
+    val date = sourceFormatter.parse(sourceDate)
+    val destFormatter = SimpleDateFormat(destFormat, Locale.FRANCE)
+    date?.let {
+        return destFormatter.format(it)
+    }
+    return null
+}
 
 fun Int.parseSecondsToMinutesString(): String = SimpleDateFormat(
-    "mm:ss",
+    MINUTES_TIME_FORMAT,
     Locale.FRANCE
-).format(this * 1000)
+).format(this * 1000L)
 
 fun Fragment.handleSharedEvent(sharedEvent: UIEvent) = context?.let {
 

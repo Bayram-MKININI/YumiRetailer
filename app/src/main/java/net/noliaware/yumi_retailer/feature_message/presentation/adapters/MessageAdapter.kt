@@ -4,14 +4,24 @@ import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import net.noliaware.yumi_retailer.R
+import net.noliaware.yumi_retailer.commun.DATE_TIME_SOURCE_FORMAT
+import net.noliaware.yumi_retailer.commun.DAY_OF_MONTH_NUMERICAL_DATE_FORMAT
+import net.noliaware.yumi_retailer.commun.HOURS_TIME_FORMAT
+import net.noliaware.yumi_retailer.commun.NUMERICAL_DATE_FORMAT
+import net.noliaware.yumi_retailer.commun.SINGLE_DAY_DATE_FORMAT
 import net.noliaware.yumi_retailer.commun.presentation.adapters.ItemViewHolder
 import net.noliaware.yumi_retailer.commun.presentation.mappers.PriorityMapper
 import net.noliaware.yumi_retailer.commun.util.inflate
-import net.noliaware.yumi_retailer.commun.util.parseTimeString
-import net.noliaware.yumi_retailer.commun.util.parseToShortDate
+import net.noliaware.yumi_retailer.commun.util.parseDateToFormat
+import net.noliaware.yumi_retailer.commun.util.parseTimeToFormat
 import net.noliaware.yumi_retailer.feature_message.domain.model.Message
 import net.noliaware.yumi_retailer.feature_message.presentation.views.MessageItemView
 import net.noliaware.yumi_retailer.feature_message.presentation.views.MessageItemView.MessageItemViewAdapter
+import java.time.LocalDate
+import java.time.Year
+import java.time.format.DateTimeFormatter
+import java.time.temporal.ChronoUnit
+import kotlin.math.absoluteValue
 
 class MessageAdapter(
     private val onItemClicked: (Message) -> Unit
@@ -29,14 +39,13 @@ class MessageAdapter(
     override fun onBindViewHolder(holder: ItemViewHolder<MessageItemView>, position: Int) {
         getItem(position)?.let { message ->
             holder.heldItemView.fillViewWithData(
-                mapAdapter(message, holder)
+                mapAdapter(message)
             )
         }
     }
 
     private fun mapAdapter(
-        message: Message,
-        holder: ItemViewHolder<MessageItemView>
+        message: Message
     ) = MessageItemViewAdapter(
         priorityIconRes = PriorityMapper().mapPriorityIcon(message.messagePriority),
         subject = if (message.messageType.isNullOrEmpty()) {
@@ -44,13 +53,36 @@ class MessageAdapter(
         } else {
             "${message.messageType} ${message.messageSubject}"
         },
-        time = holder.itemView.context.getString(
-            R.string.date_short,
-            parseToShortDate(message.messageDate),
-            parseTimeString(message.messageTime)
-        ),
-        body = message.messagePreview.orEmpty()
+        time = resolveTime(message.messageDate, message.messageTime),
+        body = message.messagePreview.orEmpty(),
+        opened = message.isMessageRead
     )
+
+    private fun resolveTime(messageDateStr: String, messageTimeStr: String): String {
+
+        val messageDate = LocalDate.parse(
+            "$messageDateStr $messageTimeStr".padEnd(DATE_TIME_SOURCE_FORMAT.length, '0'),
+            DateTimeFormatter.ofPattern(DATE_TIME_SOURCE_FORMAT)
+        )
+        val weeksPassed = ChronoUnit.WEEKS.between(messageDate, LocalDate.now())
+        val inSameYear = messageDate.year.absoluteValue == Year.now().value
+
+        return if (weeksPassed < 1) {
+            "${messageDateStr.parseDateToFormat(SINGLE_DAY_DATE_FORMAT)} ${
+                messageTimeStr.parseTimeToFormat(
+                    HOURS_TIME_FORMAT
+                )
+            }"
+        } else if (inSameYear) {
+            "${messageDateStr.parseDateToFormat(SINGLE_DAY_DATE_FORMAT)} ${
+                messageDateStr.parseDateToFormat(
+                    DAY_OF_MONTH_NUMERICAL_DATE_FORMAT
+                )
+            }"
+        } else {
+            messageDateStr.parseDateToFormat(NUMERICAL_DATE_FORMAT)
+        }
+    }
 
     object MessageComparator : DiffUtil.ItemCallback<Message>() {
         override fun areItemsTheSame(

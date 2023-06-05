@@ -4,14 +4,16 @@ import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import net.noliaware.yumi_retailer.R
+import net.noliaware.yumi_retailer.commun.SHORT_DATE_FORMAT
 import net.noliaware.yumi_retailer.commun.presentation.adapters.ItemViewHolder
 import net.noliaware.yumi_retailer.commun.util.formatNumber
 import net.noliaware.yumi_retailer.commun.util.inflate
-import net.noliaware.yumi_retailer.commun.util.parseToShortDate
+import net.noliaware.yumi_retailer.commun.util.parseDateToFormat
 import net.noliaware.yumi_retailer.feature_profile.domain.model.Product
 import net.noliaware.yumi_retailer.feature_profile.presentation.views.ProductListItemView
 
-class ProductAdapter : PagingDataAdapter<Product, ItemViewHolder<ProductListItemView>>(ProductComparator) {
+class ProductAdapter :
+    PagingDataAdapter<Product, ItemViewHolder<ProductListItemView>>(ProductComparator) {
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -33,8 +35,8 @@ class ProductAdapter : PagingDataAdapter<Product, ItemViewHolder<ProductListItem
         holder: ItemViewHolder<ProductListItemView>
     ) = ProductListItemView.ProductItemViewAdapter(
         label = product.productLabel,
-        startDate = parseToShortDate(product.productStartDate),
-        expiryDate = parseToShortDate(product.productExpiryDate),
+        startDate = product.productStartDate.parseDateToFormat(SHORT_DATE_FORMAT),
+        expiryDate = product.productExpiryDate.parseDateToFormat(SHORT_DATE_FORMAT),
         price = holder.heldItemView.context.getString(
             R.string.price_format,
             product.productPrice.formatNumber()
