@@ -24,10 +24,10 @@
     <color name="orange_2">#DE4603</color>
     <color name="red_1">#D50000</color>
 
-    <color name="color_bittersweet">#FB6E6E</color>
-
     <color name="orange">#F7A915</color>
     <color name="shadow_grey">#0000001A</color>
     <color name="red">#E03010</color>
+
+    <color name="bright_orange">#F9C73A</color>
 
 </resources>
