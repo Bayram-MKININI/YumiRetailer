@@ -51,8 +51,6 @@ class VouchersOverviewFragment : AppCompatDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val viewPager = vouchersOverviewView?.getViewPager
-
         viewModel.category?.let { category ->
             ViewPagerAdapter(
                 childFragmentManager,
@@ -60,7 +58,7 @@ class VouchersOverviewFragment : AppCompatDialogFragment() {
                 category.categoryId,
                 category.categoryColor
             ).apply {
-                viewPager?.adapter = this
+                vouchersOverviewView?.getViewPager?.adapter = this
             }
 
             bindViewToData()

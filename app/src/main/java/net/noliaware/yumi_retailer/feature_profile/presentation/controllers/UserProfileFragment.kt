@@ -29,10 +29,8 @@ class UserProfileFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val viewPager = profileView?.getViewPager
-
         UserProfileFragmentStateAdapter(childFragmentManager, viewLifecycleOwner.lifecycle).apply {
-            viewPager?.adapter = this
+            profileView?.getViewPager?.adapter = this
         }
     }
 
