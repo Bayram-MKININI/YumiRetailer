@@ -1,7 +1,6 @@
 <resources>
     <string name="error_no_network">Erreur réseau. Vérifier vos paramètres de connexion.</string>
     <string name="error_contact_support">Une erreur est survenue, veuillez contacter le support technique.</string>
-    <string name="error_message">%s Essais restants: %d</string>
     <string name="back">Retour</string>
     <string name="update_app">Mise à jour disponible</string>
     <string name="update_message">Une nouvelle version de l\'application est disponible. Veuillez la télécharger maintenant pour continuer</string>
@@ -11,13 +10,10 @@
     <string name="enter_login_message">Saisissez votre identifiant</string>
     <string name="enter_code_message">Saisissez votre code</string>
     <string name="enter_code_description">6 chiffres</string>
-    <string name="enter_code_comment_message">Bienvenue %s!</string>
     <string name="login_empty_error">Le champ identifiant est vide</string>
     <string name="hint_login">Identifiant</string>
-    <string name="secret_code">Votre code secret</string>
     <string name="confirm">Valider</string>
     <string name="erase">Effacer</string>
-    <string name="correct">Corriger</string>
     <string name="cancel">Annuler</string>
 
     //Scan
@@ -25,13 +21,10 @@
     <string name="scan_voucher">Scanner un coupon</string>
     <string name="permission_required">Permission requise</string>
     <string name="camera_permission_needed">Cette application doit accéder à la caméra pour traiter les QR codes.</string>
-    <string name="use_voucher">Utiliser ce coupon</string>
     <string name="ok">OK</string>
     <string name="scan_finished">Détéction términée</string>
     <string name="use_scanned_voucher">Valider le coupon scanné</string>
     <string name="validate">Valider</string>
-    <string name="success">Succès</string>
-    <string name="failure">Échec</string>
 
     //Profile
     <string name="my_profile">Mon Profil</string>
@@ -51,7 +44,6 @@
     <string name="access">Générer un code</string>
     <string name="new_line">\n</string>
     <string name="empty_value">-</string>
-    <string name="get_code">Obtenir un code</string>
     <string name="bo_sign_in_description">Veuillez utiliser ce code pour vous connecter à votre compte sur l\'application web</string>
     <string name="bo_code_expiration">Ce code expire dans:</string>
     <string name="empty_time">--:--</string>
@@ -96,8 +88,6 @@
     <string name="select_subject">Sélectionner un sujet</string>
     <string name="new_mail">Nouveau message</string>
     <string name="reply">Répondre</string>
-    <string name="send">Envoyer</string>
-    <string name="mail_object">Sélectionner l\'objet</string>
     <string name="mail_body">Message</string>
     <string name="delete">Suppression</string>
     <string name="delete_mail_confirmation">Voulez‑vous vraiment supprimer ce message ?</string>

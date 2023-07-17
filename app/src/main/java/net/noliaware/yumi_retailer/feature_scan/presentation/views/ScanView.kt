@@ -19,6 +19,7 @@ class ScanView(context: Context, attrs: AttributeSet?) : ViewGroup(context, attr
     private lateinit var headerView: View
     private lateinit var titleTextView: TextView
     private lateinit var homeIconView: View
+    private lateinit var scanIllustrationImageView: View
     private lateinit var scanLayout: View
     var callback: ScanViewCallback? by weak()
 
@@ -36,6 +37,7 @@ class ScanView(context: Context, attrs: AttributeSet?) : ViewGroup(context, attr
         titleTextView = findViewById(R.id.title_text_view)
         homeIconView = findViewById(R.id.home_icon_view)
         titleTextView = findViewById(R.id.title_text_view)
+        scanIllustrationImageView = findViewById(R.id.scan_illustration_image_view)
         scanLayout = findViewById(R.id.scan_layout)
         scanLayout.setOnClickListener {
             callback?.onScanClicked()
@@ -63,6 +65,14 @@ class ScanView(context: Context, attrs: AttributeSet?) : ViewGroup(context, attr
 
         scanLayout.measureWrapContent()
 
+        scanIllustrationImageView.measure(
+            MeasureSpec.makeMeasureSpec(
+                (scanLayout.measuredWidth * (1 - 1 / GOLDEN_RATIO)).roundToInt(),
+                MeasureSpec.EXACTLY
+            ),
+            MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED)
+        )
+
         setMeasuredDimension(
             MeasureSpec.makeMeasureSpec(viewWidth, MeasureSpec.EXACTLY),
             MeasureSpec.makeMeasureSpec(viewHeight, MeasureSpec.EXACTLY)
@@ -85,9 +95,17 @@ class ScanView(context: Context, attrs: AttributeSet?) : ViewGroup(context, attr
             headerView.bottom - homeIconView.measuredHeight / 2
         )
 
+        val scanBlockHeight = scanIllustrationImageView.measuredHeight + scanLayout.measuredHeight +
+                getStatusBarHeight() + convertDpToPx(15)
+
+        scanIllustrationImageView.layoutToTopLeft(
+            (viewWidth - scanIllustrationImageView.measuredWidth) / 2,
+                (viewHeight / GOLDEN_RATIO - scanBlockHeight / 2).roundToInt()
+        )
+
         scanLayout.layoutToTopLeft(
             (viewWidth - scanLayout.measuredWidth) / 2,
-            (viewHeight / GOLDEN_RATIO).roundToInt()
+            scanIllustrationImageView.bottom + convertDpToPx(15)
         )
     }
 }
