@@ -14,9 +14,9 @@ data class ProductDTO(
     @Json(name = "productPrice")
     val productPrice: String,
     @Json(name = "productStartDate")
-    val productStartDate: String,
+    val productStartDate: String?,
     @Json(name = "productExpiryDate")
-    val productExpiryDate: String,
+    val productExpiryDate: String?,
     @Json(name = "expectedVoucherCount")
     val expectedVoucherCount: Int,
     @Json(name = "assignedVoucherCount")

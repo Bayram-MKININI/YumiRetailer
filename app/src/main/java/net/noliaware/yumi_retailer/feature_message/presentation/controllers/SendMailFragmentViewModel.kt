@@ -8,10 +8,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import net.noliaware.yumi_retailer.commun.MESSAGE
-import net.noliaware.yumi_retailer.commun.MESSAGE_ID
-import net.noliaware.yumi_retailer.commun.MESSAGE_PRIORITY
 import net.noliaware.yumi_retailer.commun.MESSAGE_SUBJECTS_DATA
-import net.noliaware.yumi_retailer.commun.MESSAGE_SUBJECT_LABEL
 import net.noliaware.yumi_retailer.commun.presentation.EventsHelper
 import net.noliaware.yumi_retailer.feature_login.domain.model.MessageSubject
 import net.noliaware.yumi_retailer.feature_message.data.repository.MessageRepository
@@ -29,7 +26,7 @@ class SendMailFragmentViewModel @Inject constructor(
     val messageSentEventsHelper = EventsHelper<Boolean>()
 
     fun callSendMessage(
-        messagePriority: Int,
+        messagePriority: Int? = null,
         messageId: String? = null,
         messageSubjectId: String? = null,
         messageBody: String

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <net.noliaware.yumi_retailer.feature_profile.presentation.views.ProductListItemView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mail_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -21,14 +22,18 @@
         android:fontFamily="@font/omnes_regular"
         android:text="@string/start_date"
         android:textColor="@color/grey_2"
-        android:textSize="14sp" />
+        android:textSize="14sp"
+        android:visibility="gone"
+        tools:visibility="visible" />
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/start_date_separator_image_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layerType="software"
-        android:src="@drawable/dotted_line" />
+        android:src="@drawable/dotted_line"
+        android:visibility="gone"
+        tools:visibility="visible" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/start_date_value_text_view"
@@ -36,7 +41,10 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/omnes_semibold_regular"
         android:textColor="@color/grey_2"
-        android:textSize="13sp" />
+        android:textSize="13sp"
+        android:visibility="gone"
+        tools:text="07 nov. 2022"
+        tools:visibility="visible" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/expiry_date_label_text_view"
@@ -45,7 +53,9 @@
         android:fontFamily="@font/omnes_regular"
         android:text="@string/expiry_date"
         android:textColor="@color/grey_2"
-        android:textSize="14sp" />
+        android:textSize="14sp"
+        android:visibility="gone"
+        tools:visibility="visible" />
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/expiry_date_separator_image_view"
@@ -53,7 +63,9 @@
         android:layout_height="wrap_content"
         android:adjustViewBounds="true"
         android:layerType="software"
-        android:src="@drawable/dotted_line" />
+        android:src="@drawable/dotted_line"
+        android:visibility="gone"
+        tools:visibility="visible" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/expiry_date_value_text_view"
@@ -61,7 +73,10 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/omnes_semibold_regular"
         android:textColor="@color/grey_2"
-        android:textSize="13sp" />
+        android:textSize="13sp"
+        android:visibility="gone"
+        tools:text="07 nov. 2023"
+        tools:visibility="visible" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/price_label_text_view"
@@ -86,7 +101,8 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/omnes_semibold_regular"
         android:textColor="@color/grey_2"
-        android:textSize="13sp" />
+        android:textSize="13sp"
+        tools:text="50€" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/planned_label_text_view"
@@ -111,7 +127,8 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/omnes_semibold_regular"
         android:textColor="@color/grey_2"
-        android:textSize="13sp" />
+        android:textSize="13sp"
+        tools:text="1" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/used_label_text_view"
@@ -136,7 +153,8 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/omnes_semibold_regular"
         android:textColor="@color/grey_2"
-        android:textSize="13sp" />
+        android:textSize="13sp"
+        tools:text="1(50€)" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/cancelled_label_text_view"
@@ -161,6 +179,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/omnes_semibold_regular"
         android:textColor="@color/grey_2"
-        android:textSize="13sp" />
+        android:textSize="13sp"
+        tools:text="3(150€)" />
 
 </net.noliaware.yumi_retailer.feature_profile.presentation.views.ProductListItemView>

@@ -11,9 +11,11 @@ import net.noliaware.yumi_retailer.commun.util.inflate
 import net.noliaware.yumi_retailer.commun.util.parseDateToFormat
 import net.noliaware.yumi_retailer.feature_profile.domain.model.Product
 import net.noliaware.yumi_retailer.feature_profile.presentation.views.ProductListItemView
+import net.noliaware.yumi_retailer.feature_profile.presentation.views.ProductListItemView.*
 
-class ProductAdapter :
-    PagingDataAdapter<Product, ItemViewHolder<ProductListItemView>>(ProductComparator) {
+class ProductAdapter : PagingDataAdapter<Product, ItemViewHolder<ProductListItemView>>(
+    ProductComparator
+) {
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -33,19 +35,15 @@ class ProductAdapter :
     private fun mapAdapter(
         product: Product,
         holder: ItemViewHolder<ProductListItemView>
-    ) = ProductListItemView.ProductItemViewAdapter(
+    ) = ProductItemViewAdapter(
         label = product.productLabel,
-        startDate = product.productStartDate.parseDateToFormat(SHORT_DATE_FORMAT),
-        expiryDate = product.productExpiryDate.parseDateToFormat(SHORT_DATE_FORMAT),
+        startDate = product.productStartDate?.parseDateToFormat(SHORT_DATE_FORMAT),
+        expiryDate = product.productExpiryDate?.parseDateToFormat(SHORT_DATE_FORMAT),
         price = holder.heldItemView.context.getString(
             R.string.price_format,
             product.productPrice.formatNumber()
         ),
-        planned = holder.heldItemView.context.getString(
-            R.string.product_value_format,
-            product.expectedVoucherCount.formatNumber(),
-            product.assignedVoucherAmount.formatNumber()
-        ),
+        planned = product.expectedVoucherCount.formatNumber(),
         used = holder.heldItemView.context.getString(
             R.string.product_value_format,
             product.usedVoucherCount.formatNumber(),

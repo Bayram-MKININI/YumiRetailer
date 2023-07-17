@@ -5,6 +5,8 @@ import android.util.AttributeSet
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import net.noliaware.yumi_retailer.R
 import net.noliaware.yumi_retailer.commun.util.convertDpToPx
 import net.noliaware.yumi_retailer.commun.util.layoutToBottomLeft
@@ -41,8 +43,8 @@ class ProductListItemView(context: Context, attrs: AttributeSet?) : ViewGroup(co
 
     data class ProductItemViewAdapter(
         val label: String = "",
-        val startDate: String = "",
-        val expiryDate: String = "",
+        val startDate: String? = null,
+        val expiryDate: String? = null,
         val price: String = "",
         val planned: String = "",
         val used: String = "",
@@ -84,8 +86,27 @@ class ProductListItemView(context: Context, attrs: AttributeSet?) : ViewGroup(co
 
     fun fillViewWithData(productItemViewAdapter: ProductItemViewAdapter) {
         titleTextView.text = productItemViewAdapter.label
-        startDateValueTextView.text = productItemViewAdapter.startDate
-        expiryDateValueTextView.text = productItemViewAdapter.expiryDate
+
+        productItemViewAdapter.startDate?.let {
+            startDateValueTextView.text = productItemViewAdapter.startDate
+            startDateLabelTextView.isVisible = true
+            startDateSeparatorImageView.isVisible = true
+            startDateValueTextView.isVisible = true
+        } ?: run {
+            startDateLabelTextView.isGone = true
+            startDateSeparatorImageView.isGone = true
+            startDateValueTextView.isGone = true
+        }
+        productItemViewAdapter.expiryDate?.let {
+            expiryDateValueTextView.text = productItemViewAdapter.expiryDate
+            expiryDateLabelTextView.isVisible = true
+            expiryDateSeparatorImageView.isVisible = true
+            expiryDateValueTextView.isVisible = true
+        } ?: run {
+            expiryDateLabelTextView.isGone = true
+            expiryDateSeparatorImageView.isGone = true
+            expiryDateValueTextView.isGone = true
+        }
         priceValueTextView.text = productItemViewAdapter.price
         plannedValueTextView.text = productItemViewAdapter.planned
         usedValueTextView.text = productItemViewAdapter.used
@@ -98,11 +119,15 @@ class ProductListItemView(context: Context, attrs: AttributeSet?) : ViewGroup(co
 
         titleTextView.measureWrapContent()
 
-        startDateLabelTextView.measureWrapContent()
-        startDateValueTextView.measureWrapContent()
+        if (startDateLabelTextView.isVisible) {
+            startDateLabelTextView.measureWrapContent()
+            startDateValueTextView.measureWrapContent()
+        }
 
-        expiryDateLabelTextView.measureWrapContent()
-        expiryDateValueTextView.measureWrapContent()
+        if (expiryDateLabelTextView.isVisible) {
+            expiryDateLabelTextView.measureWrapContent()
+            expiryDateValueTextView.measureWrapContent()
+        }
 
         priceLabelTextView.measureWrapContent()
         priceValueTextView.measureWrapContent()
@@ -126,17 +151,21 @@ class ProductListItemView(context: Context, attrs: AttributeSet?) : ViewGroup(co
                     cancelledValueTextView.measuredWidth
                 ).max() + convertDpToPx(25))
 
-        measureSeparator(
-            separatorImageView = startDateSeparatorImageView,
-            labelTextView = startDateLabelTextView,
-            availableSeparatorWidth = availableSeparatorWidth
-        )
+        if (startDateLabelTextView.isVisible) {
+            measureSeparator(
+                separatorImageView = startDateSeparatorImageView,
+                labelTextView = startDateLabelTextView,
+                availableSeparatorWidth = availableSeparatorWidth
+            )
+        }
 
-        measureSeparator(
-            separatorImageView = expiryDateSeparatorImageView,
-            labelTextView = expiryDateLabelTextView,
-            availableSeparatorWidth = availableSeparatorWidth
-        )
+        if (expiryDateLabelTextView.isVisible) {
+            measureSeparator(
+                separatorImageView = expiryDateSeparatorImageView,
+                labelTextView = expiryDateLabelTextView,
+                availableSeparatorWidth = availableSeparatorWidth
+            )
+        }
 
         measureSeparator(
             separatorImageView = priceSeparatorImageView,
@@ -150,13 +179,11 @@ class ProductListItemView(context: Context, attrs: AttributeSet?) : ViewGroup(co
             availableSeparatorWidth = availableSeparatorWidth
         )
 
-
         measureSeparator(
             separatorImageView = usedSeparatorImageView,
             labelTextView = usedLabelTextView,
             availableSeparatorWidth = availableSeparatorWidth
         )
-
 
         measureSeparator(
             separatorImageView = cancelledSeparatorImageView,
@@ -164,10 +191,18 @@ class ProductListItemView(context: Context, attrs: AttributeSet?) : ViewGroup(co
             availableSeparatorWidth = availableSeparatorWidth
         )
 
-        viewHeight =
-            titleTextView.measuredHeight + startDateLabelTextView.measuredHeight + expiryDateLabelTextView.measuredHeight +
-                    priceLabelTextView.measuredHeight + plannedLabelTextView.measuredHeight + usedLabelTextView.measuredHeight +
-                    cancelledLabelTextView.measuredHeight + convertDpToPx(55)
+        viewHeight = titleTextView.measuredHeight +
+                if (startDateLabelTextView.isVisible) {
+                    startDateLabelTextView.measuredHeight + convertDpToPx(5)
+                } else {
+                    0
+                } +
+                if (expiryDateLabelTextView.isVisible) {
+                    expiryDateLabelTextView.measuredHeight + convertDpToPx(5)
+                } else {
+                    0
+                } + priceLabelTextView.measuredHeight + plannedLabelTextView.measuredHeight + usedLabelTextView.measuredHeight +
+                cancelledLabelTextView.measuredHeight + convertDpToPx(45)
 
         setMeasuredDimension(
             MeasureSpec.makeMeasureSpec(viewWidth, MeasureSpec.EXACTLY),
@@ -199,31 +234,39 @@ class ProductListItemView(context: Context, attrs: AttributeSet?) : ViewGroup(co
             convertDpToPx(10)
         )
 
-        startDateLabelTextView.layoutToTopLeft(
-            marginLeft,
-            titleTextView.bottom + convertDpToPx(5)
-        )
+        val startDateBottom = if (startDateLabelTextView.isVisible) {
+            startDateLabelTextView.layoutToTopLeft(
+                marginLeft,
+                titleTextView.bottom + convertDpToPx(5)
+            )
+            layoutValue(
+                labelTextView = startDateLabelTextView,
+                separatorImageView = startDateSeparatorImageView,
+                valueTextView = startDateValueTextView
+            )
+            startDateLabelTextView.bottom
+        } else {
+            titleTextView.bottom
+        }
 
-        layoutValue(
-            labelTextView = startDateLabelTextView,
-            separatorImageView = startDateSeparatorImageView,
-            valueTextView = startDateValueTextView
-        )
-
-        expiryDateLabelTextView.layoutToTopLeft(
-            marginLeft,
-            startDateLabelTextView.bottom + convertDpToPx(5)
-        )
-
-        layoutValue(
-            labelTextView = expiryDateLabelTextView,
-            separatorImageView = expiryDateSeparatorImageView,
-            valueTextView = expiryDateValueTextView
-        )
+        val expiryDateBottom = if (expiryDateLabelTextView.isVisible) {
+            expiryDateLabelTextView.layoutToTopLeft(
+                marginLeft,
+                startDateBottom + convertDpToPx(5)
+            )
+            layoutValue(
+                labelTextView = expiryDateLabelTextView,
+                separatorImageView = expiryDateSeparatorImageView,
+                valueTextView = expiryDateValueTextView
+            )
+            expiryDateLabelTextView.bottom
+        } else {
+            startDateBottom
+        }
 
         priceLabelTextView.layoutToTopLeft(
             marginLeft,
-            expiryDateLabelTextView.bottom + convertDpToPx(5)
+            expiryDateBottom + convertDpToPx(5)
         )
 
         layoutValue(
