@@ -1,11 +1,15 @@
 package net.noliaware.yumi_retailer.feature_profile.presentation.views
 
 import android.content.Context
+import android.text.Spannable
+import android.text.SpannableString
 import android.util.AttributeSet
+import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.widget.LinearLayoutCompat
+import androidx.core.view.isVisible
 import net.noliaware.yumi_retailer.R
 import net.noliaware.yumi_retailer.commun.util.convertDpToPx
 import net.noliaware.yumi_retailer.commun.util.layoutToTopLeft
@@ -32,6 +36,8 @@ class ProfileDataView(context: Context, attrs: AttributeSet?) : ViewGroup(contex
     private lateinit var boAccessTextView: TextView
     private lateinit var boAccessDescriptionTextView: TextView
     private lateinit var accessButtonLayout: LinearLayoutCompat
+    private lateinit var privacyPolicyLinkTextView: TextView
+
     var callback: ProfileDataViewCallback? by weak()
 
     data class ProfileViewAdapter(
@@ -39,11 +45,14 @@ class ProfileDataView(context: Context, attrs: AttributeSet?) : ViewGroup(contex
         val retailer: String = "",
         val email: String = "",
         val phone: String = "",
-        val address: String = ""
+        val address: String = "",
+        val twoFactorAuthModeText: String = "",
+        val twoFactorAuthModeActivated: Boolean = false
     )
 
-    fun interface ProfileDataViewCallback {
+    interface ProfileDataViewCallback {
         fun onGetCodeButtonClicked()
+        fun onPrivacyPolicyButtonClicked()
     }
 
     override fun onFinishInflate() {
@@ -68,7 +77,13 @@ class ProfileDataView(context: Context, attrs: AttributeSet?) : ViewGroup(contex
         boAccessTextView = findViewById(R.id.bo_access_text_view)
         boAccessDescriptionTextView = findViewById(R.id.bo_access_description_text_view)
         accessButtonLayout = findViewById(R.id.access_button_layout)
-        accessButtonLayout.setOnClickListener { callback?.onGetCodeButtonClicked() }
+        accessButtonLayout.setOnClickListener {
+            callback?.onGetCodeButtonClicked()
+        }
+        privacyPolicyLinkTextView = findViewById(R.id.privacy_policy_link_text_view)
+        privacyPolicyLinkTextView.setOnClickListener {
+            callback?.onPrivacyPolicyButtonClicked()
+        }
     }
 
     fun fillViewWithData(profileViewAdapter: ProfileViewAdapter) {
@@ -78,6 +93,12 @@ class ProfileDataView(context: Context, attrs: AttributeSet?) : ViewGroup(contex
         emailValueTextView.text = profileViewAdapter.email
         phoneValueTextView.text = profileViewAdapter.phone
         addressValueTextView.text = profileViewAdapter.address
+
+        boAccessDescriptionTextView.text = profileViewAdapter.twoFactorAuthModeText
+        if (profileViewAdapter.twoFactorAuthModeActivated) {
+            boAccessDescriptionTextView.gravity = Gravity.CENTER
+        }
+        accessButtonLayout.isVisible = profileViewAdapter.twoFactorAuthModeActivated
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
@@ -107,15 +128,26 @@ class ProfileDataView(context: Context, attrs: AttributeSet?) : ViewGroup(contex
 
         boAccessTextView.measureWrapContent()
         boAccessDescriptionTextView.measure(
-            MeasureSpec.makeMeasureSpec(viewWidth * 9 / 10, MeasureSpec.AT_MOST),
+            MeasureSpec.makeMeasureSpec(viewWidth - convertDpToPx(40), MeasureSpec.AT_MOST),
             MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED)
         )
-        accessButtonLayout.measureWrapContent()
+        if (accessButtonLayout.isVisible) {
+            accessButtonLayout.measureWrapContent()
+        }
 
-        val viewHeight = myDataTextView.measuredHeight + loginValueTextView.measuredHeight + retailerValueTextView.measuredHeight +
-                    emailValueTextView.measuredHeight + phoneValueTextView.measuredHeight + addressValueTextView.measuredHeight +
-                    separatorView.measuredHeight + boAccessTextView.measuredHeight + boAccessDescriptionTextView.measuredHeight +
-                    accessButtonLayout.measuredHeight + convertDpToPx(110)
+        privacyPolicyLinkTextView.measureWrapContent()
+
+        val viewHeight = myDataTextView.measuredHeight + loginValueTextView.measuredHeight +
+                retailerValueTextView.measuredHeight + emailValueTextView.measuredHeight +
+                phoneValueTextView.measuredHeight + addressValueTextView.measuredHeight +
+                separatorView.measuredHeight + boAccessTextView.measuredHeight +
+                boAccessDescriptionTextView.measuredHeight +
+                if (accessButtonLayout.isVisible) {
+                    accessButtonLayout.measuredHeight + convertDpToPx(15)
+                } else {
+                    0
+                } +
+                privacyPolicyLinkTextView.measuredHeight + convertDpToPx(125)
 
         setMeasuredDimension(
             MeasureSpec.makeMeasureSpec(viewWidth, MeasureSpec.EXACTLY),
@@ -195,13 +227,23 @@ class ProfileDataView(context: Context, attrs: AttributeSet?) : ViewGroup(contex
         )
 
         boAccessDescriptionTextView.layoutToTopLeft(
-            (viewWidth - boAccessDescriptionTextView.measuredWidth) / 2,
+            myDataTextView.left,
             boAccessTextView.bottom + convertDpToPx(10)
         )
 
-        accessButtonLayout.layoutToTopLeft(
-            (viewWidth - accessButtonLayout.measuredWidth) / 2,
-            boAccessDescriptionTextView.bottom + convertDpToPx(15)
+        val boAccessBottom = if (accessButtonLayout.isVisible) {
+            accessButtonLayout.layoutToTopLeft(
+                (viewWidth - accessButtonLayout.measuredWidth) / 2,
+                boAccessDescriptionTextView.bottom + convertDpToPx(15)
+            )
+            accessButtonLayout.bottom
+        } else {
+            boAccessDescriptionTextView.bottom
+        }
+
+        privacyPolicyLinkTextView.layoutToTopLeft(
+            (viewWidth - privacyPolicyLinkTextView.measuredWidth) / 2,
+            boAccessBottom + convertDpToPx(30)
         )
     }
 }

@@ -6,9 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import net.noliaware.yumi_retailer.R
 import net.noliaware.yumi_retailer.commun.ACCOUNT_DATA
+import net.noliaware.yumi_retailer.commun.PRIVACY_POLICY_FRAGMENT_TAG
 import net.noliaware.yumi_retailer.commun.util.inflate
 import net.noliaware.yumi_retailer.commun.util.withArgs
 import net.noliaware.yumi_retailer.feature_alerts.presentation.controllers.AlertsFragment
@@ -53,6 +57,18 @@ class HomeFragment : Fragment() {
                     homeMenuView.setBadgeForNotificationButton(accountData.newAlertCount)
                 }
             }
+            if (accountData.shouldConfirmPrivacyPolicy) {
+                viewLifecycleOwner.lifecycleScope.launch {
+                    delay(150)
+                    PrivacyPolicyFragment.newInstance(
+                        privacyPolicyUrl = accountData.privacyPolicyUrl,
+                        isConfirmationRequired = true
+                    ).show(
+                        childFragmentManager.beginTransaction(),
+                        PRIVACY_POLICY_FRAGMENT_TAG
+                    )
+                }
+            }
         }
     }
 
@@ -64,7 +80,10 @@ class HomeFragment : Fragment() {
 
             override fun onProfileButtonClicked() {
                 childFragmentManager.beginTransaction().run {
-                    replace(R.id.main_fragment_container, UserProfileFragment())
+                    replace(
+                        R.id.main_fragment_container,
+                        UserProfileFragment()
+                    )
                     commitAllowingStateLoss()
                 }
             }

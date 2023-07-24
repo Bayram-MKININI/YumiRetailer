@@ -5,25 +5,28 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import net.noliaware.yumi_retailer.R
 import net.noliaware.yumi_retailer.commun.BO_SIGN_IN_FRAGMENT_TAG
+import net.noliaware.yumi_retailer.commun.PRIVACY_POLICY_FRAGMENT_TAG
 import net.noliaware.yumi_retailer.commun.util.ViewModelState
 import net.noliaware.yumi_retailer.commun.util.handleSharedEvent
 import net.noliaware.yumi_retailer.commun.util.redirectToLoginScreenFromSharedEvent
+import net.noliaware.yumi_retailer.feature_login.domain.model.TFAMode
 import net.noliaware.yumi_retailer.feature_profile.domain.model.UserProfile
 import net.noliaware.yumi_retailer.feature_profile.presentation.views.ProfileDataParentView
 import net.noliaware.yumi_retailer.feature_profile.presentation.views.ProfileDataView.ProfileDataViewCallback
 import net.noliaware.yumi_retailer.feature_profile.presentation.views.ProfileDataView.ProfileViewAdapter
+import net.noliaware.yumi_retailer.feature_scan.presentation.controllers.PrivacyPolicyFragment
 
 @AndroidEntryPoint
 class UserProfileDataFragment : Fragment() {
 
     private var profileDataParentView: ProfileDataParentView? = null
-    private val viewModel by viewModels<UserProfileDataFragmentViewModel>()
+    private val viewModel by activityViewModels<UserProfileDataFragmentViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -44,9 +47,9 @@ class UserProfileDataFragment : Fragment() {
     private fun collectFlows() {
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             viewModel.eventsHelper.eventFlow.collectLatest { sharedEvent ->
-                    handleSharedEvent(sharedEvent)
-                    redirectToLoginScreenFromSharedEvent(sharedEvent)
-                }
+                handleSharedEvent(sharedEvent)
+                redirectToLoginScreenFromSharedEvent(sharedEvent)
+            }
         }
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             viewModel.eventsHelper.stateFlow.collect { vmState ->
@@ -78,18 +81,47 @@ class UserProfileDataFragment : Fragment() {
             retailer = userProfile.label,
             email = userProfile.email,
             phone = userProfile.cellPhoneNumber,
-            address = address
+            address = address,
+            twoFactorAuthModeText = map2FAModeText(viewModel.accountData?.twoFactorAuthMode),
+            twoFactorAuthModeActivated = map2FAModeActivation(viewModel.accountData?.twoFactorAuthMode)
         ).also {
             profileDataParentView?.getProfileDataView?.fillViewWithData(it)
         }
     }
 
+    private fun map2FAModeText(
+        twoFactorAuthMode: TFAMode?
+    ) = when (twoFactorAuthMode) {
+        TFAMode.APP -> getString(R.string.bo_two_factor_auth_by_app)
+        TFAMode.MAIL -> getString(R.string.bo_two_factor_auth_by_mail)
+        else -> getString(R.string.bo_two_factor_auth_none)
+    }
+
+    private fun map2FAModeActivation(
+        twoFactorAuthMode: TFAMode?
+    ) = when (twoFactorAuthMode) {
+        TFAMode.APP -> true
+        else -> false
+    }
+
     private val profileViewCallback: ProfileDataViewCallback by lazy {
-        ProfileDataViewCallback {
-            BOSignInFragment.newInstance().show(
-                childFragmentManager.beginTransaction(),
-                BO_SIGN_IN_FRAGMENT_TAG
-            )
+        object : ProfileDataViewCallback {
+            override fun onGetCodeButtonClicked() {
+                BOSignInFragment.newInstance().show(
+                    childFragmentManager.beginTransaction(),
+                    BO_SIGN_IN_FRAGMENT_TAG
+                )
+            }
+
+            override fun onPrivacyPolicyButtonClicked() {
+                PrivacyPolicyFragment.newInstance(
+                    privacyPolicyUrl = viewModel.accountData?.privacyPolicyUrl.orEmpty(),
+                    isConfirmationRequired = false
+                ).show(
+                    childFragmentManager.beginTransaction(),
+                    PRIVACY_POLICY_FRAGMENT_TAG
+                )
+            }
         }
     }
 

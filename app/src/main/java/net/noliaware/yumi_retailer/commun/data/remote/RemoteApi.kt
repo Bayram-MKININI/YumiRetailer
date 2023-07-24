@@ -19,6 +19,7 @@ import net.noliaware.yumi_retailer.commun.GET_VOUCHER_DATA_PER_CATEGORY
 import net.noliaware.yumi_retailer.commun.INIT
 import net.noliaware.yumi_retailer.commun.SALT_STRING
 import net.noliaware.yumi_retailer.commun.SEND_MESSAGE
+import net.noliaware.yumi_retailer.commun.SET_PRIVACY_POLICY_READ_STATUS
 import net.noliaware.yumi_retailer.commun.TIMESTAMP
 import net.noliaware.yumi_retailer.commun.TOKEN
 import net.noliaware.yumi_retailer.commun.USE_VOUCHER
@@ -41,6 +42,7 @@ import net.noliaware.yumi_retailer.feature_profile.data.remote.dto.ProductCatego
 import net.noliaware.yumi_retailer.feature_profile.data.remote.dto.ProfileDTO
 import net.noliaware.yumi_retailer.feature_profile.data.remote.dto.UsedVouchersDTO
 import net.noliaware.yumi_retailer.feature_profile.data.remote.dto.VoucherCategoriesDTO
+import net.noliaware.yumi_retailer.feature_scan.data.repository.dto.UpdatePrivacyPolicyResponseDTO
 import net.noliaware.yumi_retailer.feature_scan.data.repository.dto.UseVoucherResponseDTO
 import retrofit2.http.FieldMap
 import retrofit2.http.FormUrlEncoded
@@ -66,6 +68,15 @@ interface RemoteApi {
         @Path(TOKEN) token: String,
         @FieldMap params: Map<String, String>
     ): ResponseDTO<AccountDataDTO>
+
+    @FormUrlEncoded
+    @POST("$SET_PRIVACY_POLICY_READ_STATUS/{$TIMESTAMP}/{$SALT_STRING}/{$TOKEN}")
+    suspend fun updatePrivacyPolicyReadStatus(
+        @Path(TIMESTAMP) timestamp: String,
+        @Path(SALT_STRING) saltString: String,
+        @Path(TOKEN) token: String,
+        @FieldMap params: Map<String, String>
+    ): ResponseDTO<UpdatePrivacyPolicyResponseDTO>
 
     @FormUrlEncoded
     @POST("$USE_VOUCHER/{$TIMESTAMP}/{$SALT_STRING}/{$TOKEN}")
