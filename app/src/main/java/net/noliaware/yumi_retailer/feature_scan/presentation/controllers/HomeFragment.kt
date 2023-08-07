@@ -84,7 +84,7 @@ class HomeFragment : Fragment() {
                         R.id.main_fragment_container,
                         UserProfileFragment()
                     )
-                    commitAllowingStateLoss()
+                    commit()
                 }
             }
 
@@ -95,7 +95,7 @@ class HomeFragment : Fragment() {
                         R.id.main_fragment_container,
                         MessagingFragment.newInstance(viewModel.accountData?.messageSubjects)
                     )
-                    commitAllowingStateLoss()
+                    commit()
                 }
             }
 
@@ -103,7 +103,7 @@ class HomeFragment : Fragment() {
                 homeView?.homeMenuView?.hideNotificationButtonBadge()
                 childFragmentManager.beginTransaction().run {
                     replace(R.id.main_fragment_container, AlertsFragment())
-                    commitAllowingStateLoss()
+                    commit()
                 }
             }
         }
@@ -115,7 +115,7 @@ class HomeFragment : Fragment() {
                 R.id.main_fragment_container,
                 ScanFragment.newInstance()
             )
-            commitAllowingStateLoss()
+            commit()
             homeView?.selectHomeButton()
         }
     }

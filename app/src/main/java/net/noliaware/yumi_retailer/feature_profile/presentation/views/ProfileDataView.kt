@@ -1,8 +1,6 @@
 package net.noliaware.yumi_retailer.feature_profile.presentation.views
 
 import android.content.Context
-import android.text.Spannable
-import android.text.SpannableString
 import android.util.AttributeSet
 import android.view.Gravity
 import android.view.View
@@ -137,9 +135,12 @@ class ProfileDataView(context: Context, attrs: AttributeSet?) : ViewGroup(contex
 
         privacyPolicyLinkTextView.measureWrapContent()
 
-        val viewHeight = myDataTextView.measuredHeight + loginValueTextView.measuredHeight +
-                retailerValueTextView.measuredHeight + emailValueTextView.measuredHeight +
-                phoneValueTextView.measuredHeight + addressValueTextView.measuredHeight +
+        val viewHeight = myDataTextView.measuredHeight +
+                max(loginTitleTextView.measuredHeight, loginValueTextView.measuredHeight) +
+                max(retailerTitleTextView.measuredHeight, retailerValueTextView.measuredHeight) +
+                max(emailTitleTextView.measuredHeight, emailValueTextView.measuredHeight) +
+                max(phoneTitleTextView.measuredHeight, phoneValueTextView.measuredHeight) +
+                max(addressTitleTextView.measuredHeight, addressValueTextView.measuredHeight) +
                 separatorView.measuredHeight + boAccessTextView.measuredHeight +
                 boAccessDescriptionTextView.measuredHeight +
                 if (accessButtonLayout.isVisible) {
