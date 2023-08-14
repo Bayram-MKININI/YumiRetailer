@@ -52,10 +52,9 @@ class AlertPagingSource(
                 throw PaginationException(errorType)
             }
 
-            val alertTimestamp =
-                remoteData.data?.alertDTOList?.last()?.alertTimestamp ?: nextTimestamp
+            val alertTimestamp = remoteData.data?.alertDTOList?.lastOrNull()?.alertTimestamp ?: nextTimestamp
 
-            val moreItemsAvailable = remoteData.data?.alertDTOList?.last()?.let { alertDTO ->
+            val moreItemsAvailable = remoteData.data?.alertDTOList?.lastOrNull()?.let { alertDTO ->
                 alertDTO.alertRank < alertDTO.alertCount
             }
 
