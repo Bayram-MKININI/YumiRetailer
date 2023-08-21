@@ -14,7 +14,6 @@ import android.os.Build
 import android.text.SpannableString
 import android.text.Spanned
 import android.text.style.ForegroundColorSpan
-import android.text.style.UnderlineSpan
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View

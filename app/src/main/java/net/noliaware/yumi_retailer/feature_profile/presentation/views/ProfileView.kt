@@ -61,15 +61,9 @@ class ProfileView(context: Context, attrs: AttributeSet?) : ViewGroup(context, a
         viewPager.registerOnPageChangeCallback(object : OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 when (position) {
-                    0 -> {
-                        setFirstTabSelected()
-                    }
-                    1 -> {
-                        setSecondTabSelected()
-                    }
-                    else -> {
-                        setThirdTabSelected()
-                    }
+                    0 -> setFirstTabSelected()
+                    1 -> setSecondTabSelected()
+                    else -> setThirdTabSelected()
                 }
             }
         })

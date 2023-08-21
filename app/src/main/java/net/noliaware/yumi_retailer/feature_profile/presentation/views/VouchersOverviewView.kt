@@ -101,15 +101,9 @@ class VouchersOverviewView(
         viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 when (position) {
-                    0 -> {
-                        setFirstTabSelected()
-                    }
-                    1 -> {
-                        setSecondTabSelected()
-                    }
-                    else -> {
-                        setThirdTabSelected()
-                    }
+                    0 -> setFirstTabSelected()
+                    1 -> setSecondTabSelected()
+                    else -> setThirdTabSelected()
                 }
             }
         })
