@@ -58,7 +58,7 @@ class AlertsFragment : Fragment() {
     }
 
     override fun onDestroyView() {
-        super.onDestroyView()
         alertsView = null
+        super.onDestroyView()
     }
 }

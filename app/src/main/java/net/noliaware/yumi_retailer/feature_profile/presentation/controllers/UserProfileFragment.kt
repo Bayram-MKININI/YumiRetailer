@@ -35,8 +35,8 @@ class UserProfileFragment : Fragment() {
     }
 
     override fun onDestroyView() {
-        super.onDestroyView()
         profileView = null
+        super.onDestroyView()
     }
 
     private class UserProfileFragmentStateAdapter(

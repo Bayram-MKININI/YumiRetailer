@@ -71,7 +71,7 @@ class VouchersListFragment : Fragment() {
     }
 
     override fun onDestroyView() {
-        super.onDestroyView()
         vouchersListView = null
+        super.onDestroyView()
     }
 }

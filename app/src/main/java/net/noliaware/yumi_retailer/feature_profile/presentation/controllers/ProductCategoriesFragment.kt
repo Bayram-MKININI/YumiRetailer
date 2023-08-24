@@ -93,7 +93,7 @@ class ProductCategoriesFragment : Fragment() {
     }
 
     override fun onDestroyView() {
-        super.onDestroyView()
         productCategoriesView = null
+        super.onDestroyView()
     }
 }
