@@ -35,7 +35,6 @@ class VouchersListView(context: Context, attrs: AttributeSet?) : ViewGroup(conte
         shimmerView = findViewById(R.id.shimmer_view)
         shimmerRecyclerView = shimmerView.findViewById(R.id.shimmer_recycler_view)
         setUpRecyclerView(shimmerRecyclerView)
-        shimmerRecyclerView.setHasFixedSize(true)
         BaseAdapter(listOf(0)).apply {
             expressionOnCreateViewHolder = { viewGroup ->
                 viewGroup.inflate(R.layout.voucher_item_placeholder_layout)

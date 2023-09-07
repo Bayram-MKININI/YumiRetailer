@@ -43,7 +43,6 @@ class ProductCategoriesView(context: Context, attrs: AttributeSet?) : ViewGroup(
         shimmerView = findViewById(R.id.shimmer_view)
         shimmerRecyclerView = shimmerView.findViewById(R.id.shimmer_recycler_view)
         setUpRecyclerView(shimmerRecyclerView)
-        shimmerRecyclerView.setHasFixedSize(true)
         BaseAdapter((0..9).map { 0 }).apply {
             expressionOnCreateViewHolder = { viewGroup ->
                 viewGroup.inflate(R.layout.product_category_item_placeholder_layout)

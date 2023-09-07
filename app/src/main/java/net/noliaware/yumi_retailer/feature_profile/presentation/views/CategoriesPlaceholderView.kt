@@ -41,7 +41,6 @@ class CategoriesPlaceholderView @JvmOverloads constructor(
 
             it.layoutManager = LinearLayoutManager(context)
             it.addItemDecoration(MarginItemDecoration(convertDpToPx(15)))
-            it.setHasFixedSize(true)
 
             BaseAdapter((0..9).map { 0 }).apply {
                 expressionOnCreateViewHolder = { viewGroup ->
