@@ -48,7 +48,6 @@
     <string name="bo_two_factor_auth_by_mail">La double authentification sur l\'application web se fait par mail</string>
     <string name="access">Générer un code</string>
     <string name="new_line">\n</string>
-    <string name="empty_value">-</string>
     <string name="bo_sign_in_description">Veuillez utiliser ce code pour vous connecter à votre compte sur l\'application web</string>
     <string name="bo_code_expiration">Ce code expire dans:</string>
     <string name="empty_time">--:--</string>

@@ -2,19 +2,15 @@ package net.noliaware.yumi_retailer.feature_profile.presentation.views
 
 import android.content.Context
 import android.util.AttributeSet
-import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.widget.LinearLayoutCompat
+import com.facebook.shimmer.Shimmer
+import com.facebook.shimmer.ShimmerFrameLayout
 import net.noliaware.yumi_retailer.R
-import net.noliaware.yumi_retailer.commun.util.convertDpToPx
-import net.noliaware.yumi_retailer.commun.util.layoutToBottomLeft
 import net.noliaware.yumi_retailer.commun.util.layoutToTopLeft
-import net.noliaware.yumi_retailer.commun.util.measureWrapContent
-import net.noliaware.yumi_retailer.commun.util.weak
 
 class ProfileDataParentView(context: Context, attrs: AttributeSet?) : ViewGroup(context, attrs) {
 
-    private lateinit var contentView: View
+    private lateinit var shimmerView: ShimmerFrameLayout
     private lateinit var profileDataView: ProfileDataView
     val getProfileDataView get() = profileDataView
 
@@ -24,15 +20,29 @@ class ProfileDataParentView(context: Context, attrs: AttributeSet?) : ViewGroup(
     }
 
     private fun initView() {
-        contentView = findViewById(R.id.content_view)
-        profileDataView = findViewById(R.id.profile_data_view)
+        shimmerView = findViewById(R.id.shimmer_view)
+        profileDataView = shimmerView.findViewById(R.id.profile_data_view)
+    }
+
+    fun setLoadingVisible(visible: Boolean) {
+        shimmerView.setShimmer(
+            Shimmer.AlphaHighlightBuilder()
+                .setBaseAlpha(if (visible) 0.4f else 1f)
+                .setDuration(resources.getInteger(R.integer.shimmer_animation_duration_ms).toLong())
+                .build()
+        )
+        if (visible) {
+            shimmerView.startShimmer()
+        } else {
+            shimmerView.stopShimmer()
+        }
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         val viewWidth = MeasureSpec.getSize(widthMeasureSpec)
         val viewHeight = MeasureSpec.getSize(heightMeasureSpec)
 
-        contentView.measure(
+        shimmerView.measure(
             MeasureSpec.makeMeasureSpec(viewWidth, MeasureSpec.EXACTLY),
             MeasureSpec.makeMeasureSpec(viewHeight, MeasureSpec.EXACTLY)
         )
@@ -47,6 +57,6 @@ class ProfileDataParentView(context: Context, attrs: AttributeSet?) : ViewGroup(
         val viewWidth = right - left
         val viewHeight = bottom - top
 
-        contentView.layoutToTopLeft(0, 0)
+        shimmerView.layoutToTopLeft(0, 0)
     }
 }

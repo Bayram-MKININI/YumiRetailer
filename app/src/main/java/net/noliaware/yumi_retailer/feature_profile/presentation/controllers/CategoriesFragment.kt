@@ -11,7 +11,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import net.noliaware.yumi_retailer.R
 import net.noliaware.yumi_retailer.commun.VOUCHERS_OVERVIEW_FRAGMENT_TAG
-import net.noliaware.yumi_retailer.commun.util.ViewModelState
+import net.noliaware.yumi_retailer.commun.util.ViewModelState.DataState
+import net.noliaware.yumi_retailer.commun.util.ViewModelState.LoadingState
 import net.noliaware.yumi_retailer.commun.util.formatNumber
 import net.noliaware.yumi_retailer.commun.util.handleSharedEvent
 import net.noliaware.yumi_retailer.commun.util.redirectToLoginScreenFromSharedEvent
@@ -53,8 +54,9 @@ class CategoriesFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             viewModel.eventsHelper.stateFlow.collect { vmState ->
                 when (vmState) {
-                    is ViewModelState.LoadingState -> Unit
-                    is ViewModelState.DataState -> vmState.data?.let { usedCategories ->
+                    is LoadingState -> categoriesParentView?.setLoadingVisible(true)
+                    is DataState -> vmState.data?.let { usedCategories ->
+                        categoriesParentView?.setLoadingVisible(false)
                         bindViewToData(usedCategories)
                     }
                 }

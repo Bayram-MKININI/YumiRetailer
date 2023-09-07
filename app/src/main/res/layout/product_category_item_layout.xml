@@ -10,7 +10,8 @@
         android:id="@+id/icon_image_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:adjustViewBounds="true" />
+        android:adjustViewBounds="true"
+        tools:src="@drawable/ic_food" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/title_text_view"
@@ -18,7 +19,8 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/omnes_semibold_regular"
         android:textColor="@color/grey_2"
-        android:textSize="14sp" />
+        android:textSize="14sp"
+        tools:text="Alimentaire" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/distributed_text_view"

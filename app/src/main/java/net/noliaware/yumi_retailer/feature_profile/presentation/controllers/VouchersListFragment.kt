@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.paging.LoadState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import net.noliaware.yumi_retailer.R
@@ -45,7 +46,7 @@ class VouchersListFragment : Fragment() {
     ): View? {
         return inflater.inflate(R.layout.vouchers_list_layout, container, false).apply {
             vouchersListView = this as VouchersListView
-            vouchersListView?.adapter = VoucherAdapter(viewModel.categoryColor, viewModel.voucherListType)
+            vouchersListView?.voucherAdapter = VoucherAdapter(viewModel.categoryColor, viewModel.voucherListType)
         }
     }
 
@@ -56,16 +57,19 @@ class VouchersListFragment : Fragment() {
 
     private fun collectFlows() {
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-            vouchersListView?.getVoucherAdapter?.loadStateFlow?.collectLatest { loadState ->
+            vouchersListView?.voucherAdapter?.loadStateFlow?.collectLatest { loadState ->
+                if (loadState.refresh is LoadState.NotLoading) {
+                    vouchersListView?.setLoadingVisible(false)
+                }
                 handlePaginationError(loadState)
             }
         }
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             viewModel.getVouchers().collectLatest {
-                vouchersListView?.getVoucherAdapter?.withLoadStateFooter(
+                vouchersListView?.voucherAdapter?.withLoadStateFooter(
                     footer = ListLoadStateAdapter()
                 )
-                vouchersListView?.getVoucherAdapter?.submitData(it)
+                vouchersListView?.voucherAdapter?.submitData(it)
             }
         }
     }

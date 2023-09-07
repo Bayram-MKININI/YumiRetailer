@@ -131,8 +131,7 @@ class CategoriesView(context: Context, attrs: AttributeSet?) : ViewGroup(context
             MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED)
         )
 
-        val viewHeight =
-            availableVoucherCountView.measuredHeight + consumedVoucherCountView.measuredHeight +
+        val viewHeight = availableVoucherCountView.measuredHeight + consumedVoucherCountView.measuredHeight +
                     recyclerView.measuredHeight + convertDpToPx(10)
 
         setMeasuredDimension(

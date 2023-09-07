@@ -5,6 +5,9 @@ import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.view.isGone
+import androidx.core.view.isVisible
+import com.facebook.shimmer.ShimmerFrameLayout
 import net.noliaware.yumi_retailer.R
 import net.noliaware.yumi_retailer.commun.util.convertDpToPx
 import net.noliaware.yumi_retailer.commun.util.layoutToTopLeft
@@ -14,6 +17,7 @@ import net.noliaware.yumi_retailer.feature_profile.presentation.views.Categories
 class CategoriesParentView(context: Context, attrs: AttributeSet?) : ViewGroup(context, attrs) {
 
     private lateinit var myVouchersTextView: TextView
+    private lateinit var shimmerView: ShimmerFrameLayout
     private lateinit var contentView: View
     private lateinit var categoriesView: CategoriesView
     val getCategoriesView get() = categoriesView
@@ -25,12 +29,25 @@ class CategoriesParentView(context: Context, attrs: AttributeSet?) : ViewGroup(c
 
     private fun initView() {
         myVouchersTextView = findViewById(R.id.my_vouchers_text_view)
+        shimmerView = findViewById(R.id.shimmer_view)
         contentView = findViewById(R.id.content_view)
         categoriesView = contentView.findViewById(R.id.categories_view)
     }
 
     fun fillViewWithData(categoriesViewAdapter: CategoriesViewAdapter) {
         categoriesView.fillViewWithData(categoriesViewAdapter)
+    }
+
+    fun setLoadingVisible(visible: Boolean) {
+        if (visible) {
+            shimmerView.isVisible = true
+            contentView.isGone = true
+            shimmerView.startShimmer()
+        } else {
+            shimmerView.isGone = true
+            contentView.isVisible = true
+            shimmerView.stopShimmer()
+        }
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
@@ -40,10 +57,20 @@ class CategoriesParentView(context: Context, attrs: AttributeSet?) : ViewGroup(c
         myVouchersTextView.measureWrapContent()
 
         val recyclerViewHeight = viewHeight - (myVouchersTextView.measuredHeight + convertDpToPx(30))
-        contentView.measure(
-            MeasureSpec.makeMeasureSpec(viewWidth, MeasureSpec.EXACTLY),
-            MeasureSpec.makeMeasureSpec(recyclerViewHeight, MeasureSpec.EXACTLY)
-        )
+
+        if (shimmerView.isVisible) {
+            shimmerView.measure(
+                MeasureSpec.makeMeasureSpec(viewWidth, MeasureSpec.EXACTLY),
+                MeasureSpec.makeMeasureSpec(recyclerViewHeight, MeasureSpec.EXACTLY)
+            )
+        }
+
+        if (contentView.isVisible) {
+            contentView.measure(
+                MeasureSpec.makeMeasureSpec(viewWidth, MeasureSpec.EXACTLY),
+                MeasureSpec.makeMeasureSpec(recyclerViewHeight, MeasureSpec.EXACTLY)
+            )
+        }
 
         setMeasuredDimension(
             MeasureSpec.makeMeasureSpec(viewWidth, MeasureSpec.EXACTLY),
@@ -60,9 +87,14 @@ class CategoriesParentView(context: Context, attrs: AttributeSet?) : ViewGroup(c
             convertDpToPx(15)
         )
 
-        contentView.layoutToTopLeft(
-            0,
-            myVouchersTextView.bottom + convertDpToPx(10)
-        )
+        val contentViewTop = myVouchersTextView.bottom + convertDpToPx(10)
+
+        if (shimmerView.isVisible) {
+            shimmerView.layoutToTopLeft(0, contentViewTop)
+        }
+
+        if (contentView.isVisible) {
+            contentView.layoutToTopLeft(0, contentViewTop)
+        }
     }
 }

@@ -5,13 +5,18 @@ import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.facebook.shimmer.ShimmerFrameLayout
 import net.noliaware.yumi_retailer.R
+import net.noliaware.yumi_retailer.commun.presentation.adapters.BaseAdapter
 import net.noliaware.yumi_retailer.commun.util.MarginItemDecoration
 import net.noliaware.yumi_retailer.commun.util.convertDpToPx
 import net.noliaware.yumi_retailer.commun.util.drawableIdByName
 import net.noliaware.yumi_retailer.commun.util.getStatusBarHeight
+import net.noliaware.yumi_retailer.commun.util.inflate
 import net.noliaware.yumi_retailer.commun.util.layoutToTopLeft
 import net.noliaware.yumi_retailer.commun.util.measureWrapContent
 import net.noliaware.yumi_retailer.commun.util.weak
@@ -24,6 +29,8 @@ class ProductListView(context: Context, attrs: AttributeSet?) : ViewGroup(contex
     private lateinit var backView: View
     private lateinit var categoryImageView: ImageView
     private lateinit var contentView: View
+    private lateinit var shimmerView: ShimmerFrameLayout
+    private lateinit var shimmerRecyclerView: RecyclerView
     private lateinit var recyclerView: RecyclerView
 
     var productAdapter
@@ -57,17 +64,44 @@ class ProductListView(context: Context, attrs: AttributeSet?) : ViewGroup(contex
 
         categoryImageView = findViewById(R.id.category_image_view)
         contentView = findViewById(R.id.content_layout)
-        recyclerView = contentView.findViewById(R.id.recycler_view)
 
-        recyclerView.also {
-            it.layoutManager = LinearLayoutManager(context)
-            it.addItemDecoration(MarginItemDecoration(convertDpToPx(15)))
+        shimmerView = findViewById(R.id.shimmer_view)
+        shimmerRecyclerView = shimmerView.findViewById(R.id.shimmer_recycler_view)
+        setUpRecyclerView(shimmerRecyclerView)
+        shimmerRecyclerView.setHasFixedSize(true)
+        BaseAdapter(listOf(0)).apply {
+            expressionOnCreateViewHolder = { viewGroup ->
+                viewGroup.inflate(R.layout.product_item_placeholder_layout)
+            }
+            shimmerRecyclerView.adapter = this
+        }
+
+        recyclerView = contentView.findViewById(R.id.recycler_view)
+        setUpRecyclerView(recyclerView)
+    }
+
+    private fun setUpRecyclerView(recyclerView: RecyclerView) {
+        recyclerView.apply {
+            layoutManager = LinearLayoutManager(context)
+            addItemDecoration(MarginItemDecoration(convertDpToPx(15)))
         }
     }
 
     fun fillViewWithData(productListViewAdapter: ProductListViewAdapter) {
         headerView.setBackgroundColor(productListViewAdapter.color)
         categoryImageView.setImageResource(context.drawableIdByName(productListViewAdapter.iconName))
+    }
+
+    fun setLoadingVisible(visible: Boolean) {
+        if (visible) {
+            shimmerView.isVisible = true
+            recyclerView.isGone = true
+            shimmerView.startShimmer()
+        } else {
+            shimmerView.isGone = true
+            recyclerView.isVisible = true
+            shimmerView.stopShimmer()
+        }
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
@@ -102,10 +136,19 @@ class ProductListView(context: Context, attrs: AttributeSet?) : ViewGroup(contex
             MeasureSpec.makeMeasureSpec(contentViewHeight, MeasureSpec.EXACTLY)
         )
 
-        recyclerView.measure(
-            MeasureSpec.makeMeasureSpec(contentView.measuredWidth, MeasureSpec.EXACTLY),
-            MeasureSpec.makeMeasureSpec(contentView.measuredHeight, MeasureSpec.EXACTLY)
-        )
+        if (shimmerView.isVisible) {
+            shimmerView.measure(
+                MeasureSpec.makeMeasureSpec(contentView.measuredWidth, MeasureSpec.EXACTLY),
+                MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED)
+            )
+        }
+
+        if (recyclerView.isVisible) {
+            recyclerView.measure(
+                MeasureSpec.makeMeasureSpec(contentView.measuredWidth, MeasureSpec.EXACTLY),
+                MeasureSpec.makeMeasureSpec(contentView.measuredHeight, MeasureSpec.EXACTLY)
+            )
+        }
 
         setMeasuredDimension(
             MeasureSpec.makeMeasureSpec(viewWidth, MeasureSpec.EXACTLY),
@@ -140,6 +183,12 @@ class ProductListView(context: Context, attrs: AttributeSet?) : ViewGroup(contex
             categoryImageView.bottom + convertDpToPx(15)
         )
 
-        recyclerView.layoutToTopLeft(0, 0)
+        if (shimmerView.isVisible) {
+            shimmerView.layoutToTopLeft(0, 0)
+        }
+
+        if (recyclerView.isVisible) {
+            recyclerView.layoutToTopLeft(0, 0)
+        }
     }
 }

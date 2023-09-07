@@ -30,6 +30,8 @@ class ProfileRepositoryImpl(
 
     override fun getUserProfile(): Flow<Resource<UserProfile>> = flow {
 
+        emit(Resource.Loading())
+
         try {
 
             val timestamp = System.currentTimeMillis().toString()
@@ -74,6 +76,8 @@ class ProfileRepositoryImpl(
     }
 
     override fun getBackOfficeSignInCode(): Flow<Resource<BOSignIn>> = flow {
+
+        emit(Resource.Loading())
 
         try {
 
@@ -120,6 +124,8 @@ class ProfileRepositoryImpl(
 
     override fun getVoucherCategories(): Flow<Resource<List<Category>>> = flow {
 
+        emit(Resource.Loading())
+
         try {
             val timestamp = System.currentTimeMillis().toString()
             val randomString = UUID.randomUUID().toString()
@@ -162,6 +168,8 @@ class ProfileRepositoryImpl(
     }
 
     override fun getProductCategories(): Flow<Resource<List<Category>>> = flow {
+
+        emit(Resource.Loading())
 
         try {
             val timestamp = System.currentTimeMillis().toString()

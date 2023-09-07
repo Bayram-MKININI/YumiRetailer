@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <net.noliaware.yumi_retailer.feature_profile.presentation.views.ProductListView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -29,14 +30,28 @@
 
     <net.noliaware.yumi_retailer.commun.presentation.views.ElevatedCardView
         android:id="@+id/content_layout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/shimmer_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:duration="@integer/shimmer_animation_duration_ms">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/shimmer_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </com.facebook.shimmer.ShimmerFrameLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:overScrollMode="never" />
+            android:overScrollMode="never"
+            android:visibility="gone" />
 
     </net.noliaware.yumi_retailer.commun.presentation.views.ElevatedCardView>
 </net.noliaware.yumi_retailer.feature_profile.presentation.views.ProductListView>

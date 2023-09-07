@@ -19,7 +19,7 @@ class BaseAdapter<T>(private val listOfItems: List<T>) : RecyclerView.Adapter<Ba
         }?.let { view ->
             BaseViewHolder(
                 view = view,
-                expression = expressionViewHolderBinding!!,
+                expression = expressionViewHolderBinding,
                 onItemClicked = onItemClicked?.let {
                     { position ->
                         listOfItems[position]?.let {

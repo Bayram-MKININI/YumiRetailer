@@ -23,7 +23,9 @@ class AlertsFragment : Fragment() {
     private val viewModel by viewModels<AlertsFragmentViewModel>()
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.alerts_layout, container, false).apply {
             alertsView = this as AlertsView
@@ -40,13 +42,13 @@ class AlertsFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             alertsView?.alertAdapter?.loadStateFlow?.collectLatest { loadState ->
                 if (loadState.refresh is LoadState.NotLoading) {
+                    alertsView?.setLoadingVisible(false)
                     val alertsCount = alertsView?.alertAdapter?.itemCount ?: 0
                     alertsView?.setEmptyMessageVisible(alertsCount < 1)
                 }
                 handlePaginationError(loadState)
             }
         }
-
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             viewModel.getAlerts().collectLatest {
                 alertsView?.alertAdapter?.withLoadStateFooter(

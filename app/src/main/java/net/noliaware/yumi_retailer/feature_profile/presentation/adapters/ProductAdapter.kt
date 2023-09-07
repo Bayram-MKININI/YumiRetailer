@@ -10,21 +10,21 @@ import net.noliaware.yumi_retailer.commun.util.formatNumber
 import net.noliaware.yumi_retailer.commun.util.inflate
 import net.noliaware.yumi_retailer.commun.util.parseDateToFormat
 import net.noliaware.yumi_retailer.feature_profile.domain.model.Product
-import net.noliaware.yumi_retailer.feature_profile.presentation.views.ProductListItemView
-import net.noliaware.yumi_retailer.feature_profile.presentation.views.ProductListItemView.*
+import net.noliaware.yumi_retailer.feature_profile.presentation.views.ProductItemView
+import net.noliaware.yumi_retailer.feature_profile.presentation.views.ProductItemView.*
 
-class ProductAdapter : PagingDataAdapter<Product, ItemViewHolder<ProductListItemView>>(
+class ProductAdapter : PagingDataAdapter<Product, ItemViewHolder<ProductItemView>>(
     ProductComparator
 ) {
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ) = ItemViewHolder<ProductListItemView>(
+    ) = ItemViewHolder<ProductItemView>(
         parent.inflate(R.layout.product_item_layout)
     )
 
-    override fun onBindViewHolder(holder: ItemViewHolder<ProductListItemView>, position: Int) {
+    override fun onBindViewHolder(holder: ItemViewHolder<ProductItemView>, position: Int) {
         getItem(position)?.let { alert ->
             holder.heldItemView.fillViewWithData(
                 mapAdapter(alert, holder)
@@ -34,7 +34,7 @@ class ProductAdapter : PagingDataAdapter<Product, ItemViewHolder<ProductListItem
 
     private fun mapAdapter(
         product: Product,
-        holder: ItemViewHolder<ProductListItemView>
+        holder: ItemViewHolder<ProductItemView>
     ) = ProductItemViewAdapter(
         label = product.productLabel,
         startDate = product.productStartDate?.parseDateToFormat(SHORT_DATE_FORMAT),

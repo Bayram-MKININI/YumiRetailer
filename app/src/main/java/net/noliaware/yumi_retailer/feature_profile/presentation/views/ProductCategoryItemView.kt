@@ -44,9 +44,8 @@ class ProductCategoryItemView(context: Context, attrs: AttributeSet?) : ViewGrou
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         val viewWidth = MeasureSpec.getSize(widthMeasureSpec)
-        val viewHeight = viewWidth * 34 / 100
 
-        val iconSpace = viewHeight / 2
+        val iconSpace = viewWidth * 2 / 10
         iconImageView.measure(
             MeasureSpec.makeMeasureSpec(iconSpace, MeasureSpec.EXACTLY),
             MeasureSpec.makeMeasureSpec(iconSpace, MeasureSpec.EXACTLY)
@@ -55,6 +54,8 @@ class ProductCategoryItemView(context: Context, attrs: AttributeSet?) : ViewGrou
         titleTextView.measureWrapContent()
         distributedTextView.measureWrapContent()
         productCountTextView.measureWrapContent()
+
+        val viewHeight = iconImageView.measuredHeight + titleTextView.measuredHeight + convertDpToPx(35)
 
         setMeasuredDimension(
             MeasureSpec.makeMeasureSpec(viewWidth, MeasureSpec.EXACTLY),
@@ -67,10 +68,8 @@ class ProductCategoryItemView(context: Context, attrs: AttributeSet?) : ViewGrou
         val viewHeight = bottom - top
 
         val guideline = viewWidth * 45 / 100
-        val availableSpace = viewWidth - guideline
 
-        val iconHeight =
-            iconImageView.measuredHeight + titleTextView.measuredHeight + convertDpToPx(5)
+        val iconHeight = iconImageView.measuredHeight + titleTextView.measuredHeight + convertDpToPx(5)
 
         iconImageView.layoutToTopLeft(
             (guideline - iconImageView.measuredWidth) / 2,

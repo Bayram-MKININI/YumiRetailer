@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<net.noliaware.yumi_retailer.feature_profile.presentation.views.ProductItemPlaceholderView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/mail_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/rectangle_rounded_grey1">
+
+    <View
+        android:id="@+id/title_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/grey_9" />
+
+    <View
+        android:id="@+id/start_date_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/grey_9" />
+
+    <View
+        android:id="@+id/expiry_date_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/grey_9" />
+
+    <View
+        android:id="@+id/price_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/grey_9" />
+
+    <View
+        android:id="@+id/planned_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/grey_9" />
+
+    <View
+        android:id="@+id/used_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/grey_9" />
+
+    <View
+        android:id="@+id/cancelled_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/grey_9" />
+
+</net.noliaware.yumi_retailer.feature_profile.presentation.views.ProductItemPlaceholderView>

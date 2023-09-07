@@ -4,8 +4,11 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.facebook.shimmer.ShimmerFrameLayout
 import net.noliaware.yumi_retailer.R
 import net.noliaware.yumi_retailer.commun.presentation.adapters.BaseAdapter
 import net.noliaware.yumi_retailer.commun.util.MarginItemDecoration
@@ -19,6 +22,8 @@ import net.noliaware.yumi_retailer.feature_profile.presentation.views.ProductCat
 class ProductCategoriesView(context: Context, attrs: AttributeSet?) : ViewGroup(context, attrs) {
 
     private lateinit var myProductsTextView: TextView
+    private lateinit var shimmerView: ShimmerFrameLayout
+    private lateinit var shimmerRecyclerView: RecyclerView
     private lateinit var recyclerView: RecyclerView
     private val productCategoryItemViewAdapters = mutableListOf<ProductCategoryItemViewAdapter>()
     var callback: ProductCategoriesViewCallback? by weak()
@@ -34,24 +39,38 @@ class ProductCategoriesView(context: Context, attrs: AttributeSet?) : ViewGroup(
 
     private fun initView() {
         myProductsTextView = findViewById(R.id.my_products_text_view)
-        recyclerView = findViewById(R.id.recycler_view)
 
-        recyclerView.also {
-            it.layoutManager = LinearLayoutManager(context)
-            it.addItemDecoration(MarginItemDecoration(convertDpToPx(15)))
-
-            BaseAdapter(productCategoryItemViewAdapters).apply {
-                expressionViewHolderBinding = { eachItem, view ->
-                    (view as ProductCategoryItemView).fillViewWithData(eachItem)
-                }
-                expressionOnCreateViewHolder = { viewGroup ->
-                    viewGroup.inflate(R.layout.product_category_item_layout)
-                }
-                onItemClicked = { position ->
-                    callback?.onProductCategoryClickedAtIndex(position)
-                }
-                it.adapter = this
+        shimmerView = findViewById(R.id.shimmer_view)
+        shimmerRecyclerView = shimmerView.findViewById(R.id.shimmer_recycler_view)
+        setUpRecyclerView(shimmerRecyclerView)
+        shimmerRecyclerView.setHasFixedSize(true)
+        BaseAdapter((0..9).map { 0 }).apply {
+            expressionOnCreateViewHolder = { viewGroup ->
+                viewGroup.inflate(R.layout.product_category_item_placeholder_layout)
             }
+            shimmerRecyclerView.adapter = this
+        }
+
+        recyclerView = findViewById(R.id.recycler_view)
+        setUpRecyclerView(recyclerView)
+        BaseAdapter(productCategoryItemViewAdapters).apply {
+            expressionViewHolderBinding = { eachItem, view ->
+                (view as ProductCategoryItemView).fillViewWithData(eachItem)
+            }
+            expressionOnCreateViewHolder = { viewGroup ->
+                viewGroup.inflate(R.layout.product_category_item_layout)
+            }
+            onItemClicked = { position ->
+                callback?.onProductCategoryClickedAtIndex(position)
+            }
+            recyclerView.adapter = this
+        }
+    }
+
+    private fun setUpRecyclerView(recyclerView: RecyclerView) {
+        recyclerView.apply {
+            layoutManager = LinearLayoutManager(context)
+            addItemDecoration(MarginItemDecoration(convertDpToPx(15)))
         }
     }
 
@@ -62,18 +81,38 @@ class ProductCategoriesView(context: Context, attrs: AttributeSet?) : ViewGroup(
         recyclerView.adapter?.notifyDataSetChanged()
     }
 
+    fun setLoadingVisible(visible: Boolean) {
+        if (visible) {
+            shimmerView.isVisible = true
+            recyclerView.isGone = true
+            shimmerView.startShimmer()
+        } else {
+            shimmerView.isGone = true
+            recyclerView.isVisible = true
+            shimmerView.stopShimmer()
+        }
+    }
+
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         val viewWidth = MeasureSpec.getSize(widthMeasureSpec)
         val viewHeight = MeasureSpec.getSize(heightMeasureSpec)
 
         myProductsTextView.measureWrapContent()
 
-        val recyclerViewHeight =
-            viewHeight - (myProductsTextView.measuredHeight + convertDpToPx(30))
-        recyclerView.measure(
-            MeasureSpec.makeMeasureSpec(viewWidth, MeasureSpec.EXACTLY),
-            MeasureSpec.makeMeasureSpec(recyclerViewHeight, MeasureSpec.EXACTLY)
-        )
+        if (shimmerView.isVisible) {
+            shimmerView.measure(
+                MeasureSpec.makeMeasureSpec(viewWidth, MeasureSpec.EXACTLY),
+                MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED)
+            )
+        }
+
+        if (recyclerView.isVisible) {
+            val recyclerViewHeight = viewHeight - (myProductsTextView.measuredHeight + convertDpToPx(30))
+            recyclerView.measure(
+                MeasureSpec.makeMeasureSpec(viewWidth, MeasureSpec.EXACTLY),
+                MeasureSpec.makeMeasureSpec(recyclerViewHeight, MeasureSpec.EXACTLY)
+            )
+        }
 
         setMeasuredDimension(
             MeasureSpec.makeMeasureSpec(viewWidth, MeasureSpec.EXACTLY),
@@ -89,6 +128,13 @@ class ProductCategoriesView(context: Context, attrs: AttributeSet?) : ViewGroup(
             convertDpToPx(20),
             convertDpToPx(15)
         )
+
+        if (shimmerView.isVisible) {
+            shimmerView.layoutToTopLeft(
+                0,
+                myProductsTextView.bottom + convertDpToPx(10)
+            )
+        }
 
         recyclerView.layoutToTopLeft(
             0,

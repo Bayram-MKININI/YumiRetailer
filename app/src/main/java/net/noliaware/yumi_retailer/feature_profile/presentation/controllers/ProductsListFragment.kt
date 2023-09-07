@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.paging.LoadState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import net.noliaware.yumi_retailer.R
@@ -71,6 +72,9 @@ class ProductsListFragment : AppCompatDialogFragment() {
     private fun collectFlows() {
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             productListView?.productAdapter?.loadStateFlow?.collectLatest { loadState ->
+                if (loadState.refresh is LoadState.NotLoading) {
+                    productListView?.setLoadingVisible(false)
+                }
                 handlePaginationError(loadState)
             }
         }
