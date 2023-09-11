@@ -1,4 +1,4 @@
-package net.noliaware.yumi_retailer.feature_scan.data.repository.dto
+package net.noliaware.yumi_retailer.feature_scan.data.remote.dto
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass

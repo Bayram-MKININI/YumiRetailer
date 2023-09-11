@@ -42,8 +42,8 @@ import net.noliaware.yumi_retailer.feature_profile.data.remote.dto.ProductCatego
 import net.noliaware.yumi_retailer.feature_profile.data.remote.dto.ProfileDTO
 import net.noliaware.yumi_retailer.feature_profile.data.remote.dto.UsedVouchersDTO
 import net.noliaware.yumi_retailer.feature_profile.data.remote.dto.VoucherCategoriesDTO
-import net.noliaware.yumi_retailer.feature_scan.data.repository.dto.UpdatePrivacyPolicyResponseDTO
-import net.noliaware.yumi_retailer.feature_scan.data.repository.dto.UseVoucherResponseDTO
+import net.noliaware.yumi_retailer.feature_scan.data.remote.dto.UpdatePrivacyPolicyResponseDTO
+import net.noliaware.yumi_retailer.feature_scan.data.remote.dto.UseVoucherResponseDTO
 import retrofit2.http.FieldMap
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.POST

@@ -12,18 +12,8 @@ import net.noliaware.yumi_retailer.BuildConfig
 import net.noliaware.yumi_retailer.commun.ApiConstants.BASE_ENDPOINT
 import net.noliaware.yumi_retailer.commun.data.remote.RemoteApi
 import net.noliaware.yumi_retailer.commun.domain.model.SessionData
-import net.noliaware.yumi_retailer.feature_alerts.data.repository.AlertsRepositoryImpl
-import net.noliaware.yumi_retailer.feature_alerts.domain.repository.AlertsRepository
-import net.noliaware.yumi_retailer.feature_login.domain.repository.DataStoreRepository
 import net.noliaware.yumi_retailer.feature_login.data.repository.DataStoreRepositoryImpl
-import net.noliaware.yumi_retailer.feature_login.domain.repository.LoginRepository
-import net.noliaware.yumi_retailer.feature_login.data.repository.LoginRepositoryImpl
-import net.noliaware.yumi_retailer.feature_message.domain.repository.MessageRepository
-import net.noliaware.yumi_retailer.feature_message.data.repository.MessageRepositoryImpl
-import net.noliaware.yumi_retailer.feature_profile.domain.repository.ProfileRepository
-import net.noliaware.yumi_retailer.feature_profile.data.repository.ProfileRepositoryImpl
-import net.noliaware.yumi_retailer.feature_scan.domain.repository.UseVoucherRepository
-import net.noliaware.yumi_retailer.feature_scan.data.repository.UseVoucherRepositoryImpl
+import net.noliaware.yumi_retailer.feature_login.domain.repository.DataStoreRepository
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -65,39 +55,15 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideDataStoreRepository(@ApplicationContext context: Context): DataStoreRepository {
-        return DataStoreRepositoryImpl(context)
-    }
+    fun provideApi(
+        builder: Retrofit.Builder
+    ): RemoteApi = builder.build().create(RemoteApi::class.java)
 
     @Provides
     @Singleton
-    fun provideApi(builder: Retrofit.Builder): RemoteApi = builder.build().create(RemoteApi::class.java)
-
-    @Provides
-    fun provideLoginRepository(api: RemoteApi, sessionData: SessionData): LoginRepository {
-        return LoginRepositoryImpl(api, sessionData)
-    }
-
-    @Provides
-    fun provideUseVoucherRepository(
-        api: RemoteApi,
-        sessionData: SessionData
-    ): UseVoucherRepository {
-        return UseVoucherRepositoryImpl(api, sessionData)
-    }
-
-    @Provides
-    fun provideProfileRepository(api: RemoteApi, sessionData: SessionData): ProfileRepository {
-        return ProfileRepositoryImpl(api, sessionData)
-    }
-
-    @Provides
-    fun provideMessageRepository(api: RemoteApi, sessionData: SessionData): MessageRepository {
-        return MessageRepositoryImpl(api, sessionData)
-    }
-
-    @Provides
-    fun provideAlertsRepository(api: RemoteApi, sessionData: SessionData): AlertsRepository {
-        return AlertsRepositoryImpl(api, sessionData)
+    fun provideDataStoreRepository(
+        @ApplicationContext context: Context
+    ): DataStoreRepository {
+        return DataStoreRepositoryImpl(context)
     }
 }

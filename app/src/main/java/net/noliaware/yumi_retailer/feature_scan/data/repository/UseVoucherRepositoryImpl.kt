@@ -16,8 +16,9 @@ import net.noliaware.yumi_retailer.feature_scan.domain.repository.UseVoucherRepo
 import okio.IOException
 import retrofit2.HttpException
 import java.util.UUID
+import javax.inject.Inject
 
-class UseVoucherRepositoryImpl(
+class UseVoucherRepositoryImpl @Inject constructor(
     private val api: RemoteApi,
     private val sessionData: SessionData
 ) : UseVoucherRepository {
