@@ -3,7 +3,7 @@ package net.noliaware.yumi_retailer.feature_profile.presentation.controllers
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import net.noliaware.yumi_retailer.commun.CATEGORY
+import net.noliaware.yumi_retailer.commun.Args.CATEGORY
 import net.noliaware.yumi_retailer.feature_profile.domain.model.Category
 import javax.inject.Inject
 

@@ -15,7 +15,7 @@ import androidx.core.view.isVisible
 import androidx.webkit.WebViewClientCompat
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import net.noliaware.yumi_retailer.R
-import net.noliaware.yumi_retailer.commun.GOLDEN_RATIO
+import net.noliaware.yumi_retailer.commun.UI.GOLDEN_RATIO
 import net.noliaware.yumi_retailer.commun.util.convertDpToPx
 import net.noliaware.yumi_retailer.commun.util.getStatusBarHeight
 import net.noliaware.yumi_retailer.commun.util.layoutToBottomLeft

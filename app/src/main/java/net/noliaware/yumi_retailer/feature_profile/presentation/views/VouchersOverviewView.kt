@@ -19,10 +19,11 @@ import net.noliaware.yumi_retailer.commun.util.removeOverScroll
 import net.noliaware.yumi_retailer.commun.util.weak
 import net.noliaware.yumi_retailer.feature_profile.presentation.views.VoucherCountView.VoucherCountViewAdapter
 
-class VouchersOverviewView(
+class VouchersOverviewView @JvmOverloads constructor(
     context: Context,
-    attrs: AttributeSet?
-) : ViewGroup(context, attrs) {
+    attrs: AttributeSet? = null,
+    defStyle: Int = 0
+) : ViewGroup(context, attrs, defStyle) {
 
     private lateinit var categoryImageView: ImageView
     private lateinit var headerView: View

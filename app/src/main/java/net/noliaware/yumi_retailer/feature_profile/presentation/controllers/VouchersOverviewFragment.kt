@@ -12,7 +12,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import net.noliaware.yumi_retailer.R
-import net.noliaware.yumi_retailer.commun.CATEGORY
+import net.noliaware.yumi_retailer.commun.Args.CATEGORY
 import net.noliaware.yumi_retailer.commun.util.formatNumber
 import net.noliaware.yumi_retailer.commun.util.withArgs
 import net.noliaware.yumi_retailer.feature_profile.domain.model.Category

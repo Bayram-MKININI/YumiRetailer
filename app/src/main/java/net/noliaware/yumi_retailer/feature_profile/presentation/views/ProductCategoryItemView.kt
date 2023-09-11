@@ -11,7 +11,11 @@ import net.noliaware.yumi_retailer.commun.util.drawableIdByName
 import net.noliaware.yumi_retailer.commun.util.layoutToTopLeft
 import net.noliaware.yumi_retailer.commun.util.measureWrapContent
 
-class ProductCategoryItemView(context: Context, attrs: AttributeSet?) : ViewGroup(context, attrs) {
+class ProductCategoryItemView @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyle: Int = 0
+) : ViewGroup(context, attrs, defStyle) {
 
     private lateinit var iconImageView: ImageView
     private lateinit var titleTextView: TextView

@@ -19,7 +19,11 @@ import net.noliaware.yumi_retailer.commun.util.measureWrapContent
 import net.noliaware.yumi_retailer.commun.util.weak
 import net.noliaware.yumi_retailer.feature_profile.presentation.views.ProductCategoryItemView.ProductCategoryItemViewAdapter
 
-class ProductCategoriesView(context: Context, attrs: AttributeSet?) : ViewGroup(context, attrs) {
+class ProductCategoriesView @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyle: Int = 0
+) : ViewGroup(context, attrs, defStyle) {
 
     private lateinit var myProductsTextView: TextView
     private lateinit var shimmerView: ShimmerFrameLayout

@@ -10,8 +10,8 @@ import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import net.noliaware.yumi_retailer.R
-import net.noliaware.yumi_retailer.commun.BO_SIGN_IN_FRAGMENT_TAG
-import net.noliaware.yumi_retailer.commun.PRIVACY_POLICY_FRAGMENT_TAG
+import net.noliaware.yumi_retailer.commun.FragmentTags.BO_SIGN_IN_FRAGMENT_TAG
+import net.noliaware.yumi_retailer.commun.FragmentTags.PRIVACY_POLICY_FRAGMENT_TAG
 import net.noliaware.yumi_retailer.commun.util.ViewModelState
 import net.noliaware.yumi_retailer.commun.util.handleSharedEvent
 import net.noliaware.yumi_retailer.commun.util.redirectToLoginScreenFromSharedEvent

@@ -28,7 +28,11 @@ import net.noliaware.yumi_retailer.commun.util.layoutToTopRight
 import net.noliaware.yumi_retailer.commun.util.measureWrapContent
 import net.noliaware.yumi_retailer.commun.util.weak
 
-class ReadMailView(context: Context, attrs: AttributeSet?) : ViewGroup(context, attrs) {
+class ReadMailView @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyle: Int = 0
+) : ViewGroup(context, attrs, defStyle) {
 
     private lateinit var backgroundView: View
     private lateinit var headerView: View

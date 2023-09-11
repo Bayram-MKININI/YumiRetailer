@@ -18,7 +18,11 @@ import net.noliaware.yumi_retailer.commun.util.layoutToTopLeft
 import net.noliaware.yumi_retailer.commun.util.measureWrapContent
 import net.noliaware.yumi_retailer.feature_message.presentation.adapters.MessageAdapter
 
-class MessagesListView(context: Context, attrs: AttributeSet?) : ViewGroup(context, attrs) {
+class MessagesListView @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyle: Int = 0
+) : ViewGroup(context, attrs, defStyle) {
 
     private lateinit var shimmerView: ShimmerFrameLayout
     private lateinit var shimmerRecyclerView: RecyclerView

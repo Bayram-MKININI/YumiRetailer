@@ -11,8 +11,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.time.delay
 import net.noliaware.yumi_retailer.R
-import net.noliaware.yumi_retailer.commun.ACCOUNT_DATA
-import net.noliaware.yumi_retailer.commun.PRIVACY_POLICY_FRAGMENT_TAG
+import net.noliaware.yumi_retailer.commun.Args.ACCOUNT_DATA
+import net.noliaware.yumi_retailer.commun.FragmentTags.PRIVACY_POLICY_FRAGMENT_TAG
 import net.noliaware.yumi_retailer.commun.util.inflate
 import net.noliaware.yumi_retailer.commun.util.withArgs
 import net.noliaware.yumi_retailer.feature_alerts.presentation.controllers.AlertsFragment

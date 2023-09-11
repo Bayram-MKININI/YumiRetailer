@@ -4,11 +4,11 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import net.noliaware.yumi_retailer.commun.GET_ACCOUNT
-import net.noliaware.yumi_retailer.commun.GET_BACK_OFFICE_SIGN_IN_CODE
-import net.noliaware.yumi_retailer.commun.GET_PRODUCT_DATA_PER_CATEGORY
-import net.noliaware.yumi_retailer.commun.GET_VOUCHER_DATA_PER_CATEGORY
-import net.noliaware.yumi_retailer.commun.LIST_PAGE_SIZE
+import net.noliaware.yumi_retailer.commun.ApiConstants.GET_ACCOUNT
+import net.noliaware.yumi_retailer.commun.ApiConstants.GET_BACK_OFFICE_SIGN_IN_CODE
+import net.noliaware.yumi_retailer.commun.ApiConstants.GET_PRODUCT_DATA_PER_CATEGORY
+import net.noliaware.yumi_retailer.commun.ApiConstants.GET_VOUCHER_DATA_PER_CATEGORY
+import net.noliaware.yumi_retailer.commun.ApiParameters.LIST_PAGE_SIZE
 import net.noliaware.yumi_retailer.commun.data.remote.RemoteApi
 import net.noliaware.yumi_retailer.commun.domain.model.SessionData
 import net.noliaware.yumi_retailer.commun.util.ErrorType
@@ -19,6 +19,7 @@ import net.noliaware.yumi_retailer.commun.util.handleSessionWithNoFailure
 import net.noliaware.yumi_retailer.feature_profile.domain.model.BOSignIn
 import net.noliaware.yumi_retailer.feature_profile.domain.model.Category
 import net.noliaware.yumi_retailer.feature_profile.domain.model.UserProfile
+import net.noliaware.yumi_retailer.feature_profile.domain.repository.ProfileRepository
 import okio.IOException
 import retrofit2.HttpException
 import java.util.UUID

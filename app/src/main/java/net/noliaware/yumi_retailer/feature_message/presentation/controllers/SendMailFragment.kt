@@ -12,8 +12,8 @@ import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import net.noliaware.yumi_retailer.R
-import net.noliaware.yumi_retailer.commun.MESSAGE
-import net.noliaware.yumi_retailer.commun.MESSAGE_SUBJECTS_DATA
+import net.noliaware.yumi_retailer.commun.ApiParameters.MESSAGE
+import net.noliaware.yumi_retailer.commun.Args.MESSAGE_SUBJECTS_DATA
 import net.noliaware.yumi_retailer.commun.domain.model.Priority
 import net.noliaware.yumi_retailer.commun.presentation.mappers.PriorityMapper
 import net.noliaware.yumi_retailer.commun.util.ViewModelState

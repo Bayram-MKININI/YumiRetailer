@@ -20,7 +20,11 @@ import net.noliaware.yumi_retailer.commun.util.layoutToTopLeft
 import net.noliaware.yumi_retailer.commun.util.measureWrapContent
 import net.noliaware.yumi_retailer.feature_alerts.presentation.adapters.AlertAdapter
 
-class AlertsView(context: Context, attrs: AttributeSet?) : ViewGroup(context, attrs) {
+class AlertsView @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyle: Int = 0
+) : ViewGroup(context, attrs, defStyle) {
 
     private lateinit var headerView: View
     private lateinit var titleTextView: TextView

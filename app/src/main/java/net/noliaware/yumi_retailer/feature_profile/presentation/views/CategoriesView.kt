@@ -16,7 +16,11 @@ import net.noliaware.yumi_retailer.commun.util.measureWrapContent
 import net.noliaware.yumi_retailer.commun.util.weak
 import net.noliaware.yumi_retailer.feature_profile.presentation.views.CategoryItemView.CategoryItemViewAdapter
 
-class CategoriesView(context: Context, attrs: AttributeSet?) : ViewGroup(context, attrs) {
+class CategoriesView @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyle: Int = 0
+) : ViewGroup(context, attrs, defStyle) {
 
     private lateinit var availableVoucherCountView: VoucherCountView
     private lateinit var expectedVoucherCountView: VoucherCountView

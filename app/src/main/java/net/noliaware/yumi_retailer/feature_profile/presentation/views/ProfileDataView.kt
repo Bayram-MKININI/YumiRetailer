@@ -20,7 +20,11 @@ import net.noliaware.yumi_retailer.commun.util.measureWrapContent
 import net.noliaware.yumi_retailer.commun.util.weak
 import kotlin.math.max
 
-class ProfileDataView(context: Context, attrs: AttributeSet?) : ViewGroup(context, attrs) {
+class ProfileDataView @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyle: Int = 0
+) : ViewGroup(context, attrs, defStyle) {
 
     private lateinit var myDataTextView: TextView
     private lateinit var loginTitleTextView: TextView

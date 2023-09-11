@@ -8,7 +8,11 @@ import com.facebook.shimmer.ShimmerFrameLayout
 import net.noliaware.yumi_retailer.R
 import net.noliaware.yumi_retailer.commun.util.layoutToTopLeft
 
-class ProfileDataParentView(context: Context, attrs: AttributeSet?) : ViewGroup(context, attrs) {
+class ProfileDataParentView @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyle: Int = 0
+) : ViewGroup(context, attrs, defStyle) {
 
     private lateinit var shimmerView: ShimmerFrameLayout
     private lateinit var profileDataView: ProfileDataView

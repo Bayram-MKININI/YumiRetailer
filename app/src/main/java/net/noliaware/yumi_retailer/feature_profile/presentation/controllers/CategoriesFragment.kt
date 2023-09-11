@@ -10,7 +10,7 @@ import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import net.noliaware.yumi_retailer.R
-import net.noliaware.yumi_retailer.commun.VOUCHERS_OVERVIEW_FRAGMENT_TAG
+import net.noliaware.yumi_retailer.commun.FragmentTags.VOUCHERS_OVERVIEW_FRAGMENT_TAG
 import net.noliaware.yumi_retailer.commun.util.ViewModelState.DataState
 import net.noliaware.yumi_retailer.commun.util.ViewModelState.LoadingState
 import net.noliaware.yumi_retailer.commun.util.formatNumber

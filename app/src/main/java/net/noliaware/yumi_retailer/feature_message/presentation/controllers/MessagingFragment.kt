@@ -11,8 +11,8 @@ import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import net.noliaware.yumi_retailer.R
-import net.noliaware.yumi_retailer.commun.MESSAGE_SUBJECTS_DATA
-import net.noliaware.yumi_retailer.commun.SEND_MESSAGES_FRAGMENT_TAG
+import net.noliaware.yumi_retailer.commun.Args.MESSAGE_SUBJECTS_DATA
+import net.noliaware.yumi_retailer.commun.FragmentTags.SEND_MESSAGES_FRAGMENT_TAG
 import net.noliaware.yumi_retailer.commun.util.inflate
 import net.noliaware.yumi_retailer.commun.util.withArgs
 import net.noliaware.yumi_retailer.feature_login.domain.model.MessageSubject

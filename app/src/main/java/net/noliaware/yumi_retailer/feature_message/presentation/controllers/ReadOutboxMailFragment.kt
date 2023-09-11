@@ -14,9 +14,9 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import net.noliaware.yumi_retailer.R
-import net.noliaware.yumi_retailer.commun.HOURS_TIME_FORMAT
-import net.noliaware.yumi_retailer.commun.LONG_DATE_WITH_DAY_FORMAT
-import net.noliaware.yumi_retailer.commun.MESSAGE_ID
+import net.noliaware.yumi_retailer.commun.ApiParameters.MESSAGE_ID
+import net.noliaware.yumi_retailer.commun.DateTime.HOURS_TIME_FORMAT
+import net.noliaware.yumi_retailer.commun.DateTime.LONG_DATE_WITH_DAY_FORMAT
 import net.noliaware.yumi_retailer.commun.presentation.mappers.PriorityMapper
 import net.noliaware.yumi_retailer.commun.util.ViewModelState
 import net.noliaware.yumi_retailer.commun.util.handleSharedEvent

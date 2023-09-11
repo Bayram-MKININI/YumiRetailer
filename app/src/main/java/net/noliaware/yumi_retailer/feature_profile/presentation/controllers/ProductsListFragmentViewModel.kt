@@ -6,10 +6,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
 import dagger.hilt.android.lifecycle.HiltViewModel
-import net.noliaware.yumi_retailer.commun.CATEGORY_COLOR
-import net.noliaware.yumi_retailer.commun.CATEGORY_ICON
-import net.noliaware.yumi_retailer.commun.CATEGORY_ID
-import net.noliaware.yumi_retailer.feature_profile.data.repository.ProfileRepository
+import net.noliaware.yumi_retailer.commun.Args.CATEGORY_COLOR
+import net.noliaware.yumi_retailer.commun.Args.CATEGORY_ICON
+import net.noliaware.yumi_retailer.commun.Args.CATEGORY_ID
+import net.noliaware.yumi_retailer.feature_profile.domain.repository.ProfileRepository
 import javax.inject.Inject
 
 @HiltViewModel

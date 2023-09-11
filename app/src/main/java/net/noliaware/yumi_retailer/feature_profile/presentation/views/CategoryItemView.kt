@@ -13,7 +13,11 @@ import net.noliaware.yumi_retailer.commun.util.layoutToTopLeft
 import net.noliaware.yumi_retailer.commun.util.measureWrapContent
 import net.noliaware.yumi_retailer.feature_profile.presentation.views.VoucherCountView.VoucherCountViewAdapter
 
-class CategoryItemView(context: Context, attrs: AttributeSet?) : ViewGroup(context, attrs) {
+class CategoryItemView @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyle: Int = 0
+) : ViewGroup(context, attrs, defStyle) {
 
     private lateinit var iconImageView: ImageView
     private lateinit var titleTextView: TextView
@@ -91,7 +95,8 @@ class CategoryItemView(context: Context, attrs: AttributeSet?) : ViewGroup(conte
 
         val guideline = viewWidth * 45 / 100
 
-        val iconHeight = iconImageView.measuredHeight + titleTextView.measuredHeight + convertDpToPx(5)
+        val iconHeight =
+            iconImageView.measuredHeight + titleTextView.measuredHeight + convertDpToPx(5)
 
         iconImageView.layoutToTopLeft(
             (guideline - iconImageView.measuredWidth) / 2,
@@ -103,7 +108,8 @@ class CategoryItemView(context: Context, attrs: AttributeSet?) : ViewGroup(conte
             iconImageView.bottom + convertDpToPx(5)
         )
 
-        val contentHeight = consumedVoucherCountView.measuredHeight + remainingVoucherCountView.measuredHeight +
+        val contentHeight =
+            consumedVoucherCountView.measuredHeight + remainingVoucherCountView.measuredHeight +
                     convertDpToPx(2)
 
         consumedVoucherCountView.layoutToTopLeft(

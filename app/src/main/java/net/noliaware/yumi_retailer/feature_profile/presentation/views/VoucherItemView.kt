@@ -13,7 +13,11 @@ import net.noliaware.yumi_retailer.commun.util.layoutToTopRight
 import net.noliaware.yumi_retailer.commun.util.measureWrapContent
 import net.noliaware.yumi_retailer.commun.util.tint
 
-class VoucherItemView(context: Context, attrs: AttributeSet?) : ViewGroup(context, attrs) {
+class VoucherItemView @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyle: Int = 0
+) : ViewGroup(context, attrs, defStyle) {
 
     private lateinit var titleTextView: TextView
     private lateinit var highlightLayout: LinearLayoutCompat

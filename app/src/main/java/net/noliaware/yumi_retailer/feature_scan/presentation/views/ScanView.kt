@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import net.noliaware.yumi_retailer.R
-import net.noliaware.yumi_retailer.commun.GOLDEN_RATIO
+import net.noliaware.yumi_retailer.commun.UI.GOLDEN_RATIO
 import net.noliaware.yumi_retailer.commun.util.convertDpToPx
 import net.noliaware.yumi_retailer.commun.util.getStatusBarHeight
 import net.noliaware.yumi_retailer.commun.util.layoutToTopLeft
@@ -14,7 +14,11 @@ import net.noliaware.yumi_retailer.commun.util.measureWrapContent
 import net.noliaware.yumi_retailer.commun.util.weak
 import kotlin.math.roundToInt
 
-class ScanView(context: Context, attrs: AttributeSet?) : ViewGroup(context, attrs) {
+class ScanView @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyle: Int = 0
+) : ViewGroup(context, attrs, defStyle) {
 
     private lateinit var headerView: View
     private lateinit var titleTextView: TextView

@@ -1,4 +1,4 @@
-package net.noliaware.yumi_retailer.feature_scan.data.repository
+package net.noliaware.yumi_retailer.feature_scan.domain.repository
 
 import kotlinx.coroutines.flow.Flow
 import net.noliaware.yumi_retailer.commun.util.Resource

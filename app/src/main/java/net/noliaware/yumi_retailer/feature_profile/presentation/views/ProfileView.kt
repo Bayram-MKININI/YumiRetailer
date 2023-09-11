@@ -15,7 +15,11 @@ import net.noliaware.yumi_retailer.commun.util.layoutToTopLeft
 import net.noliaware.yumi_retailer.commun.util.measureWrapContent
 import net.noliaware.yumi_retailer.commun.util.removeOverScroll
 
-class ProfileView(context: Context, attrs: AttributeSet?) : ViewGroup(context, attrs) {
+class ProfileView @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyle: Int = 0
+) : ViewGroup(context, attrs, defStyle) {
 
     private lateinit var headerView: View
     private lateinit var titleTextView: TextView

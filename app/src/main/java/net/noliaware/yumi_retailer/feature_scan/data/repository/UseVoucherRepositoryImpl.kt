@@ -2,9 +2,9 @@ package net.noliaware.yumi_retailer.feature_scan.data.repository
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import net.noliaware.yumi_retailer.commun.SET_PRIVACY_POLICY_READ_STATUS
-import net.noliaware.yumi_retailer.commun.USE_VOUCHER
-import net.noliaware.yumi_retailer.commun.VOUCHER_USE_ID
+import net.noliaware.yumi_retailer.commun.ApiConstants.SET_PRIVACY_POLICY_READ_STATUS
+import net.noliaware.yumi_retailer.commun.ApiConstants.USE_VOUCHER
+import net.noliaware.yumi_retailer.commun.ApiParameters.VOUCHER_USE_ID
 import net.noliaware.yumi_retailer.commun.data.remote.RemoteApi
 import net.noliaware.yumi_retailer.commun.domain.model.SessionData
 import net.noliaware.yumi_retailer.commun.util.ErrorType
@@ -12,6 +12,7 @@ import net.noliaware.yumi_retailer.commun.util.Resource
 import net.noliaware.yumi_retailer.commun.util.generateToken
 import net.noliaware.yumi_retailer.commun.util.getCommonWSParams
 import net.noliaware.yumi_retailer.commun.util.handleSessionWithNoFailure
+import net.noliaware.yumi_retailer.feature_scan.domain.repository.UseVoucherRepository
 import okio.IOException
 import retrofit2.HttpException
 import java.util.UUID

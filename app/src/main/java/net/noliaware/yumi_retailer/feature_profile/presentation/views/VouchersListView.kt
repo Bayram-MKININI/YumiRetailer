@@ -16,7 +16,11 @@ import net.noliaware.yumi_retailer.commun.util.inflate
 import net.noliaware.yumi_retailer.commun.util.layoutToTopLeft
 import net.noliaware.yumi_retailer.feature_profile.presentation.adapters.VoucherAdapter
 
-class VouchersListView(context: Context, attrs: AttributeSet?) : ViewGroup(context, attrs) {
+class VouchersListView @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyle: Int = 0
+) : ViewGroup(context, attrs, defStyle) {
 
     private lateinit var shimmerView: ShimmerFrameLayout
     private lateinit var shimmerRecyclerView: RecyclerView

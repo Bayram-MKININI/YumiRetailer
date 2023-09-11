@@ -8,9 +8,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
-import net.noliaware.yumi_retailer.commun.ACTION_PUSH_DATA
-import net.noliaware.yumi_retailer.commun.PUSH_BODY
-import net.noliaware.yumi_retailer.commun.PUSH_TITLE
+import net.noliaware.yumi_retailer.commun.Push.ACTION_PUSH_DATA
+import net.noliaware.yumi_retailer.commun.Push.PUSH_BODY
+import net.noliaware.yumi_retailer.commun.Push.PUSH_TITLE
 
 class PushMessagingService : FirebaseMessagingService() {
 

@@ -7,10 +7,10 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import net.noliaware.yumi_retailer.commun.DATA_SHOULD_REFRESH
-import net.noliaware.yumi_retailer.commun.MESSAGE_ID
+import net.noliaware.yumi_retailer.commun.ApiParameters.MESSAGE_ID
+import net.noliaware.yumi_retailer.commun.Args.DATA_SHOULD_REFRESH
 import net.noliaware.yumi_retailer.commun.presentation.EventsHelper
-import net.noliaware.yumi_retailer.feature_message.data.repository.MessageRepository
+import net.noliaware.yumi_retailer.feature_message.domain.repository.MessageRepository
 import net.noliaware.yumi_retailer.feature_message.domain.model.Message
 import javax.inject.Inject
 

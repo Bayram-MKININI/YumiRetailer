@@ -11,9 +11,9 @@ import androidx.paging.LoadState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import net.noliaware.yumi_retailer.R
-import net.noliaware.yumi_retailer.commun.CATEGORY_COLOR
-import net.noliaware.yumi_retailer.commun.CATEGORY_ID
-import net.noliaware.yumi_retailer.commun.VOUCHER_LIST_TYPE
+import net.noliaware.yumi_retailer.commun.Args.CATEGORY_COLOR
+import net.noliaware.yumi_retailer.commun.Args.CATEGORY_ID
+import net.noliaware.yumi_retailer.commun.Args.VOUCHER_LIST_TYPE
 import net.noliaware.yumi_retailer.commun.presentation.adapters.ListLoadStateAdapter
 import net.noliaware.yumi_retailer.commun.util.handlePaginationError
 import net.noliaware.yumi_retailer.commun.util.withArgs

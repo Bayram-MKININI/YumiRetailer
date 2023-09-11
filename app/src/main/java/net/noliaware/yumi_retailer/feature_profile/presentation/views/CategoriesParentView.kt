@@ -14,7 +14,11 @@ import net.noliaware.yumi_retailer.commun.util.layoutToTopLeft
 import net.noliaware.yumi_retailer.commun.util.measureWrapContent
 import net.noliaware.yumi_retailer.feature_profile.presentation.views.CategoriesView.CategoriesViewAdapter
 
-class CategoriesParentView(context: Context, attrs: AttributeSet?) : ViewGroup(context, attrs) {
+class CategoriesParentView @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyle: Int = 0
+) : ViewGroup(context, attrs, defStyle) {
 
     private lateinit var myVouchersTextView: TextView
     private lateinit var shimmerView: ShimmerFrameLayout
