@@ -64,7 +64,6 @@ class CategoriesView @JvmOverloads constructor(
         recyclerView.also {
             it.layoutManager = LinearLayoutManager(context)
             it.addItemDecoration(MarginItemDecoration(convertDpToPx(15)))
-            it.setHasFixedSize(true)
             BaseAdapter(categoryItemViewAdapters).apply {
                 expressionViewHolderBinding = { eachItem, view ->
                     (view as CategoryItemView).fillViewWithData(eachItem)
