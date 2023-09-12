@@ -61,12 +61,10 @@ class CategoriesView @JvmOverloads constructor(
         consumedVoucherCountView = findViewById(R.id.consumed_vouchers)
         cancelledVoucherCountView = findViewById(R.id.cancelled_vouchers)
         recyclerView = findViewById(R.id.recycler_view)
-
         recyclerView.also {
-
             it.layoutManager = LinearLayoutManager(context)
             it.addItemDecoration(MarginItemDecoration(convertDpToPx(15)))
-
+            it.setHasFixedSize(true)
             BaseAdapter(categoryItemViewAdapters).apply {
                 expressionViewHolderBinding = { eachItem, view ->
                     (view as CategoryItemView).fillViewWithData(eachItem)

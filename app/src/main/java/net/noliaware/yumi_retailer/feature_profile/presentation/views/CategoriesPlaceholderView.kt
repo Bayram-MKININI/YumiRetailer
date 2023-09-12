@@ -38,10 +38,8 @@ class CategoriesPlaceholderView @JvmOverloads constructor(
         recyclerView = findViewById(R.id.shimmer_recycler_view)
 
         recyclerView.also {
-
             it.layoutManager = LinearLayoutManager(context)
             it.addItemDecoration(MarginItemDecoration(convertDpToPx(15)))
-
             BaseAdapter((0..9).map { 0 }).apply {
                 expressionOnCreateViewHolder = { viewGroup ->
                     viewGroup.inflate(R.layout.category_item_placeholder_layout)

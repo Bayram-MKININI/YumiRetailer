@@ -30,6 +30,7 @@ class VouchersListView @JvmOverloads constructor(
         set(adapter) {
             recyclerView.adapter = adapter
         }
+
     override fun onFinishInflate() {
         super.onFinishInflate()
         initView()
@@ -38,23 +39,22 @@ class VouchersListView @JvmOverloads constructor(
     private fun initView() {
         shimmerView = findViewById(R.id.shimmer_view)
         shimmerRecyclerView = shimmerView.findViewById(R.id.shimmer_recycler_view)
-        setUpRecyclerView(shimmerRecyclerView)
-        BaseAdapter(listOf(0)).apply {
-            expressionOnCreateViewHolder = { viewGroup ->
-                viewGroup.inflate(R.layout.voucher_item_placeholder_layout)
+        shimmerRecyclerView.also {
+            it.setUp()
+            BaseAdapter(listOf(0)).apply {
+                expressionOnCreateViewHolder = { viewGroup ->
+                    viewGroup.inflate(R.layout.voucher_item_placeholder_layout)
+                }
+                it.adapter = this
             }
-            shimmerRecyclerView.adapter = this
         }
-
         recyclerView = findViewById(R.id.recycler_view)
-        setUpRecyclerView(recyclerView)
+        recyclerView.setUp()
     }
 
-    private fun setUpRecyclerView(recyclerView: RecyclerView) {
-        recyclerView.apply {
-            layoutManager = LinearLayoutManager(context)
-            addItemDecoration(MarginItemDecoration(convertDpToPx(15)))
-        }
+    private fun RecyclerView.setUp() {
+        layoutManager = LinearLayoutManager(context)
+        addItemDecoration(MarginItemDecoration(convertDpToPx(15)))
     }
 
     fun setLoadingVisible(visible: Boolean) {

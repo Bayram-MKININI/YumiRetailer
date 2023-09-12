@@ -43,38 +43,38 @@ class ProductCategoriesView @JvmOverloads constructor(
 
     private fun initView() {
         myProductsTextView = findViewById(R.id.my_products_text_view)
-
         shimmerView = findViewById(R.id.shimmer_view)
         shimmerRecyclerView = shimmerView.findViewById(R.id.shimmer_recycler_view)
-        setUpRecyclerView(shimmerRecyclerView)
-        BaseAdapter((0..9).map { 0 }).apply {
-            expressionOnCreateViewHolder = { viewGroup ->
-                viewGroup.inflate(R.layout.product_category_item_placeholder_layout)
+        shimmerRecyclerView.also {
+            it.setUp()
+            BaseAdapter((0..9).map { 0 }).apply {
+                expressionOnCreateViewHolder = { viewGroup ->
+                    viewGroup.inflate(R.layout.product_category_item_placeholder_layout)
+                }
+                it.adapter = this
             }
-            shimmerRecyclerView.adapter = this
         }
-
         recyclerView = findViewById(R.id.recycler_view)
-        setUpRecyclerView(recyclerView)
-        BaseAdapter(productCategoryItemViewAdapters).apply {
-            expressionViewHolderBinding = { eachItem, view ->
-                (view as ProductCategoryItemView).fillViewWithData(eachItem)
+        recyclerView.also {
+            it.setUp()
+            BaseAdapter(productCategoryItemViewAdapters).apply {
+                expressionViewHolderBinding = { eachItem, view ->
+                    (view as ProductCategoryItemView).fillViewWithData(eachItem)
+                }
+                expressionOnCreateViewHolder = { viewGroup ->
+                    viewGroup.inflate(R.layout.product_category_item_layout)
+                }
+                onItemClicked = { position ->
+                    callback?.onProductCategoryClickedAtIndex(position)
+                }
+                it.adapter = this
             }
-            expressionOnCreateViewHolder = { viewGroup ->
-                viewGroup.inflate(R.layout.product_category_item_layout)
-            }
-            onItemClicked = { position ->
-                callback?.onProductCategoryClickedAtIndex(position)
-            }
-            recyclerView.adapter = this
         }
     }
 
-    private fun setUpRecyclerView(recyclerView: RecyclerView) {
-        recyclerView.apply {
-            layoutManager = LinearLayoutManager(context)
-            addItemDecoration(MarginItemDecoration(convertDpToPx(15)))
-        }
+    private fun RecyclerView.setUp() {
+        layoutManager = LinearLayoutManager(context)
+        addItemDecoration(MarginItemDecoration(convertDpToPx(15)))
     }
 
     fun fillViewWithData(adapters: List<ProductCategoryItemViewAdapter>) {
