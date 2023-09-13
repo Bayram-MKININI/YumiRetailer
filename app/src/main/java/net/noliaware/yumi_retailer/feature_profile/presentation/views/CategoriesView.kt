@@ -64,7 +64,15 @@ class CategoriesView @JvmOverloads constructor(
         recyclerView.also {
             it.layoutManager = LinearLayoutManager(context)
             it.addItemDecoration(MarginItemDecoration(convertDpToPx(15)))
-            BaseAdapter(categoryItemViewAdapters).apply {
+            BaseAdapter(
+                dataSet = categoryItemViewAdapters,
+                compareItems = { old, new ->
+                    old.title == new.title
+                },
+                compareContents = { old, new ->
+                    old == new
+                }
+            ).apply {
                 expressionViewHolderBinding = { eachItem, view ->
                     (view as CategoryItemView).fillViewWithData(eachItem)
                 }
@@ -116,7 +124,6 @@ class CategoriesView @JvmOverloads constructor(
         if (categoryItemViewAdapters.isNotEmpty())
             categoryItemViewAdapters.clear()
         categoryItemViewAdapters.addAll(categoriesViewAdapter.categoryItemViewAdapters)
-        recyclerView.adapter?.notifyDataSetChanged()
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {

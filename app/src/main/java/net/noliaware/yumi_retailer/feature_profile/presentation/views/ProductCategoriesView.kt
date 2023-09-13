@@ -57,7 +57,15 @@ class ProductCategoriesView @JvmOverloads constructor(
         recyclerView = findViewById(R.id.recycler_view)
         recyclerView.also {
             it.setUp()
-            BaseAdapter(productCategoryItemViewAdapters).apply {
+            BaseAdapter(
+                dataSet = productCategoryItemViewAdapters,
+                compareItems = { old, new ->
+                    old.title == new.title
+                },
+                compareContents = { old, new ->
+                    old == new
+                }
+            ).apply {
                 expressionViewHolderBinding = { eachItem, view ->
                     (view as ProductCategoryItemView).fillViewWithData(eachItem)
                 }
@@ -81,7 +89,6 @@ class ProductCategoriesView @JvmOverloads constructor(
         if (productCategoryItemViewAdapters.isNotEmpty())
             productCategoryItemViewAdapters.clear()
         productCategoryItemViewAdapters.addAll(adapters)
-        recyclerView.adapter?.notifyDataSetChanged()
     }
 
     fun setLoadingVisible(visible: Boolean) {
