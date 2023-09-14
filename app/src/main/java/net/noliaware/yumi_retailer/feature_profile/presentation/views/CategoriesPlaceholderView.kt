@@ -40,11 +40,12 @@ class CategoriesPlaceholderView @JvmOverloads constructor(
         recyclerView.also {
             it.layoutManager = LinearLayoutManager(context)
             it.addItemDecoration(MarginItemDecoration(convertDpToPx(15)))
-            BaseAdapter((0..9).map { 0 }).apply {
+            BaseAdapter<Int>().apply {
                 expressionOnCreateViewHolder = { viewGroup ->
                     viewGroup.inflate(R.layout.category_item_placeholder_layout)
                 }
                 it.adapter = this
+                submitList((0..9).map { 0 })
             }
         }
     }

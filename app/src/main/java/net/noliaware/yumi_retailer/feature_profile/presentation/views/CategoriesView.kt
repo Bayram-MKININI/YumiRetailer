@@ -27,7 +27,7 @@ class CategoriesView @JvmOverloads constructor(
     private lateinit var consumedVoucherCountView: VoucherCountView
     private lateinit var cancelledVoucherCountView: VoucherCountView
     private lateinit var recyclerView: RecyclerView
-    private val categoryItemViewAdapters = mutableListOf<CategoryItemViewAdapter>()
+    private lateinit var recyclerAdapter: BaseAdapter<CategoryItemViewAdapter>
     var callback: CategoriesViewCallback? by weak()
 
     fun interface CategoriesViewCallback {
@@ -64,8 +64,7 @@ class CategoriesView @JvmOverloads constructor(
         recyclerView.also {
             it.layoutManager = LinearLayoutManager(context)
             it.addItemDecoration(MarginItemDecoration(convertDpToPx(15)))
-            BaseAdapter(
-                dataSet = categoryItemViewAdapters,
+            recyclerAdapter = BaseAdapter<CategoryItemViewAdapter>(
                 compareItems = { old, new ->
                     old.title == new.title
                 },
@@ -120,10 +119,7 @@ class CategoriesView @JvmOverloads constructor(
                 gain = categoriesViewAdapter.cancelledVouchersGain
             )
         )
-
-        if (categoryItemViewAdapters.isNotEmpty())
-            categoryItemViewAdapters.clear()
-        categoryItemViewAdapters.addAll(categoriesViewAdapter.categoryItemViewAdapters)
+        recyclerAdapter.submitList(categoriesViewAdapter.categoryItemViewAdapters)
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {

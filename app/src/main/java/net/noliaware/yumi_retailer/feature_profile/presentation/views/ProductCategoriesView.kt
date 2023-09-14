@@ -29,7 +29,7 @@ class ProductCategoriesView @JvmOverloads constructor(
     private lateinit var shimmerView: ShimmerFrameLayout
     private lateinit var shimmerRecyclerView: RecyclerView
     private lateinit var recyclerView: RecyclerView
-    private val productCategoryItemViewAdapters = mutableListOf<ProductCategoryItemViewAdapter>()
+    private lateinit var recyclerAdapter: BaseAdapter<ProductCategoryItemViewAdapter>
     var callback: ProductCategoriesViewCallback? by weak()
 
     fun interface ProductCategoriesViewCallback {
@@ -47,18 +47,18 @@ class ProductCategoriesView @JvmOverloads constructor(
         shimmerRecyclerView = shimmerView.findViewById(R.id.shimmer_recycler_view)
         shimmerRecyclerView.also {
             it.setUp()
-            BaseAdapter((0..9).map { 0 }).apply {
+            BaseAdapter<Int>().apply {
                 expressionOnCreateViewHolder = { viewGroup ->
                     viewGroup.inflate(R.layout.product_category_item_placeholder_layout)
                 }
                 it.adapter = this
+                submitList((0..9).map { 0 })
             }
         }
         recyclerView = findViewById(R.id.recycler_view)
         recyclerView.also {
             it.setUp()
-            BaseAdapter(
-                dataSet = productCategoryItemViewAdapters,
+            recyclerAdapter = BaseAdapter<ProductCategoryItemViewAdapter>(
                 compareItems = { old, new ->
                     old.title == new.title
                 },
@@ -86,9 +86,7 @@ class ProductCategoriesView @JvmOverloads constructor(
     }
 
     fun fillViewWithData(adapters: List<ProductCategoryItemViewAdapter>) {
-        if (productCategoryItemViewAdapters.isNotEmpty())
-            productCategoryItemViewAdapters.clear()
-        productCategoryItemViewAdapters.addAll(adapters)
+        recyclerAdapter.submitList(adapters)
     }
 
     fun setLoadingVisible(visible: Boolean) {
