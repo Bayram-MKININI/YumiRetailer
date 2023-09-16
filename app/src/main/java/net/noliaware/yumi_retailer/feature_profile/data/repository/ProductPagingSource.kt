@@ -13,7 +13,8 @@ import net.noliaware.yumi_retailer.commun.util.ErrorType
 import net.noliaware.yumi_retailer.commun.util.PaginationException
 import net.noliaware.yumi_retailer.commun.util.generateToken
 import net.noliaware.yumi_retailer.commun.util.getCommonWSParams
-import net.noliaware.yumi_retailer.commun.util.handlePaginatedListErrorIfAny
+import net.noliaware.yumi_retailer.commun.util.handlePagingSourceError
+import net.noliaware.yumi_retailer.commun.util.resolvePaginatedListErrorIfAny
 import net.noliaware.yumi_retailer.feature_profile.domain.model.Product
 import java.util.UUID
 
@@ -49,7 +50,7 @@ class ProductPagingSource(
                 params = generateWSParams(categoryId, nextPage, GET_PRODUCT_LIST_BY_CATEGORY)
             )
 
-            val errorType = handlePaginatedListErrorIfAny(
+            val errorType = resolvePaginatedListErrorIfAny(
                 session = remoteData.session,
                 sessionData = sessionData,
                 tokenKey = GET_PRODUCT_LIST_BY_CATEGORY
@@ -72,8 +73,8 @@ class ProductPagingSource(
                 prevKey = null,// Only paging forward.
                 nextKey = if (canLoadMore) productRank else null
             )
-        } catch (e: Exception) {
-            return LoadResult.Error(e)
+        } catch (ex: Exception) {
+            return handlePagingSourceError(ex)
         }
     }
 

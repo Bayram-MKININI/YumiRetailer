@@ -12,7 +12,8 @@ import net.noliaware.yumi_retailer.commun.util.ErrorType
 import net.noliaware.yumi_retailer.commun.util.PaginationException
 import net.noliaware.yumi_retailer.commun.util.generateToken
 import net.noliaware.yumi_retailer.commun.util.getCommonWSParams
-import net.noliaware.yumi_retailer.commun.util.handlePaginatedListErrorIfAny
+import net.noliaware.yumi_retailer.commun.util.handlePagingSourceError
+import net.noliaware.yumi_retailer.commun.util.resolvePaginatedListErrorIfAny
 import net.noliaware.yumi_retailer.feature_alerts.domain.model.Alert
 import java.util.UUID
 
@@ -42,7 +43,7 @@ class AlertPagingSource(
                 params = generateGetAlertsListParams(nextTimestamp, GET_ALERT_LIST)
             )
 
-            val errorType = handlePaginatedListErrorIfAny(
+            val errorType = resolvePaginatedListErrorIfAny(
                 session = remoteData.session,
                 sessionData = sessionData,
                 tokenKey = GET_ALERT_LIST
@@ -65,8 +66,8 @@ class AlertPagingSource(
                 prevKey = null,// Only paging forward.
                 nextKey = if (canLoadMore) alertTimestamp else null
             )
-        } catch (e: Exception) {
-            return LoadResult.Error(e)
+        } catch (ex: Exception) {
+            return handlePagingSourceError(ex)
         }
     }
 

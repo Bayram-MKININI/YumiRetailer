@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -26,7 +26,7 @@ import net.noliaware.yumi_retailer.feature_scan.presentation.controllers.Privacy
 class UserProfileDataFragment : Fragment() {
 
     private var profileDataParentView: ProfileDataParentView? = null
-    private val viewModel by activityViewModels<UserProfileDataFragmentViewModel>()
+    private val viewModel by viewModels<UserProfileDataFragmentViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,6 +47,7 @@ class UserProfileDataFragment : Fragment() {
     private fun collectFlows() {
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             viewModel.eventsHelper.eventFlow.collectLatest { sharedEvent ->
+                profileDataParentView?.activateLoading(false)
                 handleSharedEvent(sharedEvent)
                 redirectToLoginScreenFromSharedEvent(sharedEvent)
             }
@@ -54,9 +55,9 @@ class UserProfileDataFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             viewModel.eventsHelper.stateFlow.collect { vmState ->
                 when (vmState) {
-                    is ViewModelState.LoadingState -> profileDataParentView?.setLoadingVisible(true)
+                    is ViewModelState.LoadingState -> profileDataParentView?.activateLoading(true)
                     is ViewModelState.DataState -> vmState.data?.let { userProfile ->
-                        profileDataParentView?.setLoadingVisible(false)
+                        profileDataParentView?.activateLoading(false)
                         bindViewToData(userProfile)
                     }
                 }

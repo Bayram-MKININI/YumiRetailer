@@ -12,6 +12,7 @@ import com.facebook.shimmer.ShimmerFrameLayout
 import net.noliaware.yumi_retailer.R
 import net.noliaware.yumi_retailer.commun.presentation.adapters.BaseAdapter
 import net.noliaware.yumi_retailer.commun.util.MarginItemDecoration
+import net.noliaware.yumi_retailer.commun.util.activateShimmer
 import net.noliaware.yumi_retailer.commun.util.convertDpToPx
 import net.noliaware.yumi_retailer.commun.util.inflate
 import net.noliaware.yumi_retailer.commun.util.layoutToTopLeft
@@ -90,14 +91,19 @@ class ProductCategoriesView @JvmOverloads constructor(
     }
 
     fun setLoadingVisible(visible: Boolean) {
+        shimmerView.activateShimmer(visible)
         if (visible) {
             shimmerView.isVisible = true
             recyclerView.isGone = true
-            shimmerView.startShimmer()
         } else {
             shimmerView.isGone = true
             recyclerView.isVisible = true
-            shimmerView.stopShimmer()
+        }
+    }
+
+    fun stopLoading() {
+        if (shimmerView.isVisible) {
+            shimmerView.activateShimmer(false)
         }
     }
 

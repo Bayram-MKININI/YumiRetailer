@@ -3,9 +3,9 @@ package net.noliaware.yumi_retailer.feature_profile.presentation.views
 import android.content.Context
 import android.util.AttributeSet
 import android.view.ViewGroup
-import com.facebook.shimmer.Shimmer
 import com.facebook.shimmer.ShimmerFrameLayout
 import net.noliaware.yumi_retailer.R
+import net.noliaware.yumi_retailer.commun.util.activateShimmer
 import net.noliaware.yumi_retailer.commun.util.layoutToTopLeft
 
 class ProfileDataParentView @JvmOverloads constructor(
@@ -28,18 +28,8 @@ class ProfileDataParentView @JvmOverloads constructor(
         profileDataView = shimmerView.findViewById(R.id.profile_data_view)
     }
 
-    fun setLoadingVisible(visible: Boolean) {
-        shimmerView.setShimmer(
-            Shimmer.AlphaHighlightBuilder()
-                .setBaseAlpha(if (visible) 0.4f else 1f)
-                .setDuration(resources.getInteger(R.integer.shimmer_animation_duration_ms).toLong())
-                .build()
-        )
-        if (visible) {
-            shimmerView.startShimmer()
-        } else {
-            shimmerView.stopShimmer()
-        }
+    fun activateLoading(visible: Boolean) {
+        shimmerView.activateShimmer(visible)
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {

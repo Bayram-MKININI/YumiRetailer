@@ -66,16 +66,20 @@ class ProductsListFragment : AppCompatDialogFragment() {
                 iconName = viewModel.categoryIcon
             )
         )
+        productListView?.setLoadingVisible(true)
         collectFlows()
     }
 
     private fun collectFlows() {
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             productListView?.productAdapter?.loadStateFlow?.collectLatest { loadState ->
-                if (loadState.refresh is LoadState.NotLoading) {
-                    productListView?.setLoadingVisible(false)
+                when {
+                    handlePaginationError(loadState) -> productListView?.stopLoading()
+                    loadState.refresh is LoadState.NotLoading -> {
+                        productListView?.setLoadingVisible(false)
+                    }
+                    else -> Unit
                 }
-                handlePaginationError(loadState)
             }
         }
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {

@@ -9,6 +9,7 @@ import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import com.facebook.shimmer.ShimmerFrameLayout
 import net.noliaware.yumi_retailer.R
+import net.noliaware.yumi_retailer.commun.util.activateShimmer
 import net.noliaware.yumi_retailer.commun.util.convertDpToPx
 import net.noliaware.yumi_retailer.commun.util.layoutToTopLeft
 import net.noliaware.yumi_retailer.commun.util.measureWrapContent
@@ -43,14 +44,19 @@ class CategoriesParentView @JvmOverloads constructor(
     }
 
     fun setLoadingVisible(visible: Boolean) {
+        shimmerView.activateShimmer(visible)
         if (visible) {
             shimmerView.isVisible = true
             contentView.isGone = true
-            shimmerView.startShimmer()
         } else {
             shimmerView.isGone = true
             contentView.isVisible = true
-            shimmerView.stopShimmer()
+        }
+    }
+
+    fun stopLoading() {
+        if (shimmerView.isVisible) {
+            shimmerView.activateShimmer(false)
         }
     }
 
