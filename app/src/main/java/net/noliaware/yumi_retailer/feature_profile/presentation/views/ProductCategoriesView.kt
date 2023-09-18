@@ -113,15 +113,16 @@ class ProductCategoriesView @JvmOverloads constructor(
 
         myProductsTextView.measureWrapContent()
 
+        val recyclerViewHeight = viewHeight - (myProductsTextView.measuredHeight + convertDpToPx(30))
+
         if (shimmerView.isVisible) {
             shimmerView.measure(
                 MeasureSpec.makeMeasureSpec(viewWidth, MeasureSpec.EXACTLY),
-                MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED)
+                MeasureSpec.makeMeasureSpec(recyclerViewHeight, MeasureSpec.EXACTLY)
             )
         }
 
         if (recyclerView.isVisible) {
-            val recyclerViewHeight = viewHeight - (myProductsTextView.measuredHeight + convertDpToPx(30))
             recyclerView.measure(
                 MeasureSpec.makeMeasureSpec(viewWidth, MeasureSpec.EXACTLY),
                 MeasureSpec.makeMeasureSpec(recyclerViewHeight, MeasureSpec.EXACTLY)

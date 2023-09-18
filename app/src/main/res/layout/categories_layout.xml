@@ -22,36 +22,44 @@
         app:shimmer_auto_start="false"
         app:shimmer_base_alpha="1">
 
-        <net.noliaware.yumi_retailer.feature_profile.presentation.views.CategoriesPlaceholderView
-            android:id="@+id/categories_placeholder_view"
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            android:overScrollMode="never">
 
-            <net.noliaware.yumi_retailer.feature_profile.presentation.views.VoucherCountPlaceholderView
-                android:id="@+id/available_placeholder_vouchers"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-            <net.noliaware.yumi_retailer.feature_profile.presentation.views.VoucherCountPlaceholderView
-                android:id="@+id/expected_placeholder_vouchers"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-            <net.noliaware.yumi_retailer.feature_profile.presentation.views.VoucherCountPlaceholderView
-                android:id="@+id/consumed_placeholder_vouchers"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-            <net.noliaware.yumi_retailer.feature_profile.presentation.views.VoucherCountPlaceholderView
-                android:id="@+id/cancelled_placeholder_vouchers"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/shimmer_recycler_view"
+            <net.noliaware.yumi_retailer.feature_profile.presentation.views.CategoriesPlaceholderView
+                android:id="@+id/categories_placeholder_view"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </net.noliaware.yumi_retailer.feature_profile.presentation.views.CategoriesPlaceholderView>
+                android:layout_height="wrap_content">
+
+                <net.noliaware.yumi_retailer.feature_profile.presentation.views.VoucherCountPlaceholderView
+                    android:id="@+id/available_placeholder_vouchers"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <net.noliaware.yumi_retailer.feature_profile.presentation.views.VoucherCountPlaceholderView
+                    android:id="@+id/expected_placeholder_vouchers"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <net.noliaware.yumi_retailer.feature_profile.presentation.views.VoucherCountPlaceholderView
+                    android:id="@+id/consumed_placeholder_vouchers"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <net.noliaware.yumi_retailer.feature_profile.presentation.views.VoucherCountPlaceholderView
+                    android:id="@+id/cancelled_placeholder_vouchers"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/shimmer_recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:overScrollMode="never" />
+            </net.noliaware.yumi_retailer.feature_profile.presentation.views.CategoriesPlaceholderView>
+        </androidx.core.widget.NestedScrollView>
     </com.facebook.shimmer.ShimmerFrameLayout>
 
     <androidx.core.widget.NestedScrollView
