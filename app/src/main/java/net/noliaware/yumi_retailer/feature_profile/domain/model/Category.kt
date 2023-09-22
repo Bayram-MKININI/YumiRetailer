@@ -1,7 +1,11 @@
 package net.noliaware.yumi_retailer.feature_profile.domain.model
 
-import java.io.Serializable
+import android.os.Parcelable
+import androidx.annotation.Keep
+import kotlinx.parcelize.Parcelize
 
+@Keep
+@Parcelize
 data class Category(
     val categoryId: String,
     val categoryLabel: String,
@@ -20,4 +24,4 @@ data class Category(
     val cancelledVoucherAmount: Float,
     val expectedVoucherCount: Int,
     val expectedVoucherAmount: Float
-) : Serializable
+) : Parcelable

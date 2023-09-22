@@ -7,23 +7,30 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import net.noliaware.yumi_retailer.R
-import net.noliaware.yumi_retailer.commun.FragmentTags.BO_SIGN_IN_FRAGMENT_TAG
-import net.noliaware.yumi_retailer.commun.FragmentTags.PRIVACY_POLICY_FRAGMENT_TAG
+import net.noliaware.yumi_retailer.commun.Args.ACCOUNT_DATA
 import net.noliaware.yumi_retailer.commun.util.ViewModelState
 import net.noliaware.yumi_retailer.commun.util.handleSharedEvent
 import net.noliaware.yumi_retailer.commun.util.redirectToLoginScreenFromSharedEvent
+import net.noliaware.yumi_retailer.commun.util.withArgs
+import net.noliaware.yumi_retailer.feature_login.domain.model.AccountData
 import net.noliaware.yumi_retailer.feature_login.domain.model.TFAMode
 import net.noliaware.yumi_retailer.feature_profile.domain.model.UserProfile
 import net.noliaware.yumi_retailer.feature_profile.presentation.views.ProfileDataParentView
 import net.noliaware.yumi_retailer.feature_profile.presentation.views.ProfileDataView.ProfileDataViewCallback
 import net.noliaware.yumi_retailer.feature_profile.presentation.views.ProfileDataView.ProfileViewAdapter
-import net.noliaware.yumi_retailer.feature_scan.presentation.controllers.PrivacyPolicyFragment
 
 @AndroidEntryPoint
 class UserProfileDataFragment : Fragment() {
+
+    companion object {
+        fun newInstance(
+            accountData: AccountData?
+        ) = UserProfileDataFragment().withArgs(ACCOUNT_DATA to accountData)
+    }
 
     private var profileDataParentView: ProfileDataParentView? = null
     private val viewModel by viewModels<UserProfileDataFragmentViewModel>()
@@ -109,19 +116,17 @@ class UserProfileDataFragment : Fragment() {
     private val profileViewCallback: ProfileDataViewCallback by lazy {
         object : ProfileDataViewCallback {
             override fun onGetCodeButtonClicked() {
-                BOSignInFragment.newInstance().show(
-                    childFragmentManager.beginTransaction(),
-                    BO_SIGN_IN_FRAGMENT_TAG
+                findNavController().navigate(
+                    UserProfileFragmentDirections.actionUserProfileFragmentToBOSignInFragment()
                 )
             }
 
             override fun onPrivacyPolicyButtonClicked() {
-                PrivacyPolicyFragment.newInstance(
-                    privacyPolicyUrl = viewModel.accountData?.privacyPolicyUrl.orEmpty(),
-                    isConfirmationRequired = false
-                ).show(
-                    childFragmentManager.beginTransaction(),
-                    PRIVACY_POLICY_FRAGMENT_TAG
+                findNavController().navigate(
+                    UserProfileFragmentDirections.actionUserProfileFragmentToPrivacyPolicyFragment(
+                        privacyPolicyUrl = viewModel.accountData?.privacyPolicyUrl.orEmpty(),
+                        isPrivacyPolicyConfirmationRequired = false
+                    )
                 )
             }
         }

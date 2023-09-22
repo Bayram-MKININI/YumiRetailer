@@ -15,17 +15,13 @@ import kotlinx.coroutines.flow.collectLatest
 import net.noliaware.yumi_retailer.R
 import net.noliaware.yumi_retailer.commun.util.ViewModelState
 import net.noliaware.yumi_retailer.commun.util.handleSharedEvent
-import net.noliaware.yumi_retailer.commun.util.inflate
 import net.noliaware.yumi_retailer.commun.util.redirectToLoginScreenFromSharedEvent
+import net.noliaware.yumi_retailer.feature_login.presentation.controllers.MainActivity
 import net.noliaware.yumi_retailer.feature_scan.presentation.views.ScanView
 import net.noliaware.yumi_retailer.feature_scan.presentation.views.ScanView.ScanViewCallback
 
 @AndroidEntryPoint
 class ScanFragment : Fragment() {
-
-    companion object {
-        fun newInstance() = ScanFragment()
-    }
 
     private var scanView: ScanView? = null
     private val viewModel by viewModels<ScanFragmentViewModel>()
@@ -35,7 +31,7 @@ class ScanFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return container?.inflate(R.layout.scan_layout)?.apply {
+        return inflater.inflate(R.layout.scan_layout, container, false)?.apply {
             scanView = this as ScanView
             scanView?.callback = scanViewCallback
         }

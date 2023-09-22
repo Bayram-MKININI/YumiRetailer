@@ -8,16 +8,14 @@ import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.navArgs
 import androidx.paging.LoadState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import net.noliaware.yumi_retailer.R
-import net.noliaware.yumi_retailer.commun.Args.CATEGORY_COLOR
-import net.noliaware.yumi_retailer.commun.Args.CATEGORY_ICON
-import net.noliaware.yumi_retailer.commun.Args.CATEGORY_ID
 import net.noliaware.yumi_retailer.commun.presentation.adapters.ListLoadStateAdapter
 import net.noliaware.yumi_retailer.commun.util.handlePaginationError
-import net.noliaware.yumi_retailer.commun.util.withArgs
+import net.noliaware.yumi_retailer.commun.util.navDismiss
 import net.noliaware.yumi_retailer.feature_profile.presentation.adapters.ProductAdapter
 import net.noliaware.yumi_retailer.feature_profile.presentation.views.ProductListView
 import net.noliaware.yumi_retailer.feature_profile.presentation.views.ProductListView.ProductListViewAdapter
@@ -26,19 +24,8 @@ import net.noliaware.yumi_retailer.feature_profile.presentation.views.ProductLis
 @AndroidEntryPoint
 class ProductsListFragment : AppCompatDialogFragment() {
 
-    companion object {
-        fun newInstance(
-            categoryId: String,
-            categoryColor: Int,
-            categoryIcon: String
-        ) = ProductsListFragment().withArgs(
-            CATEGORY_ID to categoryId,
-            CATEGORY_COLOR to categoryColor,
-            CATEGORY_ICON to categoryIcon
-        )
-    }
-
     private var productListView: ProductListView? = null
+    private val args: ProductsListFragmentArgs by navArgs()
     private val viewModel by viewModels<ProductsListFragmentViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,8 +49,8 @@ class ProductsListFragment : AppCompatDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
         productListView?.fillViewWithData(
             ProductListViewAdapter(
-                color = viewModel.categoryColor,
-                iconName = viewModel.categoryIcon
+                color = args.categoryColor,
+                iconName = args.categoryIcon
             )
         )
         productListView?.setLoadingVisible(true)
@@ -93,11 +80,13 @@ class ProductsListFragment : AppCompatDialogFragment() {
     }
 
     private val productListViewCallback: ProductsListViewCallback by lazy {
-        ProductsListViewCallback { dismissAllowingStateLoss() }
+        ProductsListViewCallback {
+            navDismiss()
+        }
     }
 
     override fun onDestroyView() {
-        super.onDestroyView()
         productListView = null
+        super.onDestroyView()
     }
 }

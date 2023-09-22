@@ -2,6 +2,7 @@
 <net.noliaware.yumi_retailer.feature_profile.presentation.views.ProductListView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -16,7 +17,8 @@
     <View
         android:id="@+id/header_view"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        tools:background="@color/orange_1" />
 
     <include layout="@layout/back_layout" />
 
@@ -26,7 +28,8 @@
         android:layout_height="wrap_content"
         android:adjustViewBounds="true"
         android:background="@drawable/circle_white"
-        android:padding="12dp" />
+        android:padding="12dp"
+        tools:src="@drawable/ic_food" />
 
     <net.noliaware.yumi_retailer.commun.presentation.views.ElevatedCardView
         android:id="@+id/content_layout"

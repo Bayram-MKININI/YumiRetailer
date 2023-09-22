@@ -7,30 +7,23 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
+import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import net.noliaware.yumi_retailer.R
-import net.noliaware.yumi_retailer.commun.Args.CATEGORY
 import net.noliaware.yumi_retailer.commun.util.formatNumber
-import net.noliaware.yumi_retailer.commun.util.withArgs
-import net.noliaware.yumi_retailer.feature_profile.domain.model.Category
+import net.noliaware.yumi_retailer.commun.util.navDismiss
 import net.noliaware.yumi_retailer.feature_profile.domain.model.VoucherListType
 import net.noliaware.yumi_retailer.feature_profile.presentation.views.VouchersOverviewView
-import net.noliaware.yumi_retailer.feature_profile.presentation.views.VouchersOverviewView.*
+import net.noliaware.yumi_retailer.feature_profile.presentation.views.VouchersOverviewView.VouchersOverviewAdapter
+import net.noliaware.yumi_retailer.feature_profile.presentation.views.VouchersOverviewView.VouchersOverviewViewCallback
 
 @AndroidEntryPoint
 class VouchersOverviewFragment : AppCompatDialogFragment() {
 
-    companion object {
-        fun newInstance(
-            category: Category
-        ) = VouchersOverviewFragment().withArgs(CATEGORY to category)
-    }
-
     private var vouchersOverviewView: VouchersOverviewView? = null
-    private val viewModel by viewModels<VouchersOverviewFragmentViewModel>()
+    private val args: VouchersOverviewFragmentArgs by navArgs()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,7 +44,7 @@ class VouchersOverviewFragment : AppCompatDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.category?.let { category ->
+        args.selectedCategory.let { category ->
             ViewPagerAdapter(
                 childFragmentManager,
                 viewLifecycleOwner.lifecycle,
@@ -66,7 +59,7 @@ class VouchersOverviewFragment : AppCompatDialogFragment() {
     }
 
     private fun bindViewToData() {
-        viewModel.category?.let { category ->
+        args.selectedCategory.let { category ->
             vouchersOverviewView?.fillViewWithData(
                 VouchersOverviewAdapter(
                     color = category.categoryColor,
@@ -101,12 +94,14 @@ class VouchersOverviewFragment : AppCompatDialogFragment() {
     }
 
     private val vouchersOverviewViewCallback: VouchersOverviewViewCallback by lazy {
-        VouchersOverviewViewCallback { dismissAllowingStateLoss() }
+        VouchersOverviewViewCallback {
+            navDismiss()
+        }
     }
 
     override fun onDestroyView() {
-        super.onDestroyView()
         vouchersOverviewView = null
+        super.onDestroyView()
     }
 
     private class ViewPagerAdapter(

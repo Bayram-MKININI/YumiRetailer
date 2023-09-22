@@ -30,8 +30,9 @@
         android:theme="@style/Theme.YumiRetailer">
 
         <activity
-            android:name=".feature_login.presentation.controllers.LoginActivity"
+            android:name=".feature_login.presentation.controllers.MainActivity"
             android:exported="true"
+            android:launchMode="singleTop"
             android:screenOrientation="sensorPortrait"
             android:theme="@style/Theme.SplashScreenTheme">
             <intent-filter>
@@ -39,12 +40,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name="net.noliaware.yumi_retailer.feature_scan.presentation.controllers.MainActivity"
-            android:exported="false"
-            android:launchMode="singleTop"
-            android:screenOrientation="sensorPortrait"
-            android:theme="@style/Theme.YumiRetailer.NoActionBar" />
 
         <activity
             android:name=".feature_scan.presentation.controllers.PortraitCaptureActivity"

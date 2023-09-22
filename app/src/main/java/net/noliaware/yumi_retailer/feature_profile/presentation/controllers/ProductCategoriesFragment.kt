@@ -7,10 +7,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import net.noliaware.yumi_retailer.R
-import net.noliaware.yumi_retailer.commun.FragmentTags.PRODUCTS_LIST_FRAGMENT_TAG
 import net.noliaware.yumi_retailer.commun.util.ViewModelState.DataState
 import net.noliaware.yumi_retailer.commun.util.ViewModelState.LoadingState
 import net.noliaware.yumi_retailer.commun.util.formatNumber
@@ -82,13 +82,12 @@ class ProductCategoriesFragment : Fragment() {
         ProductCategoriesViewCallback { index ->
             viewModel.eventsHelper.stateData?.let { categories ->
                 categories[index].apply {
-                    ProductsListFragment.newInstance(
-                        categoryId = categoryId,
-                        categoryColor = categoryColor,
-                        categoryIcon = categoryIcon
-                    ).show(
-                        childFragmentManager.beginTransaction(),
-                        PRODUCTS_LIST_FRAGMENT_TAG
+                    findNavController().navigate(
+                        UserProfileFragmentDirections.actionUserProfileFragmentToProductsListFragment(
+                            categoryId = categoryId,
+                            categoryColor = categoryColor,
+                            categoryIcon = categoryIcon
+                        )
                     )
                 }
             }

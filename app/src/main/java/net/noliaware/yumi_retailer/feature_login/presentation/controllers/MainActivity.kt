@@ -1,4 +1,4 @@
-package net.noliaware.yumi_retailer.feature_scan.presentation.controllers
+package net.noliaware.yumi_retailer.feature_login.presentation.controllers
 
 import android.Manifest
 import android.content.BroadcastReceiver
@@ -10,30 +10,23 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import androidx.navigation.Navigation
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import net.noliaware.yumi_retailer.R
-import net.noliaware.yumi_retailer.commun.Args.ACCOUNT_DATA
 import net.noliaware.yumi_retailer.commun.Push.ACTION_PUSH_DATA
 import net.noliaware.yumi_retailer.commun.Push.PUSH_BODY
 import net.noliaware.yumi_retailer.commun.Push.PUSH_TITLE
-import net.noliaware.yumi_retailer.commun.util.getSerializableExtraCompat
-import net.noliaware.yumi_retailer.feature_login.domain.model.AccountData
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        installSplashScreen()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        intent.getSerializableExtraCompat<AccountData>(ACCOUNT_DATA)?.let { accountData ->
-            supportFragmentManager.beginTransaction().run {
-                replace(R.id.main_fragment_container, HomeFragment.newInstance(accountData))
-                commit()
-            }
-        }
     }
 
     private val messageReceiver: BroadcastReceiver = object : BroadcastReceiver() {
@@ -119,4 +112,9 @@ class MainActivity : AppCompatActivity() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         checkIfCameraPermissionIsGranted()
     }
+
+    override fun onSupportNavigateUp() = Navigation.findNavController(
+        this,
+        R.id.app_nav_host_fragment
+    ).navigateUp()
 }
