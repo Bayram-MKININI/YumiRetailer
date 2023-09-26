@@ -1,5 +1,6 @@
 package net.noliaware.yumi_retailer.commun.util
 
+import android.animation.ObjectAnimator
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
@@ -63,7 +64,6 @@ import net.noliaware.yumi_retailer.commun.domain.model.AppMessageType
 import net.noliaware.yumi_retailer.commun.domain.model.SessionData
 import retrofit2.HttpException
 import java.io.IOException
-import java.io.Serializable
 import java.math.BigInteger
 import java.nio.charset.StandardCharsets
 import java.security.MessageDigest
@@ -317,6 +317,10 @@ fun View.measureWrapContent() {
         MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED)
     )
 }
+
+fun View.translateYByValue(
+    value: Float
+): ObjectAnimator = ObjectAnimator.ofFloat(this, "translationY", value)
 
 fun View.layoutToTopLeft(left: Int, top: Int) {
     val right = left + measuredWidth
