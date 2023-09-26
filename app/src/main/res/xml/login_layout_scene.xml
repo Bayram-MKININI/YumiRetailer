@@ -46,7 +46,7 @@
         <Constraint android:id="@id/password_view">
             <PropertySet motion:visibilityMode="ignore" />
         </Constraint>
-        <Constraint android:id="@id/password_view">
+        <Constraint android:id="@id/login_view">
             <PropertySet motion:visibilityMode="ignore" />
         </Constraint>
     </ConstraintSet>
