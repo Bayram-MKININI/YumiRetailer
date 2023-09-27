@@ -12,9 +12,7 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.net.Uri
 import android.os.Build
-import android.text.SpannableString
-import android.text.Spanned
-import android.text.style.ForegroundColorSpan
+import android.util.DisplayMetrics
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
@@ -24,8 +22,8 @@ import android.widget.Toast
 import androidx.annotation.CheckResult
 import androidx.annotation.ColorInt
 import androidx.annotation.ColorRes
-import androidx.annotation.DrawableRes
-import androidx.appcompat.content.res.AppCompatResources
+import androidx.annotation.Dimension
+import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.os.bundleOf
@@ -36,10 +34,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
-import androidx.paging.LoadStateAdapter
-import androidx.paging.PagingDataAdapter
 import androidx.paging.PagingSource
-import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.facebook.shimmer.Shimmer
@@ -72,9 +67,12 @@ import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-fun isNetworkReachable(context: Context): Boolean {
-    val connectivityManager =
-        context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+fun isNetworkReachable(
+    context: Context
+): Boolean {
+    val connectivityManager = context.getSystemService(
+        Context.CONNECTIVITY_SERVICE
+    ) as ConnectivityManager
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
         val network = connectivityManager.activeNetwork ?: return false
         val activeNetwork = connectivityManager.getNetworkCapabilities(network) ?: return false
@@ -91,11 +89,16 @@ fun isNetworkReachable(context: Context): Boolean {
     }
 }
 
-fun generateToken(timestamp: String, methodName: String, randomString: String): String {
-    return "noliaware|$timestamp|${methodName}|${timestamp.reversed()}|$randomString".sha256()
-}
+fun generateToken(
+    timestamp: String,
+    methodName: String,
+    randomString: String
+) = "noliaware|$timestamp|${methodName}|${timestamp.reversed()}|$randomString".sha256()
 
-fun getCommonWSParams(sessionData: SessionData, tokenKey: String) = mapOf(
+fun getCommonWSParams(
+    sessionData: SessionData,
+    tokenKey: String
+) = mapOf(
     LOGIN to sessionData.login,
     APP_VERSION to BuildConfig.VERSION_NAME,
     DEVICE_ID to sessionData.deviceId,
@@ -110,18 +113,15 @@ suspend fun <T> FlowCollector<Resource<T>>.handleSessionWithNoFailure(
     appMessage: AppMessageDTO?,
     error: ErrorDTO?
 ): Boolean {
-
     val errorType = session?.let { sessionDTO ->
         sessionData.apply {
             sessionId = sessionDTO.sessionId
             sessionTokens[tokenKey] = sessionDTO.sessionToken
         }
-
         ErrorType.RECOVERABLE_ERROR
     } ?: run {
         ErrorType.SYSTEM_ERROR
     }
-
     error?.let { errorDTO ->
         emit(
             Resource.Error(
@@ -198,12 +198,11 @@ fun Int.parseSecondsToMinutesString(): String = SimpleDateFormat(
     Locale.FRANCE
 ).format(this * 1000L)
 
-fun Fragment.handleSharedEvent(sharedEvent: UIEvent) = context?.let {
-
+fun Fragment.handleSharedEvent(
+    sharedEvent: UIEvent
+) = context?.let {
     when (sharedEvent) {
-
         is UIEvent.ShowAppMessage -> {
-
             val appMessage = sharedEvent.appMessage
             when (appMessage.type) {
                 AppMessageType.POPUP -> {
@@ -220,7 +219,6 @@ fun Fragment.handleSharedEvent(sharedEvent: UIEvent) = context?.let {
                             show()
                         }
                 }
-
                 AppMessageType.SNACKBAR -> {
                     Snackbar.make(
                         requireView(),
@@ -228,30 +226,21 @@ fun Fragment.handleSharedEvent(sharedEvent: UIEvent) = context?.let {
                         Snackbar.LENGTH_LONG
                     ).show()
                 }
-
                 AppMessageType.TOAST -> {
-                    Toast.makeText(
-                        context,
-                        appMessage.body,
-                        Toast.LENGTH_LONG
-                    ).show()
+                    context.toast(appMessage.body)
                 }
-
                 else -> Unit
             }
         }
-
         is UIEvent.ShowError -> {
-            Toast.makeText(
-                context,
-                getString(sharedEvent.errorStrRes),
-                Toast.LENGTH_LONG
-            ).show()
+            context.toast(sharedEvent.errorStrRes)
         }
     }
 }
 
-fun Fragment.redirectToLoginScreenFromSharedEvent(sharedEvent: UIEvent) {
+fun Fragment.redirectToLoginScreenFromSharedEvent(
+    sharedEvent: UIEvent
+) {
     if (sharedEvent is UIEvent.ShowError) {
         if (sharedEvent.errorType == ErrorType.SYSTEM_ERROR) {
             redirectToLoginScreenInternal()
@@ -259,7 +248,9 @@ fun Fragment.redirectToLoginScreenFromSharedEvent(sharedEvent: UIEvent) {
     }
 }
 
-fun Fragment.handlePaginationError(loadState: CombinedLoadStates): Boolean {
+fun Fragment.handlePaginationError(
+    loadState: CombinedLoadStates
+): Boolean {
     when {
         loadState.prepend is LoadState.Error -> loadState.prepend as LoadState.Error
         loadState.append is LoadState.Error -> loadState.append as LoadState.Error
@@ -294,15 +285,18 @@ fun Fragment.navDismiss() {
     findNavController().navigateUp()
 }
 
-fun <T : Fragment> T.withArgs(vararg pairs: Pair<String, Any?>) =
-    apply { arguments = bundleOf(*pairs) }
+fun <T : Fragment> T.withArgs(
+    vararg pairs: Pair<String, Any?>
+) = apply { arguments = bundleOf(*pairs) }
 
 fun ViewGroup.inflate(
     layoutRes: Int,
     attachToRoot: Boolean = false
 ): View = LayoutInflater.from(context).inflate(layoutRes, this, attachToRoot)
 
-fun Context.drawableIdByName(resIdName: String?): Int {
+fun Context.drawableIdByName(
+    resIdName: String?
+): Int {
     resIdName?.let {
         return resources.getIdentifier(it, "drawable", packageName)
     }
@@ -322,33 +316,55 @@ fun View.translateYByValue(
     value: Float
 ): ObjectAnimator = ObjectAnimator.ofFloat(this, "translationY", value)
 
-fun View.layoutToTopLeft(left: Int, top: Int) {
+fun Context?.toast(
+    text: CharSequence,
+    duration: Int = Toast.LENGTH_LONG
+) = this?.let {
+    Toast.makeText(it, text, duration).show()
+}
+
+fun Context?.toast(
+    @StringRes textId: Int,
+    duration: Int = Toast.LENGTH_LONG
+) = this?.let {
+    Toast.makeText(it, textId, duration).show()
+}
+
+fun View.layoutToTopLeft(
+    left: Int,
+    top: Int
+) {
     val right = left + measuredWidth
     val bottom = top + measuredHeight
     layout(left, top, right, bottom)
 }
 
-fun View.layoutToTopRight(right: Int, top: Int) {
+fun View.layoutToTopRight(
+    right: Int,
+    top: Int
+) {
     val left = right - measuredWidth
     val bottom = top + measuredHeight
     layout(left, top, right, bottom)
 }
 
-fun View.layoutToBottomLeft(left: Int, bottom: Int) {
+fun View.layoutToBottomLeft(
+    left: Int,
+    bottom: Int
+) {
     val right = left + measuredWidth
     val top = bottom - measuredHeight
     layout(left, top, right, bottom)
 }
 
-fun View.layoutToBottomRight(right: Int, bottom: Int) {
+fun View.layoutToBottomRight(
+    right: Int,
+    bottom: Int
+) {
     val left = right - measuredWidth
     val top = bottom - measuredHeight
     layout(left, top, right, bottom)
 }
-
-fun View.convertDpToPx(dpValue: Int): Int = TypedValue.applyDimension(
-    TypedValue.COMPLEX_UNIT_DIP, dpValue.toFloat(), resources.displayMetrics
-).toInt()
 
 fun View.getLocationRectOnScreen(): Rect {
     val location = IntArray(2)
@@ -361,7 +377,9 @@ fun View.getLocationRectOnScreen(): Rect {
     }
 }
 
-fun ShimmerFrameLayout.activateShimmer(activated: Boolean) {
+fun ShimmerFrameLayout.activateShimmer(
+    activated: Boolean
+) {
     Shimmer.AlphaHighlightBuilder()
         .setBaseAlpha(if (activated) 0.4f else 1f)
         .setDuration(resources.getInteger(R.integer.shimmer_animation_duration_ms).toLong())
@@ -379,6 +397,28 @@ fun ViewPager2.removeOverScroll() {
     (getChildAt(0) as? RecyclerView)?.overScrollMode = View.OVER_SCROLL_NEVER
 }
 
+fun View.convertDpToPx(
+    dpValue: Int
+) = TypedValue.applyDimension(
+    TypedValue.COMPLEX_UNIT_DIP, dpValue.toFloat(), resources.displayMetrics
+).toInt()
+
+@JvmOverloads
+@Dimension(unit = Dimension.PX)
+fun Number.dpToPx(
+    metrics: DisplayMetrics = Resources.getSystem().displayMetrics
+): Float {
+    return toFloat() * metrics.density
+}
+
+@JvmOverloads
+@Dimension(unit = Dimension.DP)
+fun Number.pxToDp(
+    metrics: DisplayMetrics = Resources.getSystem().displayMetrics
+): Float {
+    return toFloat() / metrics.density
+}
+
 fun Context.showKeyboard() {
     (this as? Activity)?.let {
         WindowInsetsControllerCompat(window, window.decorView).show(WindowInsetsCompat.Type.ime())
@@ -394,14 +434,15 @@ fun Context.hideKeyboard() {
 inline fun <reified T : View> View.find(id: Int): T = findViewById(id)
 inline fun <reified T : View> Activity.find(id: Int): T = findViewById(id)
 inline fun <reified T : View> Fragment.find(id: Int): T = view?.findViewById(id) as T
-inline fun <reified T : View> RecyclerView.ViewHolder.find(id: Int): T =
-    itemView.findViewById(id) as T
-
+inline fun <reified T : View> RecyclerView.ViewHolder.find(
+    id: Int
+): T = itemView.findViewById(id) as T
 inline fun <reified T : View> View.findOptional(id: Int): T? = findViewById(id) as? T
 inline fun <reified T : View> Activity.findOptional(id: Int): T? = findViewById(id) as? T
 inline fun <reified T : View> Fragment.findOptional(id: Int): T? = view?.findViewById(id) as? T
-inline fun <reified T : View> RecyclerView.ViewHolder.findOptional(id: Int): T? =
-    itemView.findViewById(id) as? T
+inline fun <reified T : View> RecyclerView.ViewHolder.findOptional(
+    id: Int
+): T? = itemView.findViewById(id) as? T
 
 fun String.sha256(): String {
     return try {
@@ -420,78 +461,31 @@ fun String.sha256(): String {
 }
 
 @ColorInt
-fun Context.getColorCompat(@ColorRes colorRes: Int): Int {
-    return ContextCompat.getColor(this, colorRes)
-}
+fun Context.getColorCompat(
+    @ColorRes colorRes: Int
+) = ContextCompat.getColor(this, colorRes)
 
 @ColorInt
-fun String.parseHexColor(): Int {
-    return if (isEmpty()) {
-        Color.TRANSPARENT
-    } else {
-        Color.parseColor(this)
-    }
+fun String.parseHexColor() = if (isEmpty()) {
+    Color.TRANSPARENT
+} else {
+    Color.parseColor(this)
 }
 
-fun Context.getDrawableCompat(@DrawableRes drawableRes: Int) =
-    AppCompatResources.getDrawable(this, drawableRes)
-
 @CheckResult
-fun Drawable.tint(@ColorInt color: Int): Drawable {
+fun Drawable.tint(
+    @ColorInt color: Int
+): Drawable {
     val tintedDrawable = DrawableCompat.wrap(this).mutate()
     DrawableCompat.setTint(tintedDrawable, color)
     return tintedDrawable
 }
 
-@CheckResult
-fun Drawable.tint(context: Context, @ColorRes color: Int): Drawable {
-    return tint(context.getColorCompat(color))
-}
-
 fun Number.formatNumber(): String = NumberFormat.getNumberInstance(Locale.getDefault()).format(this)
 
-fun String.decorateText(
-    coloredText1: String,
-    color1: Int,
-    coloredText2: String,
-    color2: Int
-) = SpannableString(this).apply {
-    val colorSpan1 = ForegroundColorSpan(color1)
-    val startIndex1 = indexOf(coloredText1)
-    val endIndex1 = startIndex1 + coloredText1.length
-    setSpan(
-        colorSpan1,
-        startIndex1,
-        endIndex1,
-        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-    )
-    val colorSpan2 = ForegroundColorSpan(color2)
-    val startIndex2 = indexOf(coloredText2)
-    val endIndex2 = startIndex2 + coloredText2.length
-    setSpan(
-        colorSpan2,
-        startIndex2,
-        endIndex2,
-        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-    )
-}
-
-fun <T> unsafeLazy(initializer: () -> T) = lazy(LazyThreadSafetyMode.NONE, initializer)
-val <T> T.exhaustive: T get() = this
-
-fun <T : Any, V : RecyclerView.ViewHolder> PagingDataAdapter<T, V>.withLoadStateAdapters(
-    header: LoadStateAdapter<*>,
-    footer: LoadStateAdapter<*>
-): ConcatAdapter {
-    addLoadStateListener { loadStates ->
-        header.loadState = loadStates.refresh
-        footer.loadState = loadStates.append
-    }
-
-    return ConcatAdapter(header, this, footer)
-}
-
-fun Context.startWebBrowserAtURL(url: String) {
+fun Context.startWebBrowserAtURL(
+    url: String
+) {
     Intent(Intent.ACTION_VIEW, Uri.parse(url)).apply {
         flags = Intent.FLAG_ACTIVITY_NEW_TASK
     }.run {
