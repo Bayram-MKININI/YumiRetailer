@@ -9,13 +9,14 @@ import net.noliaware.yumi_retailer.commun.data.remote.RemoteApi
 import net.noliaware.yumi_retailer.commun.domain.model.SessionData
 import net.noliaware.yumi_retailer.commun.util.ErrorType
 import net.noliaware.yumi_retailer.commun.util.Resource
+import net.noliaware.yumi_retailer.commun.util.currentTimeInMillis
 import net.noliaware.yumi_retailer.commun.util.generateToken
 import net.noliaware.yumi_retailer.commun.util.getCommonWSParams
 import net.noliaware.yumi_retailer.commun.util.handleSessionWithNoFailure
+import net.noliaware.yumi_retailer.commun.util.randomString
 import net.noliaware.yumi_retailer.feature_scan.domain.repository.UseVoucherRepository
 import okio.IOException
 import retrofit2.HttpException
-import java.util.UUID
 import javax.inject.Inject
 
 class UseVoucherRepositoryImpl @Inject constructor(
@@ -28,9 +29,8 @@ class UseVoucherRepositoryImpl @Inject constructor(
         emit(Resource.Loading())
 
         try {
-
-            val timestamp = System.currentTimeMillis().toString()
-            val randomString = UUID.randomUUID().toString()
+            val timestamp = currentTimeInMillis()
+            val randomString = randomString()
 
             val remoteData = api.updatePrivacyPolicyReadStatus(
                 timestamp = timestamp,
@@ -72,9 +72,8 @@ class UseVoucherRepositoryImpl @Inject constructor(
         emit(Resource.Loading())
 
         try {
-
-            val timestamp = System.currentTimeMillis().toString()
-            val randomString = UUID.randomUUID().toString()
+            val timestamp = currentTimeInMillis()
+            val randomString = randomString()
 
             val remoteData = api.useVoucher(
                 timestamp = timestamp,

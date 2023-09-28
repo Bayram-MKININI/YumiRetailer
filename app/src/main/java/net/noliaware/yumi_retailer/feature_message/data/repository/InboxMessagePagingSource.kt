@@ -10,12 +10,13 @@ import net.noliaware.yumi_retailer.commun.data.remote.RemoteApi
 import net.noliaware.yumi_retailer.commun.domain.model.SessionData
 import net.noliaware.yumi_retailer.commun.util.ErrorType
 import net.noliaware.yumi_retailer.commun.util.PaginationException
+import net.noliaware.yumi_retailer.commun.util.currentTimeInMillis
 import net.noliaware.yumi_retailer.commun.util.generateToken
 import net.noliaware.yumi_retailer.commun.util.getCommonWSParams
 import net.noliaware.yumi_retailer.commun.util.handlePagingSourceError
+import net.noliaware.yumi_retailer.commun.util.randomString
 import net.noliaware.yumi_retailer.commun.util.resolvePaginatedListErrorIfAny
 import net.noliaware.yumi_retailer.feature_message.domain.model.Message
-import java.util.UUID
 
 class InboxMessagePagingSource(
     private val api: RemoteApi,
@@ -33,8 +34,8 @@ class InboxMessagePagingSource(
         try {
             val nextPage = params.key ?: 0
 
-            val timestamp = System.currentTimeMillis().toString()
-            val randomString = UUID.randomUUID().toString()
+            val timestamp = currentTimeInMillis()
+            val randomString = randomString()
 
             val remoteData = api.fetchInboxMessages(
                 timestamp = timestamp,
