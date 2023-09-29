@@ -7,16 +7,14 @@ import net.noliaware.yumi_retailer.commun.ApiConstants.USE_VOUCHER
 import net.noliaware.yumi_retailer.commun.ApiParameters.VOUCHER_USE_ID
 import net.noliaware.yumi_retailer.commun.data.remote.RemoteApi
 import net.noliaware.yumi_retailer.commun.domain.model.SessionData
-import net.noliaware.yumi_retailer.commun.util.ErrorType
 import net.noliaware.yumi_retailer.commun.util.Resource
 import net.noliaware.yumi_retailer.commun.util.currentTimeInMillis
 import net.noliaware.yumi_retailer.commun.util.generateToken
 import net.noliaware.yumi_retailer.commun.util.getCommonWSParams
+import net.noliaware.yumi_retailer.commun.util.handleRemoteCallError
 import net.noliaware.yumi_retailer.commun.util.handleSessionWithNoFailure
 import net.noliaware.yumi_retailer.commun.util.randomString
 import net.noliaware.yumi_retailer.feature_scan.domain.repository.UseVoucherRepository
-import okio.IOException
-import retrofit2.HttpException
 import javax.inject.Inject
 
 class UseVoucherRepositoryImpl @Inject constructor(
@@ -60,10 +58,8 @@ class UseVoucherRepositoryImpl @Inject constructor(
                 )
             }
 
-        } catch (ex: HttpException) {
-            emit(Resource.Error(errorType = ErrorType.SYSTEM_ERROR))
-        } catch (ex: IOException) {
-            emit(Resource.Error(errorType = ErrorType.NETWORK_ERROR))
+        } catch (ex: Exception) {
+            handleRemoteCallError(ex)
         }
     }
 
@@ -103,10 +99,8 @@ class UseVoucherRepositoryImpl @Inject constructor(
                 )
             }
 
-        } catch (ex: HttpException) {
-            emit(Resource.Error(errorType = ErrorType.SYSTEM_ERROR))
-        } catch (ex: IOException) {
-            emit(Resource.Error(errorType = ErrorType.NETWORK_ERROR))
+        } catch (ex: Exception) {
+            handleRemoteCallError(ex)
         }
     }
 

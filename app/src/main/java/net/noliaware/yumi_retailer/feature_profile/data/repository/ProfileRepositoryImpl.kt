@@ -11,19 +11,17 @@ import net.noliaware.yumi_retailer.commun.ApiConstants.GET_VOUCHER_DATA_PER_CATE
 import net.noliaware.yumi_retailer.commun.ApiParameters.LIST_PAGE_SIZE
 import net.noliaware.yumi_retailer.commun.data.remote.RemoteApi
 import net.noliaware.yumi_retailer.commun.domain.model.SessionData
-import net.noliaware.yumi_retailer.commun.util.ErrorType
 import net.noliaware.yumi_retailer.commun.util.Resource
 import net.noliaware.yumi_retailer.commun.util.currentTimeInMillis
 import net.noliaware.yumi_retailer.commun.util.generateToken
 import net.noliaware.yumi_retailer.commun.util.getCommonWSParams
+import net.noliaware.yumi_retailer.commun.util.handleRemoteCallError
 import net.noliaware.yumi_retailer.commun.util.handleSessionWithNoFailure
 import net.noliaware.yumi_retailer.commun.util.randomString
 import net.noliaware.yumi_retailer.feature_profile.domain.model.BOSignIn
 import net.noliaware.yumi_retailer.feature_profile.domain.model.Category
 import net.noliaware.yumi_retailer.feature_profile.domain.model.UserProfile
 import net.noliaware.yumi_retailer.feature_profile.domain.repository.ProfileRepository
-import okio.IOException
-import retrofit2.HttpException
 import javax.inject.Inject
 
 class ProfileRepositoryImpl @Inject constructor(
@@ -70,10 +68,8 @@ class ProfileRepositoryImpl @Inject constructor(
                 }
             }
 
-        } catch (ex: HttpException) {
-            emit(Resource.Error(errorType = ErrorType.SYSTEM_ERROR))
-        } catch (ex: IOException) {
-            emit(Resource.Error(errorType = ErrorType.NETWORK_ERROR))
+        } catch (ex: Exception) {
+            handleRemoteCallError(ex)
         }
     }
 
@@ -116,10 +112,8 @@ class ProfileRepositoryImpl @Inject constructor(
                 }
             }
 
-        } catch (ex: HttpException) {
-            emit(Resource.Error(errorType = ErrorType.SYSTEM_ERROR))
-        } catch (ex: IOException) {
-            emit(Resource.Error(errorType = ErrorType.NETWORK_ERROR))
+        } catch (ex: Exception) {
+            handleRemoteCallError(ex)
         }
     }
 
@@ -161,10 +155,8 @@ class ProfileRepositoryImpl @Inject constructor(
                 }
             }
 
-        } catch (ex: HttpException) {
-            emit(Resource.Error(errorType = ErrorType.SYSTEM_ERROR))
-        } catch (ex: IOException) {
-            emit(Resource.Error(errorType = ErrorType.NETWORK_ERROR))
+        } catch (ex: Exception) {
+            handleRemoteCallError(ex)
         }
     }
 
@@ -206,10 +198,8 @@ class ProfileRepositoryImpl @Inject constructor(
                 }
             }
 
-        } catch (ex: HttpException) {
-            emit(Resource.Error(errorType = ErrorType.SYSTEM_ERROR))
-        } catch (ex: IOException) {
-            emit(Resource.Error(errorType = ErrorType.NETWORK_ERROR))
+        } catch (ex: Exception) {
+            handleRemoteCallError(ex)
         }
     }
 

@@ -19,12 +19,14 @@ import net.noliaware.yumi_retailer.commun.RemoteConfig.KEY_FORCE_UPDATE_REQUIRED
 import net.noliaware.yumi_retailer.commun.RemoteConfig.KEY_FORCE_UPDATE_URL
 import net.noliaware.yumi_retailer.commun.presentation.EventsHelper
 import net.noliaware.yumi_retailer.commun.util.ViewModelState
-import net.noliaware.yumi_retailer.commun.util.ViewModelState.*
-import net.noliaware.yumi_retailer.feature_login.domain.repository.DataStoreRepository
-import net.noliaware.yumi_retailer.feature_login.domain.repository.LoginRepository
+import net.noliaware.yumi_retailer.commun.util.ViewModelState.DataState
+import net.noliaware.yumi_retailer.commun.util.ViewModelState.LoadingState
+import net.noliaware.yumi_retailer.commun.util.recordNonFatal
 import net.noliaware.yumi_retailer.feature_login.domain.model.AccountData
 import net.noliaware.yumi_retailer.feature_login.domain.model.InitData
 import net.noliaware.yumi_retailer.feature_login.domain.model.UserPreferences
+import net.noliaware.yumi_retailer.feature_login.domain.repository.DataStoreRepository
+import net.noliaware.yumi_retailer.feature_login.domain.repository.LoginRepository
 import org.json.JSONArray
 import javax.inject.Inject
 
@@ -114,7 +116,7 @@ class LoginFragmentViewModel @Inject constructor(
                 if (pushToken.isNullOrBlank())
                     pushToken = FirebaseMessaging.getInstance().token.await()
             } catch (e: Exception) {
-                e.printStackTrace()
+                e.recordNonFatal()
             }
 
             repository.getInitData(
@@ -144,7 +146,7 @@ class LoginFragmentViewModel @Inject constructor(
                 }
             }
         } catch (e: Exception) {
-            e.printStackTrace()
+            e.recordNonFatal()
         }
         return false
     }
