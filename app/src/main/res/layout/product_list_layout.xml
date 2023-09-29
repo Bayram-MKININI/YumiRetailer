@@ -42,7 +42,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:shimmer_auto_start="false"
-            app:shimmer_base_alpha="1">
+            app:shimmer_base_alpha="1"
+            tools:visibility="gone">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/shimmer_recycler_view"
@@ -55,7 +56,10 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:overScrollMode="never"
-            android:visibility="gone" />
+            android:visibility="gone"
+            tools:layoutManager="LinearLayoutManager"
+            tools:listitem="@layout/product_item_layout"
+            tools:visibility="visible" />
 
     </net.noliaware.yumi_retailer.commun.presentation.views.ElevatedCardView>
 </net.noliaware.yumi_retailer.feature_profile.presentation.views.ProductListView>

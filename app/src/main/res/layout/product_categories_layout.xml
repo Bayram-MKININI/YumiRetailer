@@ -2,6 +2,7 @@
 <net.noliaware.yumi_retailer.feature_profile.presentation.views.ProductCategoriesView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -20,7 +21,8 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         app:shimmer_auto_start="false"
-        app:shimmer_base_alpha="1">
+        app:shimmer_base_alpha="1"
+        tools:visibility="gone">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/shimmer_recycler_view"
@@ -32,8 +34,11 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:overScrollMode="never"
-        android:visibility="gone" />
+        android:visibility="gone"
+        tools:layoutManager="LinearLayoutManager"
+        tools:listitem="@layout/product_category_item_layout"
+        tools:visibility="visible" />
 
 </net.noliaware.yumi_retailer.feature_profile.presentation.views.ProductCategoriesView>
