@@ -16,6 +16,7 @@ import net.noliaware.yumi_retailer.commun.util.ViewModelState.LoadingState
 import net.noliaware.yumi_retailer.commun.util.formatNumber
 import net.noliaware.yumi_retailer.commun.util.handleSharedEvent
 import net.noliaware.yumi_retailer.commun.util.redirectToLoginScreenFromSharedEvent
+import net.noliaware.yumi_retailer.commun.util.safeNavigate
 import net.noliaware.yumi_retailer.feature_profile.domain.model.Category
 import net.noliaware.yumi_retailer.feature_profile.presentation.views.CategoriesParentView
 import net.noliaware.yumi_retailer.feature_profile.presentation.views.CategoriesView.CategoriesViewAdapter
@@ -132,7 +133,7 @@ class CategoriesFragment : Fragment() {
         CategoriesViewCallback { index ->
             viewModel.eventsHelper.stateData?.let { categories ->
                 categories[index].apply {
-                    findNavController().navigate(
+                    findNavController().safeNavigate(
                         UserProfileFragmentDirections.actionUserProfileFragmentToVouchersOverviewFragment(this)
                     )
                 }

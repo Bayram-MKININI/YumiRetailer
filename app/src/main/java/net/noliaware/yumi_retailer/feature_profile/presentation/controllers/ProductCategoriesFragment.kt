@@ -16,6 +16,7 @@ import net.noliaware.yumi_retailer.commun.util.ViewModelState.LoadingState
 import net.noliaware.yumi_retailer.commun.util.formatNumber
 import net.noliaware.yumi_retailer.commun.util.handleSharedEvent
 import net.noliaware.yumi_retailer.commun.util.redirectToLoginScreenFromSharedEvent
+import net.noliaware.yumi_retailer.commun.util.safeNavigate
 import net.noliaware.yumi_retailer.feature_profile.domain.model.Category
 import net.noliaware.yumi_retailer.feature_profile.presentation.views.ProductCategoriesView
 import net.noliaware.yumi_retailer.feature_profile.presentation.views.ProductCategoriesView.ProductCategoriesViewCallback
@@ -82,7 +83,7 @@ class ProductCategoriesFragment : Fragment() {
         ProductCategoriesViewCallback { index ->
             viewModel.eventsHelper.stateData?.let { categories ->
                 categories[index].apply {
-                    findNavController().navigate(
+                    findNavController().safeNavigate(
                         UserProfileFragmentDirections.actionUserProfileFragmentToProductsListFragment(
                             categoryId = categoryId,
                             categoryColor = categoryColor,
