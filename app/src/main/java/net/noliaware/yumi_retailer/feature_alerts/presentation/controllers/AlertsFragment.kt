@@ -10,6 +10,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import net.noliaware.yumi_retailer.R
 import net.noliaware.yumi_retailer.commun.presentation.adapters.ListLoadStateAdapter
 import net.noliaware.yumi_retailer.commun.util.handlePaginationError
@@ -40,7 +41,7 @@ class AlertsFragment : Fragment() {
     }
 
     private fun collectFlows() {
-        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+        viewLifecycleOwner.lifecycleScope.launch {
             alertsView?.alertAdapter?.loadStateFlow?.collectLatest { loadState ->
 
                 val noAlertsLoaded = (alertsView?.alertAdapter?.itemCount ?: 0) < 1
@@ -54,7 +55,7 @@ class AlertsFragment : Fragment() {
                 }
             }
         }
-        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+        viewLifecycleOwner.lifecycleScope.launch {
             viewModel.getAlerts().collectLatest {
                 alertsView?.alertAdapter?.withLoadStateFooter(
                     footer = ListLoadStateAdapter()

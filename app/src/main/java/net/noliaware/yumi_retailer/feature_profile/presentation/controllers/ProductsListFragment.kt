@@ -12,6 +12,7 @@ import androidx.navigation.fragment.navArgs
 import androidx.paging.LoadState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import net.noliaware.yumi_retailer.R
 import net.noliaware.yumi_retailer.commun.presentation.adapters.ListLoadStateAdapter
 import net.noliaware.yumi_retailer.commun.util.handlePaginationError
@@ -58,7 +59,7 @@ class ProductsListFragment : AppCompatDialogFragment() {
     }
 
     private fun collectFlows() {
-        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+        viewLifecycleOwner.lifecycleScope.launch {
             productListView?.productAdapter?.loadStateFlow?.collectLatest { loadState ->
                 when {
                     handlePaginationError(loadState) -> productListView?.stopLoading()
@@ -69,7 +70,7 @@ class ProductsListFragment : AppCompatDialogFragment() {
                 }
             }
         }
-        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+        viewLifecycleOwner.lifecycleScope.launch {
             viewModel.getProducts().collectLatest {
                 productListView?.productAdapter?.withLoadStateFooter(
                     footer = ListLoadStateAdapter()
