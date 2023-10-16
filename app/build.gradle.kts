@@ -114,8 +114,8 @@ dependencies {
     implementation("com.facebook.shimmer:shimmer:0.5.0")
 
     // Navigation
-    implementation("androidx.navigation:navigation-fragment-ktx:2.7.3")
-    implementation("androidx.navigation:navigation-ui-ktx:2.7.3")
+    implementation("androidx.navigation:navigation-fragment-ktx:2.7.4")
+    implementation("androidx.navigation:navigation-ui-ktx:2.7.4")
 
     // Utils
     implementation("com.journeyapps:zxing-android-embedded:4.3.0")
