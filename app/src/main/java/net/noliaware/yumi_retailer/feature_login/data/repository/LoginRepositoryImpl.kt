@@ -36,6 +36,7 @@ import net.noliaware.yumi_retailer.commun.ApiParameters.PUSH_TOKEN
 import net.noliaware.yumi_retailer.commun.data.remote.RemoteApi
 import net.noliaware.yumi_retailer.commun.data.remote.dto.SessionDTO
 import net.noliaware.yumi_retailer.commun.domain.model.SessionData
+import net.noliaware.yumi_retailer.commun.domain.repository.ActionsRepository
 import net.noliaware.yumi_retailer.commun.util.Resource
 import net.noliaware.yumi_retailer.commun.util.currentTimeInMillis
 import net.noliaware.yumi_retailer.commun.util.generateToken
@@ -50,7 +51,8 @@ import javax.inject.Inject
 
 class LoginRepositoryImpl @Inject constructor(
     private val api: RemoteApi,
-    private val sessionData: SessionData
+    private val sessionData: SessionData,
+    private val actionsRepository: ActionsRepository
 ) : LoginRepository {
 
     override fun getInitData(
@@ -77,6 +79,12 @@ class LoginRepositoryImpl @Inject constructor(
                     login = login
                 )
             )
+
+            remoteData.actions?.map {
+                it.toAction()
+            }?.let { actions ->
+                actionsRepository.performActions(actions)
+            }
 
             val sessionNoFailure = handleSessionWithNoFailure(
                 session = remoteData.session,
