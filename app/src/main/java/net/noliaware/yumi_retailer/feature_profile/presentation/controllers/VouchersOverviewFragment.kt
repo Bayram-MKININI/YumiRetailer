@@ -23,7 +23,7 @@ import net.noliaware.yumi_retailer.feature_profile.presentation.views.VouchersOv
 class VouchersOverviewFragment : AppCompatDialogFragment() {
 
     private var vouchersOverviewView: VouchersOverviewView? = null
-    private val args: VouchersOverviewFragmentArgs by navArgs()
+    private val args by navArgs<VouchersOverviewFragmentArgs>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

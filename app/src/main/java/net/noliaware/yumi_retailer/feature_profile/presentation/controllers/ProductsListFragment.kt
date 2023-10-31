@@ -26,7 +26,7 @@ import net.noliaware.yumi_retailer.feature_profile.presentation.views.ProductLis
 class ProductsListFragment : AppCompatDialogFragment() {
 
     private var productListView: ProductListView? = null
-    private val args: ProductsListFragmentArgs by navArgs()
+    private val args by navArgs<ProductsListFragmentArgs>()
     private val viewModel by viewModels<ProductsListFragmentViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {

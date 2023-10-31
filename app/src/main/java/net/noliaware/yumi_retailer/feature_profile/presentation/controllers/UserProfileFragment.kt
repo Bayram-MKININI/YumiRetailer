@@ -18,7 +18,7 @@ import net.noliaware.yumi_retailer.feature_profile.presentation.views.ProfileVie
 class UserProfileFragment : Fragment() {
 
     private var profileView: ProfileView? = null
-    private val args: UserProfileFragmentArgs by navArgs()
+    private val args by navArgs<UserProfileFragmentArgs>()
 
     override fun onCreateView(
         inflater: LayoutInflater,

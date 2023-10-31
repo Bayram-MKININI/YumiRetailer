@@ -24,7 +24,7 @@ import net.noliaware.yumi_retailer.feature_message.presentation.views.MessagingV
 class MessagingFragment : Fragment() {
 
     private var messagingView: MessagingView? = null
-    private val args: MessagingFragmentArgs by navArgs()
+    private val args by navArgs<MessagingFragmentArgs>()
     private val viewModel by viewModels<MessagingFragmentViewModel>()
 
     override fun onCreateView(
