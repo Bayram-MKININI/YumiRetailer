@@ -9,7 +9,7 @@
         android:id="@+id/highlight_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/rectangle_rounded_15dp"
+        android:background="@drawable/rectangle_rounded_10dp"
         android:backgroundTint="@color/grey_9" />
 
     <View

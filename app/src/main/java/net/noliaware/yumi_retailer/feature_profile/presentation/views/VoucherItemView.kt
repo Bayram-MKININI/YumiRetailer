@@ -47,7 +47,7 @@ class VoucherItemView @JvmOverloads constructor(
         titleTextView.text = voucherItemViewAdapter.title
         highlightLayout.background = ContextCompat.getDrawable(
             context,
-            R.drawable.rectangle_rounded_15dp
+            R.drawable.rectangle_rounded_10dp
         )?.tint(voucherItemViewAdapter.color)
         highlightDescriptionTextView.text = voucherItemViewAdapter.highlightDescription
         highlightValueTextView.text = voucherItemViewAdapter.highlightValue
