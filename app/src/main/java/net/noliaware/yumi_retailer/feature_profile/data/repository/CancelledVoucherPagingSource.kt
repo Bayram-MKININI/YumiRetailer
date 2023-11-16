@@ -9,8 +9,8 @@ import net.noliaware.yumi_retailer.commun.ApiParameters.OFFSET
 import net.noliaware.yumi_retailer.commun.Args.CATEGORY_ID
 import net.noliaware.yumi_retailer.commun.data.remote.RemoteApi
 import net.noliaware.yumi_retailer.commun.domain.model.SessionData
-import net.noliaware.yumi_retailer.commun.util.ErrorType
 import net.noliaware.yumi_retailer.commun.util.PaginationException
+import net.noliaware.yumi_retailer.commun.util.ServiceError.ErrNone
 import net.noliaware.yumi_retailer.commun.util.currentTimeInMillis
 import net.noliaware.yumi_retailer.commun.util.generateToken
 import net.noliaware.yumi_retailer.commun.util.getCommonWSParams
@@ -55,14 +55,14 @@ class CancelledVoucherPagingSource(
                 )
             )
 
-            val errorType = resolvePaginatedListErrorIfAny(
+            val serviceError = resolvePaginatedListErrorIfAny(
                 session = remoteData.session,
                 sessionData = sessionData,
                 tokenKey = GET_CANCELLED_VOUCHER_LIST_BY_CATEGORY
             )
 
-            if (errorType != ErrorType.RECOVERABLE_ERROR) {
-                throw PaginationException(errorType)
+            if (serviceError !is ErrNone) {
+                throw PaginationException(serviceError)
             }
 
             val voucherRank = remoteData.data?.voucherDTOList?.lastOrNull()?.voucherRank ?: nextPage
