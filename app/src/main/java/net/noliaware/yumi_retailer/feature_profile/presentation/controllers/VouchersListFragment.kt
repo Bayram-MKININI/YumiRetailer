@@ -1,5 +1,6 @@
 package net.noliaware.yumi_retailer.feature_profile.presentation.controllers
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,19 +8,28 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import net.noliaware.yumi_retailer.R
-import net.noliaware.yumi_retailer.commun.Args.CATEGORY_COLOR
-import net.noliaware.yumi_retailer.commun.Args.CATEGORY_ID
+import net.noliaware.yumi_retailer.commun.Args.CATEGORY
 import net.noliaware.yumi_retailer.commun.Args.VOUCHER_LIST_TYPE
+import net.noliaware.yumi_retailer.commun.Args.VOUCHER_REQUEST_TYPES
 import net.noliaware.yumi_retailer.commun.presentation.adapters.ListLoadStateAdapter
+import net.noliaware.yumi_retailer.commun.util.collectLifecycleAware
 import net.noliaware.yumi_retailer.commun.util.handlePaginationError
+import net.noliaware.yumi_retailer.commun.util.safeNavigate
 import net.noliaware.yumi_retailer.commun.util.withArgs
+import net.noliaware.yumi_retailer.feature_login.domain.model.VoucherRequestType
+import net.noliaware.yumi_retailer.feature_profile.domain.model.Category
 import net.noliaware.yumi_retailer.feature_profile.domain.model.VoucherListType
 import net.noliaware.yumi_retailer.feature_profile.presentation.adapters.VoucherAdapter
+import net.noliaware.yumi_retailer.feature_profile.presentation.mappers.AvailableVoucherMapper
+import net.noliaware.yumi_retailer.feature_profile.presentation.mappers.CancelledVoucherMapper
+import net.noliaware.yumi_retailer.feature_profile.presentation.mappers.UsedVoucherMapper
+import net.noliaware.yumi_retailer.feature_profile.presentation.views.CategoryUI
 import net.noliaware.yumi_retailer.feature_profile.presentation.views.VouchersListView
 
 @AndroidEntryPoint
@@ -27,12 +37,12 @@ class VouchersListFragment : Fragment() {
 
     companion object {
         fun newInstance(
-            categoryId: String,
-            categoryColor: Int,
+            category: Category,
+            voucherRequestTypes: List<VoucherRequestType>?,
             voucherListType: VoucherListType
         ) = VouchersListFragment().withArgs(
-            CATEGORY_ID to categoryId,
-            CATEGORY_COLOR to categoryColor,
+            CATEGORY to category,
+            VOUCHER_REQUEST_TYPES to voucherRequestTypes,
             VOUCHER_LIST_TYPE to voucherListType
         )
     }
@@ -44,10 +54,32 @@ class VouchersListFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.vouchers_list_layout, container, false).apply {
-            vouchersListView = this as VouchersListView
-            vouchersListView?.voucherAdapter = VoucherAdapter(viewModel.categoryColor, viewModel.voucherListType)
+    ): View? = inflater.inflate(
+        R.layout.vouchers_list_layout,
+        container,
+        false
+    ).apply {
+        vouchersListView = this as VouchersListView
+        vouchersListView?.voucherAdapter = VoucherAdapter(
+            viewModel.selectedCategory?.categoryColor ?: Color.TRANSPARENT,
+            when (viewModel.voucherListType) {
+                VoucherListType.AVAILABLE -> AvailableVoucherMapper()
+                VoucherListType.USED -> UsedVoucherMapper()
+                VoucherListType.CANCELLED -> CancelledVoucherMapper()
+                null -> null
+            }
+        ) { voucher ->
+            val selectedCategory = viewModel.selectedCategory
+            findNavController().safeNavigate(
+                VouchersOverviewFragmentDirections.actionVouchersOverviewFragmentToVoucherDetailsFragment(
+                    categoryUI = CategoryUI(
+                        categoryColor = selectedCategory?.categoryColor ?: Color.TRANSPARENT,
+                        categoryIcon = selectedCategory?.categoryIcon
+                    ),
+                    voucherId = voucher.voucherId,
+                    requestTypes = viewModel.voucherRequestTypes?.toTypedArray()
+                )
+            )
         }
     }
 
@@ -55,6 +87,10 @@ class VouchersListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         vouchersListView?.setLoadingVisible(true)
         collectFlows()
+    }
+
+    fun fireVoucherListRefreshedEvent() {
+        viewModel.fireVoucherListRefreshedEvent()
     }
 
     private fun collectFlows() {
@@ -76,6 +112,10 @@ class VouchersListFragment : Fragment() {
                 )
                 vouchersListView?.voucherAdapter?.submitData(it)
             }
+        }
+
+        viewModel.onVoucherListRefreshedEventFlow.collectLifecycleAware(viewLifecycleOwner) {
+            vouchersListView?.voucherAdapter?.refresh()
         }
     }
 

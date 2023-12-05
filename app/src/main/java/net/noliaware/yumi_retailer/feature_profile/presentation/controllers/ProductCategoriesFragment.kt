@@ -31,11 +31,13 @@ class ProductCategoriesFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.product_categories_layout, container, false).apply {
-            productCategoriesView = this as ProductCategoriesView
-            productCategoriesView?.callback = productCategoriesViewCallback
-        }
+    ): View? = inflater.inflate(
+        R.layout.product_categories_layout,
+        container,
+        false
+    ).apply {
+        productCategoriesView = this as ProductCategoriesView
+        productCategoriesView?.callback = productCategoriesViewCallback
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

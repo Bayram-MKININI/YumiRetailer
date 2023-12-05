@@ -38,12 +38,14 @@ class ProductsListFragment : AppCompatDialogFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.product_list_layout, container, false).apply {
-            productListView = this as ProductListView
-            productListView?.productAdapter = ProductAdapter()
-            productListView?.callback = productListViewCallback
-        }
+    ): View? = inflater.inflate(
+        R.layout.product_list_layout,
+        container,
+        false
+    ).apply {
+        productListView = this as ProductListView
+        productListView?.productAdapter = ProductAdapter()
+        productListView?.callback = productListViewCallback
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -66,6 +68,7 @@ class ProductsListFragment : AppCompatDialogFragment() {
                     loadState.refresh is LoadState.NotLoading -> {
                         productListView?.setLoadingVisible(false)
                     }
+
                     else -> Unit
                 }
             }

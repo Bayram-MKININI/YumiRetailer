@@ -9,6 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import net.noliaware.yumi_retailer.R
+import net.noliaware.yumi_retailer.commun.Args.VOUCHER_REQUEST_TYPES
 import net.noliaware.yumi_retailer.commun.util.ViewState.DataState
 import net.noliaware.yumi_retailer.commun.util.ViewState.LoadingState
 import net.noliaware.yumi_retailer.commun.util.collectLifecycleAware
@@ -16,6 +17,8 @@ import net.noliaware.yumi_retailer.commun.util.formatNumber
 import net.noliaware.yumi_retailer.commun.util.handleSharedEvent
 import net.noliaware.yumi_retailer.commun.util.redirectToLoginScreenFromSharedEvent
 import net.noliaware.yumi_retailer.commun.util.safeNavigate
+import net.noliaware.yumi_retailer.commun.util.withArgs
+import net.noliaware.yumi_retailer.feature_login.domain.model.VoucherRequestType
 import net.noliaware.yumi_retailer.feature_profile.domain.model.Category
 import net.noliaware.yumi_retailer.feature_profile.presentation.views.CategoriesParentView
 import net.noliaware.yumi_retailer.feature_profile.presentation.views.CategoriesView.CategoriesViewAdapter
@@ -25,6 +28,14 @@ import net.noliaware.yumi_retailer.feature_profile.presentation.views.CategoryIt
 @AndroidEntryPoint
 class CategoriesFragment : Fragment() {
 
+    companion object {
+        fun newInstance(
+            voucherRequestTypes: List<VoucherRequestType>
+        ) = CategoriesFragment().withArgs(
+            VOUCHER_REQUEST_TYPES to voucherRequestTypes
+        )
+    }
+
     private var categoriesParentView: CategoriesParentView? = null
     private val viewModel by viewModels<CategoriesFragmentViewModel>()
 
@@ -32,11 +43,13 @@ class CategoriesFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.categories_layout, container, false).apply {
-            categoriesParentView = this as CategoriesParentView
-            categoriesParentView?.getCategoriesView?.callback = categoriesViewCallback
-        }
+    ): View? = inflater.inflate(
+        R.layout.categories_layout,
+        container,
+        false
+    ).apply {
+        categoriesParentView = this as CategoriesParentView
+        categoriesParentView?.getCategoriesView?.callback = categoriesViewCallback
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -130,7 +143,10 @@ class CategoriesFragment : Fragment() {
             viewModel.eventsHelper.stateData?.let { categories ->
                 categories[index].apply {
                     findNavController().safeNavigate(
-                        UserProfileFragmentDirections.actionUserProfileFragmentToVouchersOverviewFragment(this)
+                        UserProfileFragmentDirections.actionUserProfileFragmentToVouchersOverviewFragment(
+                            this,
+                            viewModel.voucherRequestTypes?.toTypedArray() ?: arrayOf()
+                        )
                     )
                 }
             }

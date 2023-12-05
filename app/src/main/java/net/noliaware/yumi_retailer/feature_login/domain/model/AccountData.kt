@@ -9,6 +9,7 @@ import kotlinx.parcelize.Parcelize
 data class AccountData(
     val privacyPolicyUrl: String = "",
     val shouldConfirmPrivacyPolicy: Boolean,
+    val voucherRequestTypes: List<VoucherRequestType>,
     val messageSubjects: List<MessageSubject>,
     val newAlertCount: Int = 0,
     val newMessageCount: Int = 0,

@@ -68,8 +68,12 @@ class AvailableVoucherPagingSource(
             val voucherRank = remoteData.data?.voucherDTOList?.lastOrNull()?.voucherRank ?: nextPage
 
             val moreItemsAvailable = remoteData.data?.voucherDTOList?.lastOrNull()?.let { voucherDTO ->
+                if (voucherDTO.voucherRank != null && voucherDTO.voucherCount != null) {
                     voucherDTO.voucherRank < voucherDTO.voucherCount
+                } else {
+                    false
                 }
+            }
 
             val canLoadMore = moreItemsAvailable == true
 

@@ -23,12 +23,19 @@ import androidx.annotation.CheckResult
 import androidx.annotation.ColorInt
 import androidx.annotation.ColorRes
 import androidx.annotation.Dimension
+import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import androidx.appcompat.content.res.AppCompatResources
+import androidx.browser.customtabs.CustomTabColorSchemeParams
+import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.drawable.DrawableCompat
+import androidx.core.net.toUri
 import androidx.core.os.bundleOf
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.flowWithLifecycle
@@ -66,8 +73,11 @@ import net.noliaware.yumi_retailer.commun.data.remote.dto.ErrorDTO
 import net.noliaware.yumi_retailer.commun.data.remote.dto.SessionDTO
 import net.noliaware.yumi_retailer.commun.domain.model.AppMessageType
 import net.noliaware.yumi_retailer.commun.domain.model.SessionData
-import net.noliaware.yumi_retailer.commun.util.ErrorUI.*
-import net.noliaware.yumi_retailer.commun.util.ServiceError.*
+import net.noliaware.yumi_retailer.commun.util.ErrorUI.ErrUINetwork
+import net.noliaware.yumi_retailer.commun.util.ErrorUI.ErrUISystem
+import net.noliaware.yumi_retailer.commun.util.ServiceError.ErrNetwork
+import net.noliaware.yumi_retailer.commun.util.ServiceError.ErrNone
+import net.noliaware.yumi_retailer.commun.util.ServiceError.ErrSystem
 import retrofit2.HttpException
 import java.io.IOException
 import java.math.BigInteger
@@ -388,6 +398,10 @@ fun Context?.toast(
     Toast.makeText(it, textId, duration).show()
 }
 
+fun Context.getFontFromResources(
+    fontRes: Int
+) = ResourcesCompat.getFont(this, fontRes)
+
 fun View.layoutToTopLeft(
     left: Int,
     top: Int
@@ -422,6 +436,14 @@ fun View.layoutToBottomRight(
     val left = right - measuredWidth
     val top = bottom - measuredHeight
     layout(left, top, right, bottom)
+}
+
+fun View.sizeForVisible(
+    visibleSize: () -> Int
+) = if (isVisible) {
+    visibleSize.invoke()
+} else {
+    0
 }
 
 fun View.getLocationRectOnScreen(): Rect {
@@ -523,6 +545,10 @@ fun Context.getColorCompat(
     @ColorRes colorRes: Int
 ) = ContextCompat.getColor(this, colorRes)
 
+fun Context.getDrawableCompat(
+    @DrawableRes drawableRes: Int
+) = AppCompatResources.getDrawable(this, drawableRes)
+
 @ColorInt
 fun String.parseHexColor() = if (isEmpty()) {
     Color.TRANSPARENT
@@ -550,3 +576,42 @@ fun Context.startWebBrowserAtURL(
         startActivity(this)
     }
 }
+
+fun Context.openWebPage(
+    url: String
+): Boolean {
+    // Format the URI properly.
+    val uri = url.toWebUri()
+    try {
+        val params = CustomTabColorSchemeParams.Builder()
+            .setToolbarColor(getColorCompat(R.color.colorPrimary))
+            .build()
+
+        val intent = CustomTabsIntent.Builder()
+            .setColorSchemeParams(CustomTabsIntent.COLOR_SCHEME_DARK, params)
+            .setShowTitle(true)
+            .build()
+        intent.launchUrl(this, uri)
+        return true
+    } catch (ex: Exception) {
+        ex.recordNonFatal()
+    }
+    // Fall back to launching a default web browser intent.
+    try {
+        val intent = Intent(Intent.ACTION_VIEW, uri)
+        if (intent.resolveActivity(packageManager) != null) {
+            startActivity(intent)
+            return true
+        }
+    } catch (ex: Exception) {
+        ex.recordNonFatal()
+    }
+    // We were unable to show the web page.
+    return false
+}
+
+fun String.toWebUri() = if (startsWith("http://") || startsWith("https://")) {
+    this
+} else {
+    "https://$this"
+}.toUri()

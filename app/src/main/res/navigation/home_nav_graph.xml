@@ -60,6 +60,48 @@
         <argument
             android:name="selectedCategory"
             app:argType="net.noliaware.yumi_retailer.feature_profile.domain.model.Category" />
+        <argument
+            android:name="requestTypes"
+            android:defaultValue="@null"
+            app:argType="net.noliaware.yumi_retailer.feature_login.domain.model.VoucherRequestType[]"
+            app:nullable="true" />
+        <action
+            android:id="@+id/action_VouchersOverviewFragment_to_VoucherDetailsFragment"
+            app:destination="@id/voucher_detail_fragment" />
+    </dialog>
+
+    <dialog
+        android:id="@+id/voucher_detail_fragment"
+        android:name="net.noliaware.yumi_retailer.feature_profile.presentation.controllers.VoucherDetailsFragment"
+        android:label="@string/voucher_details_fragment_screen_label"
+        tools:layout="@layout/vouchers_details_layout">
+        <argument
+            android:name="categoryUI"
+            app:argType="net.noliaware.yumi_retailer.feature_profile.presentation.views.CategoryUI" />
+        <argument
+            android:name="voucherId"
+            app:argType="string" />
+        <argument
+            android:name="requestTypes"
+            android:defaultValue="@null"
+            app:argType="net.noliaware.yumi_retailer.feature_login.domain.model.VoucherRequestType[]"
+            app:nullable="true" />
+        <action
+            android:id="@+id/action_VoucherDetailsFragment_to_VoucherOngoingRequestListFragment"
+            app:destination="@id/voucher_ongoing_requests_fragment" />
+    </dialog>
+
+    <dialog
+        android:id="@+id/voucher_ongoing_requests_fragment"
+        android:name="net.noliaware.yumi_retailer.feature_profile.presentation.controllers.VoucherOngoingRequestListFragment"
+        android:label="@string/voucher_ongoing_requests_fragment_screen_label"
+        tools:layout="@layout/voucher_ongoing_request_list_layout">
+        <argument
+            android:name="categoryUI"
+            app:argType="net.noliaware.yumi_retailer.feature_profile.presentation.views.CategoryUI" />
+        <argument
+            android:name="voucherId"
+            app:argType="string" />
     </dialog>
 
     <dialog

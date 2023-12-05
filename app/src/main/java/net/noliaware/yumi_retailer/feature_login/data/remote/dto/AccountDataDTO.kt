@@ -11,6 +11,8 @@ data class AccountDataDTO(
     val privacyPolicyUrl: String = "",
     @Json(name = "privacyPolicyReadStatus")
     val privacyPolicyReadStatus: Int,
+    @Json(name = "voucherRequestTypes")
+    val voucherRequestTypeDTOs: List<VoucherRequestTypeDTO> = listOf(),
     @Json(name = "encryptionVector")
     val encryptionVector: String = "",
     @Json(name = "messageSubjects")
@@ -25,6 +27,7 @@ data class AccountDataDTO(
     fun toAccountData() = AccountData(
         privacyPolicyUrl = privacyPolicyUrl,
         shouldConfirmPrivacyPolicy = privacyPolicyReadStatus == 0,
+        voucherRequestTypes = voucherRequestTypeDTOs.map { it.toVoucherRequestType() },
         messageSubjects = messageSubjectDTOs.map { it.toMessageSubject() },
         newAlertCount = newAlertCount,
         newMessageCount = newMessageCount,

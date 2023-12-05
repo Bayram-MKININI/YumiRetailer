@@ -9,7 +9,8 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 import net.noliaware.yumi_retailer.R
-import net.noliaware.yumi_retailer.commun.util.ViewState.*
+import net.noliaware.yumi_retailer.commun.util.ViewState.DataState
+import net.noliaware.yumi_retailer.commun.util.ViewState.LoadingState
 import net.noliaware.yumi_retailer.commun.util.collectLifecycleAware
 import net.noliaware.yumi_retailer.commun.util.handleSharedEvent
 import net.noliaware.yumi_retailer.commun.util.navDismiss
@@ -33,11 +34,13 @@ class BOSignInFragment : AppCompatDialogFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.bo_sign_in_layout, container, false).apply {
-            boSignInView = this as BOSignInParentView
-            boSignInView?.callback = boSignInViewCallback
-        }
+    ): View? = inflater.inflate(
+        R.layout.bo_sign_in_layout,
+        container,
+        false
+    ).apply {
+        boSignInView = this as BOSignInParentView
+        boSignInView?.callback = boSignInViewCallback
     }
 
     private val boSignInViewCallback: BOSignInViewCallback by lazy {

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <net.noliaware.yumi_retailer.feature_profile.presentation.views.VoucherItemView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -11,30 +10,33 @@
         android:id="@+id/highlight_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
+        android:gravity="center_vertical"
         android:orientation="horizontal"
         android:paddingHorizontal="10dp"
         android:paddingVertical="5dp"
-        app:divider="@drawable/empty_divider_2dp"
-        app:showDividers="middle"
         tools:background="@drawable/rectangle_rounded_10dp"
         tools:backgroundTint="@color/orange_1">
 
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/highlight_description_text_view"
+            android:id="@+id/highlight_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/omnes_medium"
-            android:text="@string/valid_until"
             android:textColor="@android:color/white"
-            tools:text="Valable jusqu'au 07 nov. 2023" />
+            tools:text="Utilisable jusqu'au 07 nov.2023" />
 
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/highlight_value_text_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/omnes_semibold_regular"
-            android:textColor="@android:color/white" />
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ongoing_requests_image_view"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_marginStart="5dp"
+            android:adjustViewBounds="true"
+            android:background="@drawable/circle_primary"
+            android:padding="2dp"
+            android:src="@drawable/ic_progress"
+            android:visibility="gone"
+            tools:visibility="visible" />
+
     </androidx.appcompat.widget.LinearLayoutCompat>
 
     <com.google.android.material.textview.MaterialTextView

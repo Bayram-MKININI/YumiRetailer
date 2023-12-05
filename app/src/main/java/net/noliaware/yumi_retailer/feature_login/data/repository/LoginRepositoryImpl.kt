@@ -19,10 +19,14 @@ import net.noliaware.yumi_retailer.commun.ApiConstants.GET_OUTBOX_MESSAGE_LIST
 import net.noliaware.yumi_retailer.commun.ApiConstants.GET_PRODUCT_DATA_PER_CATEGORY
 import net.noliaware.yumi_retailer.commun.ApiConstants.GET_PRODUCT_LIST_BY_CATEGORY
 import net.noliaware.yumi_retailer.commun.ApiConstants.GET_USED_VOUCHER_LIST_BY_CATEGORY
+import net.noliaware.yumi_retailer.commun.ApiConstants.GET_VOUCHER
 import net.noliaware.yumi_retailer.commun.ApiConstants.GET_VOUCHER_DATA_PER_CATEGORY
+import net.noliaware.yumi_retailer.commun.ApiConstants.GET_VOUCHER_REQUEST_LIST
 import net.noliaware.yumi_retailer.commun.ApiConstants.INIT
 import net.noliaware.yumi_retailer.commun.ApiConstants.SEND_MESSAGE
+import net.noliaware.yumi_retailer.commun.ApiConstants.SEND_VOUCHER_REQUEST
 import net.noliaware.yumi_retailer.commun.ApiConstants.SET_PRIVACY_POLICY_READ_STATUS
+import net.noliaware.yumi_retailer.commun.ApiConstants.SET_VOUCHER_AVAILABILITY_DATE
 import net.noliaware.yumi_retailer.commun.ApiConstants.USE_VOUCHER
 import net.noliaware.yumi_retailer.commun.ApiParameters.APP_VERSION
 import net.noliaware.yumi_retailer.commun.ApiParameters.DEVICE_ID
@@ -190,6 +194,10 @@ class LoginRepositoryImpl @Inject constructor(
         this.sessionTokens[GET_ACCOUNT] = sessionDTO.sessionToken
         this.sessionTokens[GET_BACK_OFFICE_SIGN_IN_CODE] = sessionDTO.sessionToken
         this.sessionTokens[GET_VOUCHER_DATA_PER_CATEGORY] = sessionDTO.sessionToken
+        this.sessionTokens[GET_VOUCHER] = sessionDTO.sessionToken
+        this.sessionTokens[SEND_VOUCHER_REQUEST] = sessionDTO.sessionToken
+        this.sessionTokens[GET_VOUCHER_REQUEST_LIST] = sessionDTO.sessionToken
+        this.sessionTokens[SET_VOUCHER_AVAILABILITY_DATE] = sessionDTO.sessionToken
         this.sessionTokens[GET_PRODUCT_DATA_PER_CATEGORY] = sessionDTO.sessionToken
         this.sessionTokens[GET_PRODUCT_LIST_BY_CATEGORY] = sessionDTO.sessionToken
         this.sessionTokens[GET_AVAILABLE_VOUCHER_LIST_BY_CATEGORY] = sessionDTO.sessionToken

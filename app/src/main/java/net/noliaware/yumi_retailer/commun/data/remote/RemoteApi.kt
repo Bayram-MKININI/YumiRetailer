@@ -15,10 +15,14 @@ import net.noliaware.yumi_retailer.commun.ApiConstants.GET_OUTBOX_MESSAGE_LIST
 import net.noliaware.yumi_retailer.commun.ApiConstants.GET_PRODUCT_DATA_PER_CATEGORY
 import net.noliaware.yumi_retailer.commun.ApiConstants.GET_PRODUCT_LIST_BY_CATEGORY
 import net.noliaware.yumi_retailer.commun.ApiConstants.GET_USED_VOUCHER_LIST_BY_CATEGORY
+import net.noliaware.yumi_retailer.commun.ApiConstants.GET_VOUCHER
 import net.noliaware.yumi_retailer.commun.ApiConstants.GET_VOUCHER_DATA_PER_CATEGORY
+import net.noliaware.yumi_retailer.commun.ApiConstants.GET_VOUCHER_REQUEST_LIST
 import net.noliaware.yumi_retailer.commun.ApiConstants.INIT
 import net.noliaware.yumi_retailer.commun.ApiConstants.SEND_MESSAGE
+import net.noliaware.yumi_retailer.commun.ApiConstants.SEND_VOUCHER_REQUEST
 import net.noliaware.yumi_retailer.commun.ApiConstants.SET_PRIVACY_POLICY_READ_STATUS
+import net.noliaware.yumi_retailer.commun.ApiConstants.SET_VOUCHER_AVAILABILITY_DATE
 import net.noliaware.yumi_retailer.commun.ApiConstants.USE_VOUCHER
 import net.noliaware.yumi_retailer.commun.ApiParameters.SALT_STRING
 import net.noliaware.yumi_retailer.commun.ApiParameters.TIMESTAMP
@@ -38,10 +42,14 @@ import net.noliaware.yumi_retailer.feature_profile.data.remote.dto.AvailableVouc
 import net.noliaware.yumi_retailer.feature_profile.data.remote.dto.BOSignInDTO
 import net.noliaware.yumi_retailer.feature_profile.data.remote.dto.CancelledVouchersDTO
 import net.noliaware.yumi_retailer.feature_profile.data.remote.dto.CategoryProductsDTO
+import net.noliaware.yumi_retailer.feature_profile.data.remote.dto.GetVoucherDTO
 import net.noliaware.yumi_retailer.feature_profile.data.remote.dto.ProductCategoriesDTO
 import net.noliaware.yumi_retailer.feature_profile.data.remote.dto.ProfileDTO
+import net.noliaware.yumi_retailer.feature_profile.data.remote.dto.SendVoucherRequestDTO
+import net.noliaware.yumi_retailer.feature_profile.data.remote.dto.SetVoucherAvailabilityDTO
 import net.noliaware.yumi_retailer.feature_profile.data.remote.dto.UsedVouchersDTO
 import net.noliaware.yumi_retailer.feature_profile.data.remote.dto.VoucherCategoriesDTO
+import net.noliaware.yumi_retailer.feature_profile.data.remote.dto.VoucherRequestsDTO
 import net.noliaware.yumi_retailer.feature_scan.data.remote.dto.UpdatePrivacyPolicyResponseDTO
 import net.noliaware.yumi_retailer.feature_scan.data.remote.dto.UseVoucherResponseDTO
 import retrofit2.http.FieldMap
@@ -158,6 +166,42 @@ interface RemoteApi {
         @Path(TOKEN) token: String,
         @FieldMap params: Map<String, String>
     ): ResponseDTO<CancelledVouchersDTO>
+
+    @FormUrlEncoded
+    @POST("${GET_VOUCHER}/{$TIMESTAMP}/{$SALT_STRING}/{$TOKEN}")
+    suspend fun fetchVoucherForId(
+        @Path(TIMESTAMP) timestamp: String,
+        @Path(SALT_STRING) saltString: String,
+        @Path(TOKEN) token: String,
+        @FieldMap params: Map<String, String>
+    ): ResponseDTO<GetVoucherDTO>
+
+    @FormUrlEncoded
+    @POST("${SEND_VOUCHER_REQUEST}/{$TIMESTAMP}/{$SALT_STRING}/{$TOKEN}")
+    suspend fun sendVoucherRequestWithId(
+        @Path(TIMESTAMP) timestamp: String,
+        @Path(SALT_STRING) saltString: String,
+        @Path(TOKEN) token: String,
+        @FieldMap params: Map<String, String>
+    ): ResponseDTO<SendVoucherRequestDTO>
+
+    @FormUrlEncoded
+    @POST("${GET_VOUCHER_REQUEST_LIST}/{$TIMESTAMP}/{$SALT_STRING}/{$TOKEN}")
+    suspend fun fetchVoucherRequestListForId(
+        @Path(TIMESTAMP) timestamp: String,
+        @Path(SALT_STRING) saltString: String,
+        @Path(TOKEN) token: String,
+        @FieldMap params: Map<String, String>
+    ): ResponseDTO<VoucherRequestsDTO>
+
+    @FormUrlEncoded
+    @POST("${SET_VOUCHER_AVAILABILITY_DATE}/{$TIMESTAMP}/{$SALT_STRING}/{$TOKEN}")
+    suspend fun setVoucherAvailabilityDates(
+        @Path(TIMESTAMP) timestamp: String,
+        @Path(SALT_STRING) saltString: String,
+        @Path(TOKEN) token: String,
+        @FieldMap params: Map<String, String>
+    ): ResponseDTO<SetVoucherAvailabilityDTO>
 
     @FormUrlEncoded
     @POST("$GET_INBOX_MESSAGE_LIST/{$TIMESTAMP}/{$SALT_STRING}/{$TOKEN}")

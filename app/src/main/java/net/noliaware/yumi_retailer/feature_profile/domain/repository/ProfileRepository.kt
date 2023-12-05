@@ -8,6 +8,7 @@ import net.noliaware.yumi_retailer.feature_profile.domain.model.Category
 import net.noliaware.yumi_retailer.feature_profile.domain.model.Product
 import net.noliaware.yumi_retailer.feature_profile.domain.model.UserProfile
 import net.noliaware.yumi_retailer.feature_profile.domain.model.Voucher
+import net.noliaware.yumi_retailer.feature_profile.domain.model.VoucherRequest
 
 interface ProfileRepository {
 
@@ -24,6 +25,23 @@ interface ProfileRepository {
     fun getUsedVoucherListByCategory(categoryId: String): Flow<PagingData<Voucher>>
 
     fun getCancelledVoucherListByCategory(categoryId: String): Flow<PagingData<Voucher>>
+
+    fun getVoucherById(voucherId: String): Flow<Resource<Voucher>>
+
+    fun sendVoucherRequestWithId(
+        voucherId: String,
+        voucherRequestTypeId: Int,
+        voucherRequestComment: String
+    ): Flow<Resource<Boolean>>
+
+    fun getVoucherRequestListById(voucherId: String): Flow<Resource<List<VoucherRequest>>>
+
+    fun setVoucherAvailabilityDates(
+        voucherId: String,
+        voucherStartDate: String,
+        voucherEndDate: String,
+        voucherComment: String
+    ): Flow<Resource<Boolean>>
 
     fun getProductListByCategory(categoryId: String): Flow<PagingData<Product>>
 }

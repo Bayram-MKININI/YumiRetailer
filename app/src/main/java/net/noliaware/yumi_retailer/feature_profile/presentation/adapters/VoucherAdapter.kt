@@ -4,23 +4,16 @@ import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import net.noliaware.yumi_retailer.R
-import net.noliaware.yumi_retailer.commun.DateTime.HOURS_TIME_FORMAT
-import net.noliaware.yumi_retailer.commun.DateTime.SHORT_DATE_FORMAT
 import net.noliaware.yumi_retailer.commun.presentation.adapters.ItemViewHolder
 import net.noliaware.yumi_retailer.commun.util.inflate
-import net.noliaware.yumi_retailer.commun.util.parseDateToFormat
-import net.noliaware.yumi_retailer.commun.util.parseTimeToFormat
 import net.noliaware.yumi_retailer.feature_profile.domain.model.Voucher
-import net.noliaware.yumi_retailer.feature_profile.domain.model.VoucherListType
-import net.noliaware.yumi_retailer.feature_profile.domain.model.VoucherListType.AVAILABLE
-import net.noliaware.yumi_retailer.feature_profile.domain.model.VoucherListType.CANCELLED
-import net.noliaware.yumi_retailer.feature_profile.domain.model.VoucherListType.USED
+import net.noliaware.yumi_retailer.feature_profile.presentation.mappers.VoucherMapper
 import net.noliaware.yumi_retailer.feature_profile.presentation.views.VoucherItemView
-import net.noliaware.yumi_retailer.feature_profile.presentation.views.VoucherItemView.VoucherItemViewAdapter
 
 class VoucherAdapter(
     private val color: Int,
-    private val voucherListType: VoucherListType?
+    private val voucherMapper: VoucherMapper?,
+    private val onItemClicked: (Voucher) -> Unit
 ) : PagingDataAdapter<Voucher, ItemViewHolder<VoucherItemView>>(VoucherComparator) {
 
     override fun onCreateViewHolder(
@@ -28,38 +21,19 @@ class VoucherAdapter(
         viewType: Int
     ) = ItemViewHolder<VoucherItemView>(
         parent.inflate(R.layout.voucher_item_layout)
-    )
-
-    override fun onBindViewHolder(holder: ItemViewHolder<VoucherItemView>, position: Int) {
-        getItem(position)?.let { alert ->
-            holder.heldItemView.fillViewWithData(
-                mapAdapter(alert, holder)
-            )
-        }
+    ) { position ->
+        getItem(position)?.let { onItemClicked(it) }
     }
 
-    private fun mapAdapter(
-        voucher: Voucher,
-        holder: ItemViewHolder<VoucherItemView>
-    ) = VoucherItemViewAdapter(
-        color = color,
-        title = voucher.productLabel.orEmpty(),
-        highlightDescription = when (voucherListType) {
-            AVAILABLE -> holder.heldItemView.context.getString(R.string.valid_until)
-            USED -> holder.heldItemView.context.getString(R.string.validation_date)
-            CANCELLED -> holder.heldItemView.context.getString(R.string.cancellation_date)
-            else -> ""
-        },
-        highlightValue = when (voucherListType) {
-            AVAILABLE -> voucher.voucherExpiryDate?.parseDateToFormat(SHORT_DATE_FORMAT).orEmpty()
-            USED, CANCELLED -> holder.heldItemView.context.getString(
-                R.string.date_time,
-                voucher.voucherUseDate?.parseDateToFormat(SHORT_DATE_FORMAT),
-                voucher.voucherUseTime?.parseTimeToFormat(HOURS_TIME_FORMAT)
-            )
-            else -> ""
+    override fun onBindViewHolder(holder: ItemViewHolder<VoucherItemView>, position: Int) {
+        getItem(position)?.let { voucher ->
+            voucherMapper?.let {
+                holder.heldItemView.fillViewWithData(
+                    it.mapVoucher(holder.heldItemView.context, color, voucher)
+                )
+            }
         }
-    )
+    }
 
     object VoucherComparator : DiffUtil.ItemCallback<Voucher>() {
         override fun areItemsTheSame(

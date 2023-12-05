@@ -24,10 +24,12 @@ class UserProfileFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.profile_layout, container, false)?.apply {
-            profileView = this as ProfileView
-        }
+    ): View? = inflater.inflate(
+        R.layout.profile_layout,
+        container,
+        false
+    )?.apply {
+        profileView = this as ProfileView
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -54,7 +56,7 @@ class UserProfileFragment : Fragment() {
         override fun createFragment(position: Int): Fragment {
             return when (position) {
                 0 -> UserProfileDataFragment.newInstance(accountData)
-                1 -> CategoriesFragment()
+                1 -> CategoriesFragment.newInstance(accountData.voucherRequestTypes)
                 else -> ProductCategoriesFragment()
             }
         }

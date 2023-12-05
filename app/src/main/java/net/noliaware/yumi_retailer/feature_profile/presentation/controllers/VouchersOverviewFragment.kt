@@ -7,13 +7,17 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import net.noliaware.yumi_retailer.R
+import net.noliaware.yumi_retailer.commun.FragmentKeys
 import net.noliaware.yumi_retailer.commun.util.formatNumber
 import net.noliaware.yumi_retailer.commun.util.navDismiss
+import net.noliaware.yumi_retailer.feature_login.domain.model.VoucherRequestType
+import net.noliaware.yumi_retailer.feature_profile.domain.model.Category
 import net.noliaware.yumi_retailer.feature_profile.domain.model.VoucherListType
 import net.noliaware.yumi_retailer.feature_profile.presentation.views.VouchersOverviewView
 import net.noliaware.yumi_retailer.feature_profile.presentation.views.VouchersOverviewView.VouchersOverviewAdapter
@@ -34,27 +38,41 @@ class VouchersOverviewFragment : AppCompatDialogFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.vouchers_overview_layout, container, false).apply {
-            vouchersOverviewView = this as VouchersOverviewView
-            vouchersOverviewView?.callback = vouchersOverviewViewCallback
-        }
+    ): View? = inflater.inflate(
+        R.layout.vouchers_overview_layout,
+        container,
+        false
+    ).apply {
+        vouchersOverviewView = this as VouchersOverviewView
+        vouchersOverviewView?.callback = vouchersOverviewViewCallback
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        setUpFragmentListener()
         args.selectedCategory.let { category ->
             ViewPagerAdapter(
                 childFragmentManager,
                 viewLifecycleOwner.lifecycle,
-                category.categoryId,
-                category.categoryColor
+                category,
+                args.requestTypes?.toList()
             ).apply {
                 vouchersOverviewView?.getViewPager?.adapter = this
             }
 
             bindViewToData()
+        }
+    }
+
+    private fun setUpFragmentListener() {
+        setFragmentResultListener(
+            FragmentKeys.REFRESH_VOUCHERS_REQUEST_KEY
+        ) { _, _ ->
+            childFragmentManager.fragments.find {
+                it.isResumed
+            }?.also {
+                (it as VouchersListFragment).fireVoucherListRefreshedEvent()
+            }
         }
     }
 
@@ -107,14 +125,14 @@ class VouchersOverviewFragment : AppCompatDialogFragment() {
     private class ViewPagerAdapter(
         fragmentManager: FragmentManager,
         lifecycle: Lifecycle,
-        val categoryId: String,
-        val categoryColor: Int
+        val category: Category,
+        val voucherRequestTypes: List<VoucherRequestType>?
     ) : FragmentStateAdapter(fragmentManager, lifecycle) {
-        override fun getItemCount() = VoucherListType.values().size
+        override fun getItemCount() = VoucherListType.entries.size
         override fun createFragment(position: Int) = VouchersListFragment.newInstance(
-            categoryId,
-            categoryColor,
-            VoucherListType.values()[position]
+            category,
+            voucherRequestTypes,
+            VoucherListType.entries[position]
         )
     }
 }

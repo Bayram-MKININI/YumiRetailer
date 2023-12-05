@@ -12,6 +12,7 @@ import net.noliaware.yumi_retailer.commun.util.convertDpToPx
 import net.noliaware.yumi_retailer.commun.util.layoutToBottomLeft
 import net.noliaware.yumi_retailer.commun.util.layoutToTopLeft
 import net.noliaware.yumi_retailer.commun.util.measureWrapContent
+import net.noliaware.yumi_retailer.commun.util.sizeForVisible
 
 class ProductItemView @JvmOverloads constructor(
     context: Context,
@@ -196,17 +197,13 @@ class ProductItemView @JvmOverloads constructor(
         )
 
         viewHeight = titleTextView.measuredHeight +
-                if (startDateLabelTextView.isVisible) {
+                startDateLabelTextView.sizeForVisible {
                     startDateLabelTextView.measuredHeight + convertDpToPx(5)
-                } else {
-                    0
                 } +
-                if (expiryDateLabelTextView.isVisible) {
+                expiryDateLabelTextView.sizeForVisible {
                     expiryDateLabelTextView.measuredHeight + convertDpToPx(5)
-                } else {
-                    0
-                } + priceLabelTextView.measuredHeight + plannedLabelTextView.measuredHeight + usedLabelTextView.measuredHeight +
-                cancelledLabelTextView.measuredHeight + convertDpToPx(45)
+                } + priceLabelTextView.measuredHeight + plannedLabelTextView.measuredHeight +
+                usedLabelTextView.measuredHeight + cancelledLabelTextView.measuredHeight + convertDpToPx(45)
 
         setMeasuredDimension(
             MeasureSpec.makeMeasureSpec(viewWidth, MeasureSpec.EXACTLY),

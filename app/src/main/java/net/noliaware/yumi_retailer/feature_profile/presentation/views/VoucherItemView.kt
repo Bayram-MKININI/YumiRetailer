@@ -1,13 +1,17 @@
 package net.noliaware.yumi_retailer.feature_profile.presentation.views
 
 import android.content.Context
+import android.text.SpannableString
 import android.util.AttributeSet
+import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
-import androidx.appcompat.widget.LinearLayoutCompat
-import androidx.core.content.ContextCompat
+import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import net.noliaware.yumi_retailer.R
 import net.noliaware.yumi_retailer.commun.util.convertDpToPx
+import net.noliaware.yumi_retailer.commun.util.getDrawableCompat
 import net.noliaware.yumi_retailer.commun.util.layoutToTopLeft
 import net.noliaware.yumi_retailer.commun.util.layoutToTopRight
 import net.noliaware.yumi_retailer.commun.util.measureWrapContent
@@ -19,16 +23,17 @@ class VoucherItemView @JvmOverloads constructor(
     defStyle: Int = 0
 ) : ViewGroup(context, attrs, defStyle) {
 
+    private lateinit var highlightLayout: View
+    private lateinit var highlightTextView: TextView
+    private lateinit var ongoingRequestsImageView: ImageView
     private lateinit var titleTextView: TextView
-    private lateinit var highlightLayout: LinearLayoutCompat
-    private lateinit var highlightDescriptionTextView: TextView
-    private lateinit var highlightValueTextView: TextView
 
     data class VoucherItemViewAdapter(
+        val isDeactivated: Boolean = false,
         val color: Int,
-        val title: String,
-        val highlightDescription: String,
-        val highlightValue: String
+        val highlight: SpannableString,
+        val hasOngoingRequests: Boolean = false,
+        val title: String = ""
     )
 
     override fun onFinishInflate() {
@@ -37,20 +42,28 @@ class VoucherItemView @JvmOverloads constructor(
     }
 
     private fun initView() {
-        titleTextView = findViewById(R.id.title_text_view)
         highlightLayout = findViewById(R.id.highlight_layout)
-        highlightDescriptionTextView = highlightLayout.findViewById(R.id.highlight_description_text_view)
-        highlightValueTextView = highlightLayout.findViewById(R.id.highlight_value_text_view)
+        highlightTextView = highlightLayout.findViewById(R.id.highlight_text_view)
+        ongoingRequestsImageView = highlightLayout.findViewById(R.id.ongoing_requests_image_view)
+        titleTextView = findViewById(R.id.title_text_view)
     }
 
     fun fillViewWithData(voucherItemViewAdapter: VoucherItemViewAdapter) {
-        titleTextView.text = voucherItemViewAdapter.title
-        highlightLayout.background = ContextCompat.getDrawable(
-            context,
+        alpha = if (voucherItemViewAdapter.isDeactivated) {
+            0.4f
+        } else {
+            1f
+        }
+        highlightLayout.background = context.getDrawableCompat(
             R.drawable.rectangle_rounded_10dp
         )?.tint(voucherItemViewAdapter.color)
-        highlightDescriptionTextView.text = voucherItemViewAdapter.highlightDescription
-        highlightValueTextView.text = voucherItemViewAdapter.highlightValue
+        titleTextView.text = voucherItemViewAdapter.title
+        if (voucherItemViewAdapter.hasOngoingRequests) {
+            ongoingRequestsImageView.isVisible = true
+        } else {
+            ongoingRequestsImageView.isGone = true
+        }
+        highlightTextView.text = voucherItemViewAdapter.highlight
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {

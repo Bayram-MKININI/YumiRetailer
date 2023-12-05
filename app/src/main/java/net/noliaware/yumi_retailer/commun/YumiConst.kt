@@ -16,6 +16,10 @@ object ApiConstants {
     const val GET_AVAILABLE_VOUCHER_LIST_BY_CATEGORY = "getAvailableVoucherListByCategory"
     const val GET_USED_VOUCHER_LIST_BY_CATEGORY = "getUsedVoucherListByCategory"
     const val GET_CANCELLED_VOUCHER_LIST_BY_CATEGORY = "getCanceledVoucherListByCategory"
+    const val GET_VOUCHER = "getVoucher"
+    const val SEND_VOUCHER_REQUEST = "sendVoucherRequest"
+    const val GET_VOUCHER_REQUEST_LIST = "getVoucherRequestList"
+    const val SET_VOUCHER_AVAILABILITY_DATE = "setVoucherAvailabilityDate"
     const val GET_ALERT_LIST = "getAlertList"
     const val GET_INBOX_MESSAGE_LIST = "getInboxMessageList"
     const val GET_INBOX_MESSAGE = "getInboxMessage"
@@ -42,6 +46,12 @@ object ApiParameters {
     const val SALT_STRING = "saltString"
     const val TOKEN = "token"
     const val VOUCHER_USE_ID = "voucherUseId"
+    const val VOUCHER_ID = "voucherId"
+    const val VOUCHER_START_DATE = "voucherStartDate"
+    const val VOUCHER_END_DATE = "voucherEndDate"
+    const val VOUCHER_COMMENT = "voucherComment"
+    const val VOUCHER_REQUEST_TYPE_ID = "voucherRequestTypeId"
+    const val VOUCHER_REQUEST_COMMENT = "voucherRequestComment"
     const val LIMIT = "limit"
     const val LIST_PAGE_SIZE = 20
     const val OFFSET = "offset"
@@ -59,9 +69,11 @@ object ActionTypes {
 
 object Args {
     const val ACCOUNT_DATA = "account_data"
+    const val CATEGORY = "category"
     const val CATEGORY_ID = "categoryId"
-    const val CATEGORY_COLOR = "categoryColor"
+    const val CATEGORY_UI = "categoryUI"
     const val VOUCHER_LIST_TYPE = "voucherListType"
+    const val VOUCHER_REQUEST_TYPES = "voucherRequestTypes"
 }
 
 object Push {
@@ -90,6 +102,8 @@ object RemoteConfig {
 }
 
 object FragmentKeys {
+    const val REFRESH_VOUCHERS_REQUEST_KEY = "refresh_vouchers_request_key"
+    const val DATE_RANGE_PICKER_KEY = "date_range_picker_key"
     const val REFRESH_RECEIVED_MESSAGES_REQUEST_KEY = "refresh_received_message_request_key"
     const val REFRESH_SENT_MESSAGES_REQUEST_KEY = "refresh_sent_message_request_key"
 }

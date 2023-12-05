@@ -2,7 +2,6 @@ package net.noliaware.yumi_retailer.feature_profile.presentation.views
 
 import android.content.Context
 import android.util.AttributeSet
-import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.view.isVisible
@@ -44,7 +43,7 @@ class VoucherCountView @JvmOverloads constructor(
         gainTextView = findViewById(R.id.gain_text_view)
     }
 
-    fun fillViewWithData(voucherCountViewAdapter: VoucherCountView.VoucherCountViewAdapter) {
+    fun fillViewWithData(voucherCountViewAdapter: VoucherCountViewAdapter) {
         titleTextView.text = voucherCountViewAdapter.title
         countTextView.text = voucherCountViewAdapter.count
         gainTextView.isVisible = voucherCountViewAdapter.gainAvailable
@@ -65,8 +64,7 @@ class VoucherCountView @JvmOverloads constructor(
             titleTextView.measuredWidth,
             countTextView.measuredWidth + gainTextView.measuredWidth + convertDpToPx(10)
         )
-        val viewHeight =
-            titleTextView.measuredHeight + countTextView.measuredHeight + convertDpToPx(2)
+        val viewHeight = titleTextView.measuredHeight + countTextView.measuredHeight + convertDpToPx(2)
 
         setMeasuredDimension(
             MeasureSpec.makeMeasureSpec(viewWidth, MeasureSpec.EXACTLY),

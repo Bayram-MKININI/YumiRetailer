@@ -64,7 +64,7 @@
     <string name="cancelled_value">Annulés</string>
     <string name="product_value_format">%s (%s€)</string>
 
-    //Vouchers
+    //Vouchers Overview
     <string name="vouchers_consumed">Coupons consommés</string>
     <string name="vouchers_remaining">Coupons restants</string>
     <string name="available">Disponibles</string>
@@ -77,10 +77,32 @@
     <string name="cancelled_vouchers">Coupons annulés</string>
     <string name="consumed_vouchers">Coupons consommés</string>
     <string name="price_format">%s€</string>
-    <string name="valid_until">Valable jusqu\'au</string>
-    <string name="validation_date">Validé le</string>
+    <string name="usable_start_date">Utilisable à partir du %s</string>
+    <string name="usage_date">Utilisé le %s</string>
+    <string name="cancellation_date">Annulé le %s</string>
+    <string name="usable_end_date">Utilisable jusqu\'au %s</string>
+
+    //Vouchers
+    <string name="voucher_number">Numéro: %s</string>
+    <string name="created_in">Crée le %s</string>
+    <string name="more">Voir plus</string>
+    <string name="availability_dates">Dates de disponibilité</string>
+    <string name="amend">Modifier</string>
+    <string name="date_range">Plage de dates:</string>
+    <string name="new_availability">Nouvelle disponibilité</string>
+    <string name="comment">Commentaire</string>
+    <string name="send">Envoyer</string>
+    <string name="requests_in_progress">Demandes en cours</string>
+    <string name="in_progress_highlighted_text">en cours</string>
+    <string name="creation">Création:</string>
     <string name="date_time">%s à %s</string>
-    <string name="cancellation_date">Annulé le</string>
+    <string name="voucher_value">Valeur du coupon: %s</string>
+    <string name="voucher_available">DISPONIBLE</string>
+    <string name="voucher_non_available">NON DISPONIBLE</string>
+    <string name="voucher_non_retrievable">NON RÉCUPÉRABLE</string>
+    <string name="voucher_used">UTILISÉ</string>
+    <string name="voucher_canceled">ANNULÉ</string>
+    <string name="voucher_inexistent">INEXISTANT</string>
 
     //Messages
     <string name="mail">Messagerie</string>

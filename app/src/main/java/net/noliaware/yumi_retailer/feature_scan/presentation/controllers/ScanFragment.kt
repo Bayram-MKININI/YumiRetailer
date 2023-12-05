@@ -30,11 +30,13 @@ class ScanFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.scan_layout, container, false)?.apply {
-            scanView = this as ScanView
-            scanView?.callback = scanViewCallback
-        }
+    ): View? = inflater.inflate(
+        R.layout.scan_layout,
+        container,
+        false
+    )?.apply {
+        scanView = this as ScanView
+        scanView?.callback = scanViewCallback
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

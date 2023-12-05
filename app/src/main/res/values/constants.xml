@@ -11,6 +11,8 @@
     <string name="user_profile_fragment_screen_label" translatable="false">User Profile</string>
     <string name="bo_sign_in_fragment_screen_label" translatable="false">BO Sign In</string>
     <string name="vouchers_overview_fragment_screen_label" translatable="false">Vouchers Overview</string>
+    <string name="voucher_details_fragment_screen_label" translatable="false">Voucher Details</string>
+    <string name="voucher_ongoing_requests_fragment_screen_label" translatable="false">Voucher Ongoing Requests</string>
     <string name="product_list_fragment_screen_label" translatable="false">Products</string>
     <string name="messaging_fragment_screen_label" translatable="false">Messaging</string>
     <string name="send_mail_fragment_screen_label" translatable="false">Send Message</string>
