@@ -75,7 +75,7 @@ class SendMailFragment : AppCompatDialogFragment() {
     }
 
     private fun setUpPriorityDropdownView() {
-        Priority.values().map { priority ->
+        Priority.entries.map { priority ->
             val mapper = PriorityMapper()
             PriorityUI(
                 resIcon = mapper.mapPriorityIcon(priority),
@@ -132,7 +132,7 @@ class SendMailFragment : AppCompatDialogFragment() {
                     sendMailReply(text)
                 } ?: run {
                     val selectedPriorityIndex = sendMailView?.getSelectedPriorityIndex() ?: 0
-                    val priority = Priority.values()[selectedPriorityIndex].value
+                    val priority = Priority.entries[selectedPriorityIndex].value
                     sendNewMail(priority, text)
                 }
             }

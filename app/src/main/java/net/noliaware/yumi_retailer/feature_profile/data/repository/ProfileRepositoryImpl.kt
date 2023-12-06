@@ -456,9 +456,12 @@ class ProfileRepositoryImpl @Inject constructor(
         VOUCHER_START_DATE to voucherStartDate,
         VOUCHER_END_DATE to voucherEndDate,
         VOUCHER_COMMENT to voucherComment
-        ).also { it += getCommonWSParams(sessionData, tokenKey) }
+    ).also { it += getCommonWSParams(sessionData, tokenKey) }
 
-    private fun generateVoucherIdParams(voucherId: String, tokenKey: String) = mutableMapOf(
+    private fun generateVoucherIdParams(
+        voucherId: String,
+        tokenKey: String
+    ) = mutableMapOf(
         VOUCHER_ID to voucherId
     ).also { it += getCommonWSParams(sessionData, tokenKey) }
 

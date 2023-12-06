@@ -72,10 +72,13 @@ class AlertPagingSource(
         }
     }
 
-    private fun generateGetAlertsListParams(timestamp: Long, tokenKey: String) = mutableMapOf(
+    private fun generateGetAlertsListParams(
+        timestamp: Long,
+        tokenKey: String
+    ) = mutableMapOf(
         TIMESTAMP_OFFSET to timestamp.toString(),
         LIMIT to LIST_PAGE_SIZE.toString()
     ).also {
-        it.plusAssign(getCommonWSParams(sessionData, tokenKey))
+        it += getCommonWSParams(sessionData, tokenKey)
     }.toMap()
 }

@@ -104,7 +104,10 @@ class UseVoucherRepositoryImpl @Inject constructor(
         }
     }
 
-    private fun generateUseVoucherParams(voucherCode: String, tokenKey: String) = mutableMapOf(
+    private fun generateUseVoucherParams(
+        voucherCode: String,
+        tokenKey: String
+    ) = mutableMapOf(
         VOUCHER_USE_ID to voucherCode
-    ).also { it.plusAssign(getCommonWSParams(sessionData, tokenKey)) }
+    ).also { it += getCommonWSParams(sessionData, tokenKey) }
 }

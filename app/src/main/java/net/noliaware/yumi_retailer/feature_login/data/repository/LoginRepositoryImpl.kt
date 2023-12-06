@@ -213,7 +213,12 @@ class LoginRepositoryImpl @Inject constructor(
         this.sessionTokens[DELETE_OUTBOX_MESSAGE] = sessionDTO.sessionToken
     }
 
-    private fun generateGetAccountParams(password: String, tokenKey: String) = mutableMapOf(
+    private fun generateGetAccountParams(
+        password: String,
+        tokenKey: String
+    ) = mutableMapOf(
         PASSWORD to password
-    ).also { it.plusAssign(getCommonWSParams(sessionData, tokenKey)) }
+    ).also {
+        it += getCommonWSParams(sessionData, tokenKey)
+    }
 }

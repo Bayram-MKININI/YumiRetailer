@@ -43,7 +43,8 @@ class ReceivedMessagesFragment : Fragment() {
         messagesListView?.messageAdapter = MessageAdapter { message ->
             findNavController().safeNavigate(
                 MessagingFragmentDirections.actionMessagingFragmentToReadInboxMailFragment(
-                    message.messageId
+                    messageId = message.messageId,
+                    firstReadComplete = message.isMessageRead
                 )
             )
         }

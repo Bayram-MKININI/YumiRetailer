@@ -88,7 +88,7 @@
     <string name="more">Voir plus</string>
     <string name="availability_dates">Dates de disponibilité</string>
     <string name="amend">Modifier</string>
-    <string name="date_range">Plage de dates:</string>
+    <string name="date_range">Choisir une plage de dates:</string>
     <string name="new_availability">Nouvelle disponibilité</string>
     <string name="comment">Commentaire</string>
     <string name="send">Envoyer</string>
