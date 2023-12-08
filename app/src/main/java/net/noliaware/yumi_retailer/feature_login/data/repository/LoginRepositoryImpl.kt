@@ -7,6 +7,7 @@ import net.noliaware.yumi_retailer.BuildConfig
 import net.noliaware.yumi_retailer.commun.ApiConstants.CONNECT
 import net.noliaware.yumi_retailer.commun.ApiConstants.DELETE_INBOX_MESSAGE
 import net.noliaware.yumi_retailer.commun.ApiConstants.DELETE_OUTBOX_MESSAGE
+import net.noliaware.yumi_retailer.commun.ApiConstants.DELETE_VOUCHER_REQUEST
 import net.noliaware.yumi_retailer.commun.ApiConstants.GET_ACCOUNT
 import net.noliaware.yumi_retailer.commun.ApiConstants.GET_ALERT_LIST
 import net.noliaware.yumi_retailer.commun.ApiConstants.GET_AVAILABLE_VOUCHER_LIST_BY_CATEGORY
@@ -197,6 +198,7 @@ class LoginRepositoryImpl @Inject constructor(
         this.sessionTokens[GET_VOUCHER] = sessionDTO.sessionToken
         this.sessionTokens[SEND_VOUCHER_REQUEST] = sessionDTO.sessionToken
         this.sessionTokens[GET_VOUCHER_REQUEST_LIST] = sessionDTO.sessionToken
+        this.sessionTokens[DELETE_VOUCHER_REQUEST] = sessionDTO.sessionToken
         this.sessionTokens[SET_VOUCHER_AVAILABILITY_DATE] = sessionDTO.sessionToken
         this.sessionTokens[GET_PRODUCT_DATA_PER_CATEGORY] = sessionDTO.sessionToken
         this.sessionTokens[GET_PRODUCT_LIST_BY_CATEGORY] = sessionDTO.sessionToken

@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import net.noliaware.yumi_retailer.commun.ApiParameters.VOUCHER_ID
+import net.noliaware.yumi_retailer.commun.Args.DATA_SHOULD_REFRESH
 import net.noliaware.yumi_retailer.commun.presentation.EventsHelper
 import net.noliaware.yumi_retailer.feature_profile.domain.model.Voucher
 import net.noliaware.yumi_retailer.feature_profile.domain.repository.ProfileRepository
@@ -15,21 +16,27 @@ import javax.inject.Inject
 
 @HiltViewModel
 class VoucherDetailsFragmentViewModel @Inject constructor(
-    savedStateHandle: SavedStateHandle,
+    private val savedStateHandle: SavedStateHandle,
     private val repository: ProfileRepository
 ) : ViewModel() {
 
-    private val voucherId = savedStateHandle.get<String>(VOUCHER_ID)
+    private val voucherId get() = savedStateHandle.get<String>(VOUCHER_ID)
     val getVoucherEventsHelper = EventsHelper<Voucher>()
     val requestSentEventsHelper = EventsHelper<Boolean>()
     val setVoucherAvailabilityEventsHelper = EventsHelper<Boolean>()
 
+    var voucherListShouldRefresh
+        get() = savedStateHandle.getStateFlow(key = DATA_SHOULD_REFRESH, initialValue = false).value
+        set(value) {
+            savedStateHandle[DATA_SHOULD_REFRESH] = value
+        }
+
     init {
-        callGetVoucherData()
+        callGetVoucher()
     }
 
-    fun callGetVoucherData() {
-        voucherId?.let {
+    fun callGetVoucher() {
+        voucherId?.let { voucherId ->
             viewModelScope.launch {
                 repository.getVoucherById(voucherId).onEach { result ->
                     getVoucherEventsHelper.handleResponse(result)
@@ -38,37 +45,39 @@ class VoucherDetailsFragmentViewModel @Inject constructor(
         }
     }
 
-    fun callSendVoucherRequestWithId(
-        voucherId: String,
+    fun callSendVoucherRequestWithTypeId(
         voucherRequestTypeId: Int,
         voucherRequestComment: String
     ) {
-        viewModelScope.launch {
-            repository.sendVoucherRequestWithId(
-                voucherId,
-                voucherRequestTypeId,
-                voucherRequestComment
-            ).onEach { result ->
-                requestSentEventsHelper.handleResponse(result)
-            }.launchIn(this)
+        voucherId?.let { voucherId ->
+            viewModelScope.launch {
+                repository.sendVoucherRequestWithId(
+                    voucherId,
+                    voucherRequestTypeId,
+                    voucherRequestComment
+                ).onEach { result ->
+                    requestSentEventsHelper.handleResponse(result)
+                }.launchIn(this)
+            }
         }
     }
 
     fun callSetVoucherAvailabilityDates(
-        voucherId: String,
         voucherStartDate: String,
         voucherEndDate: String,
         voucherComment: String
     ) {
-        viewModelScope.launch {
-            repository.setVoucherAvailabilityDates(
-                voucherId,
-                voucherStartDate,
-                voucherEndDate,
-                voucherComment
-            ).onEach { result ->
-                setVoucherAvailabilityEventsHelper.handleResponse(result)
-            }.launchIn(this)
+        voucherId?.let { voucherId ->
+            viewModelScope.launch {
+                repository.setVoucherAvailabilityDates(
+                    voucherId,
+                    voucherStartDate,
+                    voucherEndDate,
+                    voucherComment
+                ).onEach { result ->
+                    setVoucherAvailabilityEventsHelper.handleResponse(result)
+                }.launchIn(this)
+            }
         }
     }
 }

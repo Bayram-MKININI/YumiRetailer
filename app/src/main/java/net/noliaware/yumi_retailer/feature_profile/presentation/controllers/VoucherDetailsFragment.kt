@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.setFragmentResult
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -23,7 +24,8 @@ import net.noliaware.yumi_retailer.commun.DateTime.DATE_SOURCE_FORMAT
 import net.noliaware.yumi_retailer.commun.DateTime.HOURS_TIME_FORMAT
 import net.noliaware.yumi_retailer.commun.DateTime.SHORT_DATE_FORMAT
 import net.noliaware.yumi_retailer.commun.FragmentKeys.DATE_RANGE_PICKER_KEY
-import net.noliaware.yumi_retailer.commun.FragmentKeys.REFRESH_VOUCHERS_REQUEST_KEY
+import net.noliaware.yumi_retailer.commun.FragmentKeys.REFRESH_VOUCHER_DETAILS_REQUEST_KEY
+import net.noliaware.yumi_retailer.commun.FragmentKeys.REFRESH_VOUCHER_LIST_REQUEST_KEY
 import net.noliaware.yumi_retailer.commun.util.DecoratedText
 import net.noliaware.yumi_retailer.commun.util.ViewState.DataState
 import net.noliaware.yumi_retailer.commun.util.ViewState.LoadingState
@@ -56,7 +58,6 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-
 @AndroidEntryPoint
 class VoucherDetailsFragment : AppCompatDialogFragment() {
 
@@ -84,6 +85,7 @@ class VoucherDetailsFragment : AppCompatDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setUpFragmentListener()
         collectFlows()
         setUpRequestsDropdownView()
         vouchersDetailsContainerView?.activateLoading(true)
@@ -91,6 +93,15 @@ class VoucherDetailsFragment : AppCompatDialogFragment() {
             color = args.categoryUI.categoryColor,
             iconName = args.categoryUI.categoryIcon
         )
+    }
+
+    private fun setUpFragmentListener() {
+        setFragmentResultListener(
+            REFRESH_VOUCHER_DETAILS_REQUEST_KEY
+        ) { _, _ ->
+            viewModel.callGetVoucher()
+            viewModel.voucherListShouldRefresh = true
+        }
     }
 
     private fun collectFlows() {
@@ -118,26 +129,24 @@ class VoucherDetailsFragment : AppCompatDialogFragment() {
                 is LoadingState -> Unit
                 is DataState -> viewState.data?.let { requestSent ->
                     if (requestSent) {
-                        vouchersDetailsContainerView?.displayOngoingRequestsButton()
+                        viewModel.callGetVoucher()
+                        viewModel.voucherListShouldRefresh = true
                     }
                 }
             }
         }
 
-        viewModel.setVoucherAvailabilityEventsHelper.eventFlow.collectLifecycleAware(
-            viewLifecycleOwner
-        ) { sharedEvent ->
+        viewModel.setVoucherAvailabilityEventsHelper.eventFlow.collectLifecycleAware(viewLifecycleOwner) { sharedEvent ->
             handleSharedEvent(sharedEvent)
             redirectToLoginScreenFromSharedEvent(sharedEvent)
         }
-        viewModel.setVoucherAvailabilityEventsHelper.stateFlow.collectLifecycleAware(
-            viewLifecycleOwner
-        ) { viewState ->
+        viewModel.setVoucherAvailabilityEventsHelper.stateFlow.collectLifecycleAware(viewLifecycleOwner) { viewState ->
             when (viewState) {
                 is LoadingState -> Unit
                 is DataState -> viewState.data?.let { requestSent ->
                     if (requestSent) {
-                        viewModel.callGetVoucherData()
+                        viewModel.callGetVoucher()
+                        viewModel.voucherListShouldRefresh = true
                     }
                 }
             }
@@ -330,8 +339,7 @@ class VoucherDetailsFragment : AppCompatDialogFragment() {
             )
             setView(voucherRequestView)
             setPositiveButton(R.string.send) { dialog, _ ->
-                viewModel.callSendVoucherRequestWithId(
-                    voucherId = args.voucherId,
+                viewModel.callSendVoucherRequestWithTypeId(
                     voucherRequestTypeId = selectedRequestType.requestTypeId,
                     voucherRequestComment = voucherRequestView.getUserComment()
                 )
@@ -385,7 +393,6 @@ class VoucherDetailsFragment : AppCompatDialogFragment() {
             setView(voucherAmendAvailabilityView)
             setPositiveButton(R.string.send) { dialog, _ ->
                 viewModel.callSetVoucherAvailabilityDates(
-                    voucherId = args.voucherId,
                     voucherStartDate = startDate,
                     voucherEndDate = endDate,
                     voucherComment = voucherAmendAvailabilityView.getUserComment()
@@ -401,9 +408,9 @@ class VoucherDetailsFragment : AppCompatDialogFragment() {
 
     override fun onDismiss(dialog: DialogInterface) {
         super.onDismiss(dialog)
-        if (viewModel.requestSentEventsHelper.stateData == true || viewModel.setVoucherAvailabilityEventsHelper.stateData == true) {
+        if (viewModel.voucherListShouldRefresh) {
             setFragmentResult(
-                REFRESH_VOUCHERS_REQUEST_KEY,
+                REFRESH_VOUCHER_LIST_REQUEST_KEY,
                 bundleOf()
             )
         }

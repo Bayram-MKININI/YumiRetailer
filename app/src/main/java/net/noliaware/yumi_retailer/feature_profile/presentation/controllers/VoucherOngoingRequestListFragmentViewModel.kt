@@ -7,7 +7,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import net.noliaware.yumi_retailer.commun.ApiParameters.VOUCHER_ID
+import net.noliaware.yumi_retailer.commun.ApiParameters
 import net.noliaware.yumi_retailer.commun.presentation.EventsHelper
 import net.noliaware.yumi_retailer.feature_profile.domain.model.VoucherRequest
 import net.noliaware.yumi_retailer.feature_profile.domain.repository.ProfileRepository
@@ -15,22 +15,32 @@ import javax.inject.Inject
 
 @HiltViewModel
 class VoucherOngoingRequestListFragmentViewModel @Inject constructor(
-    private val repository: ProfileRepository,
-    savedStateHandle: SavedStateHandle
+    private val categoryRepository: ProfileRepository,
+    private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
+    private val voucherId get() = savedStateHandle.get<String>(ApiParameters.VOUCHER_ID)
     val getVoucherRequestsEventsHelper = EventsHelper<List<VoucherRequest>>()
+    val deleteVoucherRequestEventsHelper = EventsHelper<Boolean>()
 
     init {
-        savedStateHandle.get<String>(VOUCHER_ID)?.let {
-            callGetVoucherById(it)
+        callGetVoucherRequestList()
+    }
+
+    fun callGetVoucherRequestList() {
+        voucherId?.let {
+            viewModelScope.launch {
+                categoryRepository.getVoucherRequestListById(it).onEach { result ->
+                    getVoucherRequestsEventsHelper.handleResponse(result)
+                }.launchIn(this)
+            }
         }
     }
 
-    private fun callGetVoucherById(voucherId: String) {
+    fun callRemoveVoucherRequestById(requestId: String) {
         viewModelScope.launch {
-            repository.getVoucherRequestListById(voucherId).onEach { result ->
-                getVoucherRequestsEventsHelper.handleResponse(result)
+            categoryRepository.removeVoucherRequestById(requestId).onEach { result ->
+                deleteVoucherRequestEventsHelper.handleResponse(result)
             }.launchIn(this)
         }
     }

@@ -4,6 +4,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import net.noliaware.yumi_retailer.commun.ApiConstants.DELETE_VOUCHER_REQUEST
 import net.noliaware.yumi_retailer.commun.ApiConstants.GET_ACCOUNT
 import net.noliaware.yumi_retailer.commun.ApiConstants.GET_BACK_OFFICE_SIGN_IN_CODE
 import net.noliaware.yumi_retailer.commun.ApiConstants.GET_PRODUCT_DATA_PER_CATEGORY
@@ -17,6 +18,7 @@ import net.noliaware.yumi_retailer.commun.ApiParameters.VOUCHER_COMMENT
 import net.noliaware.yumi_retailer.commun.ApiParameters.VOUCHER_END_DATE
 import net.noliaware.yumi_retailer.commun.ApiParameters.VOUCHER_ID
 import net.noliaware.yumi_retailer.commun.ApiParameters.VOUCHER_REQUEST_COMMENT
+import net.noliaware.yumi_retailer.commun.ApiParameters.VOUCHER_REQUEST_ID
 import net.noliaware.yumi_retailer.commun.ApiParameters.VOUCHER_REQUEST_TYPE_ID
 import net.noliaware.yumi_retailer.commun.ApiParameters.VOUCHER_START_DATE
 import net.noliaware.yumi_retailer.commun.data.remote.RemoteApi
@@ -215,7 +217,9 @@ class ProfileRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun getAvailableVoucherListById(categoryId: String) = Pager(
+    override fun getAvailableVoucherListById(
+        categoryId: String
+    ) = Pager(
         PagingConfig(
             pageSize = LIST_PAGE_SIZE,
             enablePlaceholders = false
@@ -224,7 +228,9 @@ class ProfileRepositoryImpl @Inject constructor(
         AvailableVoucherPagingSource(api, sessionData, categoryId)
     }.flow
 
-    override fun getUsedVoucherListByCategory(categoryId: String) = Pager(
+    override fun getUsedVoucherListByCategory(
+        categoryId: String
+    ) = Pager(
         PagingConfig(
             pageSize = LIST_PAGE_SIZE,
             enablePlaceholders = false
@@ -233,7 +239,9 @@ class ProfileRepositoryImpl @Inject constructor(
         UsedVoucherPagingSource(api, sessionData, categoryId)
     }.flow
 
-    override fun getCancelledVoucherListByCategory(categoryId: String) = Pager(
+    override fun getCancelledVoucherListByCategory(
+        categoryId: String
+    ) = Pager(
         PagingConfig(
             pageSize = LIST_PAGE_SIZE,
             enablePlaceholders = false
@@ -381,7 +389,9 @@ class ProfileRepositoryImpl @Inject constructor(
                 remoteData.data?.let { voucherRequestsDTO ->
                     emit(
                         Resource.Success(
-                            data = voucherRequestsDTO.requestDTOList.map { it.toVoucherRequest() },
+                            data = voucherRequestsDTO.requestDTOList?.map {
+                                it.toVoucherRequest()
+                            } ?: listOf(),
                             appMessage = remoteData.message?.toAppMessage()
                         )
                     )
@@ -391,6 +401,58 @@ class ProfileRepositoryImpl @Inject constructor(
         } catch (ex: Exception) {
             handleRemoteCallError(ex)
         }
+    }
+
+    override fun removeVoucherRequestById(
+        requestId: String
+    ): Flow<Resource<Boolean>> = flow {
+
+        emit(Resource.Loading())
+
+        try {
+            val timestamp = currentTimeInMillis()
+            val randomString = randomString()
+
+            val remoteData = api.deleteVoucherRequestById(
+                timestamp = timestamp,
+                saltString = randomString,
+                token = generateToken(
+                    timestamp = timestamp,
+                    methodName = DELETE_VOUCHER_REQUEST,
+                    randomString = randomString
+                ),
+                params = generateVoucherRequestParams(requestId, DELETE_VOUCHER_REQUEST)
+            )
+
+            val sessionNoFailure = handleSessionWithNoFailure(
+                session = remoteData.session,
+                sessionData = sessionData,
+                tokenKey = DELETE_VOUCHER_REQUEST,
+                appMessage = remoteData.message,
+                error = remoteData.error
+            )
+
+            if (sessionNoFailure) {
+                emit(
+                    Resource.Success(
+                        data = remoteData.data != null,
+                        appMessage = remoteData.message?.toAppMessage()
+                    )
+                )
+            }
+
+        } catch (ex: Exception) {
+            handleRemoteCallError(ex)
+        }
+    }
+
+    private fun generateVoucherRequestParams(
+        requestId: String,
+        tokenKey: String
+    ) = mutableMapOf(
+        VOUCHER_REQUEST_ID to requestId
+    ).also {
+        it += getCommonWSParams(sessionData, tokenKey)
     }
 
     override fun setVoucherAvailabilityDates(
@@ -465,7 +527,9 @@ class ProfileRepositoryImpl @Inject constructor(
         VOUCHER_ID to voucherId
     ).also { it += getCommonWSParams(sessionData, tokenKey) }
 
-    override fun getProductListByCategory(categoryId: String) = Pager(
+    override fun getProductListByCategory(
+        categoryId: String
+    ) = Pager(
         PagingConfig(
             pageSize = LIST_PAGE_SIZE,
             enablePlaceholders = false

@@ -36,6 +36,8 @@ interface ProfileRepository {
 
     fun getVoucherRequestListById(voucherId: String): Flow<Resource<List<VoucherRequest>>>
 
+    fun removeVoucherRequestById(requestId: String): Flow<Resource<Boolean>>
+
     fun setVoucherAvailabilityDates(
         voucherId: String,
         voucherStartDate: String,

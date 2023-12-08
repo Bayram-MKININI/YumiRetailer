@@ -6,5 +6,5 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class GetVoucherDTO(
     @Json(name = "voucher")
-    val voucherDTO: VoucherDTO,
+    val voucherDTO: VoucherDTO
 )

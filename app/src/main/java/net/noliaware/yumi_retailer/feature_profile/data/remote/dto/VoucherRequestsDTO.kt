@@ -6,5 +6,5 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class VoucherRequestsDTO(
     @Json(name = "voucherRequests")
-    val requestDTOList: List<VoucherRequestDTO>
+    val requestDTOList: List<VoucherRequestDTO>?
 )

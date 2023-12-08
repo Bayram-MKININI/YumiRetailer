@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.view.isVisible
 import com.facebook.shimmer.ShimmerFrameLayout
 import net.noliaware.yumi_retailer.R
 import net.noliaware.yumi_retailer.commun.util.activateShimmer
@@ -134,10 +133,6 @@ class VouchersDetailsContainerView @JvmOverloads constructor(
     fun fillViewWithData(vouchersDetailsViewAdapter: VouchersDetailsViewAdapter) {
         vouchersDetailsView.fillViewWithData(vouchersDetailsViewAdapter)
         voucherStatusTextView.text = vouchersDetailsViewAdapter.voucherStatus
-    }
-
-    fun displayOngoingRequestsButton() {
-        vouchersDetailsView.ongoingRequestsButton.isVisible = true
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {

@@ -13,7 +13,7 @@ import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import net.noliaware.yumi_retailer.R
-import net.noliaware.yumi_retailer.commun.FragmentKeys
+import net.noliaware.yumi_retailer.commun.FragmentKeys.REFRESH_VOUCHER_LIST_REQUEST_KEY
 import net.noliaware.yumi_retailer.commun.util.formatNumber
 import net.noliaware.yumi_retailer.commun.util.navDismiss
 import net.noliaware.yumi_retailer.feature_login.domain.model.VoucherRequestType
@@ -66,7 +66,7 @@ class VouchersOverviewFragment : AppCompatDialogFragment() {
 
     private fun setUpFragmentListener() {
         setFragmentResultListener(
-            FragmentKeys.REFRESH_VOUCHERS_REQUEST_KEY
+            REFRESH_VOUCHER_LIST_REQUEST_KEY
         ) { _, _ ->
             childFragmentManager.fragments.find {
                 it.isResumed
