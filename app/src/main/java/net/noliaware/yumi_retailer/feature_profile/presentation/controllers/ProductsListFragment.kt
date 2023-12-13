@@ -68,7 +68,6 @@ class ProductsListFragment : AppCompatDialogFragment() {
                     loadState.refresh is LoadState.NotLoading -> {
                         productListView?.setLoadingVisible(false)
                     }
-
                     else -> Unit
                 }
             }
@@ -90,6 +89,7 @@ class ProductsListFragment : AppCompatDialogFragment() {
     }
 
     override fun onDestroyView() {
+        productListView?.callback = null
         productListView = null
         super.onDestroyView()
     }

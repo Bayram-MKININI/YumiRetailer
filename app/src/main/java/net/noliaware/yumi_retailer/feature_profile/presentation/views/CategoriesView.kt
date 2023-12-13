@@ -13,7 +13,6 @@ import net.noliaware.yumi_retailer.commun.util.formatNumber
 import net.noliaware.yumi_retailer.commun.util.inflate
 import net.noliaware.yumi_retailer.commun.util.layoutToTopLeft
 import net.noliaware.yumi_retailer.commun.util.measureWrapContent
-import net.noliaware.yumi_retailer.commun.util.weak
 import net.noliaware.yumi_retailer.feature_profile.presentation.views.CategoryItemView.CategoryItemViewAdapter
 
 class CategoriesView @JvmOverloads constructor(
@@ -28,7 +27,7 @@ class CategoriesView @JvmOverloads constructor(
     private lateinit var cancelledVoucherCountView: VoucherCountView
     private lateinit var recyclerView: RecyclerView
     private lateinit var recyclerAdapter: BaseAdapter<CategoryItemViewAdapter>
-    var callback: CategoriesViewCallback? by weak()
+    var callback: CategoriesViewCallback? = null
 
     fun interface CategoriesViewCallback {
         fun onCategoryClickedAtIndex(index: Int)

@@ -22,7 +22,6 @@ import net.noliaware.yumi_retailer.commun.util.getStatusBarHeight
 import net.noliaware.yumi_retailer.commun.util.inflate
 import net.noliaware.yumi_retailer.commun.util.layoutToTopLeft
 import net.noliaware.yumi_retailer.commun.util.measureWrapContent
-import net.noliaware.yumi_retailer.commun.util.weak
 import net.noliaware.yumi_retailer.feature_profile.presentation.adapters.VoucherOngoingRequestsAdapter
 
 class VoucherOngoingRequestListView @JvmOverloads constructor(
@@ -41,13 +40,13 @@ class VoucherOngoingRequestListView @JvmOverloads constructor(
     private lateinit var shimmerRecyclerView: RecyclerView
     private lateinit var recyclerView: RecyclerView
     private lateinit var emptyView: TextView
+    var callback: VoucherOngoingRequestListViewCallback? = null
+
     var voucherOngoingRequestAdapter
         get() = recyclerView.adapter as VoucherOngoingRequestsAdapter
         set(adapter) {
             recyclerView.adapter = adapter
         }
-
-    var callback: VoucherOngoingRequestListViewCallback? by weak()
 
     fun interface VoucherOngoingRequestListViewCallback {
         fun onBackButtonClicked()

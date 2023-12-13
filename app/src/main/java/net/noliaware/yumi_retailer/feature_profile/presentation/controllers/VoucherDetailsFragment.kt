@@ -417,6 +417,7 @@ class VoucherDetailsFragment : AppCompatDialogFragment() {
     }
 
     override fun onDestroyView() {
+        vouchersDetailsContainerView?.callback = null
         vouchersDetailsContainerView = null
         super.onDestroyView()
     }

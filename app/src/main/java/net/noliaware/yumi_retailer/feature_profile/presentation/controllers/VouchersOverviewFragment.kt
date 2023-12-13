@@ -118,21 +118,24 @@ class VouchersOverviewFragment : AppCompatDialogFragment() {
     }
 
     override fun onDestroyView() {
+        vouchersOverviewView?.callback = null
         vouchersOverviewView = null
         super.onDestroyView()
     }
+}
 
-    private class ViewPagerAdapter(
-        fragmentManager: FragmentManager,
-        lifecycle: Lifecycle,
-        val category: Category,
-        val voucherRequestTypes: List<VoucherRequestType>?
-    ) : FragmentStateAdapter(fragmentManager, lifecycle) {
-        override fun getItemCount() = VoucherListType.entries.size
-        override fun createFragment(position: Int) = VouchersListFragment.newInstance(
-            category,
-            voucherRequestTypes,
-            VoucherListType.entries[position]
-        )
-    }
+private class ViewPagerAdapter(
+    fragmentManager: FragmentManager,
+    lifecycle: Lifecycle,
+    val category: Category,
+    val voucherRequestTypes: List<VoucherRequestType>?
+) : FragmentStateAdapter(fragmentManager, lifecycle) {
+    override fun getItemCount() = VoucherListType.entries.size
+    override fun createFragment(
+        position: Int
+    ) = VouchersListFragment.newInstance(
+        category,
+        voucherRequestTypes,
+        VoucherListType.entries[position]
+    )
 }

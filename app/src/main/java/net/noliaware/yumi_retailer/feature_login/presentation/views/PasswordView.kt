@@ -13,7 +13,6 @@ import net.noliaware.yumi_retailer.commun.util.activateShimmer
 import net.noliaware.yumi_retailer.commun.util.convertDpToPx
 import net.noliaware.yumi_retailer.commun.util.layoutToTopLeft
 import net.noliaware.yumi_retailer.commun.util.measureWrapContent
-import net.noliaware.yumi_retailer.commun.util.weak
 
 class PasswordView @JvmOverloads constructor(
     context: Context,
@@ -59,8 +58,7 @@ class PasswordView @JvmOverloads constructor(
     private lateinit var deleteTextView: TextView
     private lateinit var confirmImageView: ImageView
     private lateinit var confirmTextView: TextView
-
-    var callback: PasswordViewCallback? by weak()
+    var callback: PasswordViewCallback? = null
 
     interface PasswordViewCallback {
         fun onPadClickedAtIndex(index: Int)

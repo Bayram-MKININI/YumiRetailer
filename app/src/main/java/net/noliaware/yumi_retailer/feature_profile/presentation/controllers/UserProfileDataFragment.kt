@@ -133,6 +133,7 @@ class UserProfileDataFragment : Fragment() {
     }
 
     override fun onDestroyView() {
+        profileDataParentView?.getProfileDataView?.callback = null
         profileDataParentView = null
         super.onDestroyView()
     }

@@ -98,17 +98,14 @@
                         tools:visibility="visible">
 
                         <androidx.appcompat.widget.AppCompatImageView
-                            android:id="@+id/requests_image_view"
                             android:layout_width="30dp"
                             android:layout_height="30dp"
                             android:adjustViewBounds="true"
                             android:background="@drawable/circle_primary"
-                            android:clickable="true"
                             android:padding="5dp"
                             android:src="@drawable/ic_progress" />
 
                         <com.google.android.material.textview.MaterialTextView
-                            android:id="@+id/requests_text_view"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="5dp"

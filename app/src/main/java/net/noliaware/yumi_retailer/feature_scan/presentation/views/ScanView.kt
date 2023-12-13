@@ -11,7 +11,6 @@ import net.noliaware.yumi_retailer.commun.util.convertDpToPx
 import net.noliaware.yumi_retailer.commun.util.getStatusBarHeight
 import net.noliaware.yumi_retailer.commun.util.layoutToTopLeft
 import net.noliaware.yumi_retailer.commun.util.measureWrapContent
-import net.noliaware.yumi_retailer.commun.util.weak
 import kotlin.math.roundToInt
 
 class ScanView @JvmOverloads constructor(
@@ -25,7 +24,7 @@ class ScanView @JvmOverloads constructor(
     private lateinit var homeIconView: View
     private lateinit var scanIllustrationImageView: View
     private lateinit var scanLayout: View
-    var callback: ScanViewCallback? by weak()
+    var callback: ScanViewCallback? = null
 
     fun interface ScanViewCallback {
         fun onScanClicked()

@@ -20,7 +20,6 @@ import net.noliaware.yumi_retailer.commun.util.getStatusBarHeight
 import net.noliaware.yumi_retailer.commun.util.inflate
 import net.noliaware.yumi_retailer.commun.util.layoutToTopLeft
 import net.noliaware.yumi_retailer.commun.util.measureWrapContent
-import net.noliaware.yumi_retailer.commun.util.weak
 import net.noliaware.yumi_retailer.feature_profile.presentation.adapters.ProductAdapter
 
 class ProductListView @JvmOverloads constructor(
@@ -37,13 +36,13 @@ class ProductListView @JvmOverloads constructor(
     private lateinit var shimmerView: ShimmerFrameLayout
     private lateinit var shimmerRecyclerView: RecyclerView
     private lateinit var recyclerView: RecyclerView
+    var callback: ProductsListViewCallback? = null
 
     var productAdapter
         get() = recyclerView.adapter as ProductAdapter
         set(adapter) {
             recyclerView.adapter = adapter
         }
-    var callback: ProductsListViewCallback? by weak()
 
     fun interface ProductsListViewCallback {
         fun onBackButtonClicked()

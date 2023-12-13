@@ -101,6 +101,7 @@ class ScanFragment : Fragment() {
     }
 
     override fun onDestroyView() {
+        scanView?.callback = null
         scanView = null
         super.onDestroyView()
     }

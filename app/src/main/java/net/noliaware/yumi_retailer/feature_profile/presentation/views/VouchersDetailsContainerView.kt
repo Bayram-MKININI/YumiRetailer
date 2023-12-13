@@ -18,7 +18,6 @@ import net.noliaware.yumi_retailer.commun.util.getStatusBarHeight
 import net.noliaware.yumi_retailer.commun.util.layoutToBottomLeft
 import net.noliaware.yumi_retailer.commun.util.layoutToTopLeft
 import net.noliaware.yumi_retailer.commun.util.measureWrapContent
-import net.noliaware.yumi_retailer.commun.util.weak
 
 class VouchersDetailsContainerView @JvmOverloads constructor(
     context: Context,
@@ -34,7 +33,8 @@ class VouchersDetailsContainerView @JvmOverloads constructor(
     private lateinit var shimmerView: ShimmerFrameLayout
     private lateinit var vouchersDetailsView: VouchersDetailsView
     private lateinit var voucherStatusTextView: TextView
-    var callback: VouchersDetailsViewCallback? by weak()
+    var callback: VouchersDetailsViewCallback? = null
+
     val getRequestSpinner get() = vouchersDetailsView.requestSpinner
 
     data class VouchersDetailsViewAdapter(

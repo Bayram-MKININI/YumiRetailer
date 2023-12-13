@@ -46,19 +46,19 @@ class UserProfileFragment : Fragment() {
         profileView = null
         super.onDestroyView()
     }
+}
 
-    private class UserProfileFragmentStateAdapter(
-        val accountData: AccountData,
-        fragmentManager: FragmentManager,
-        lifecycle: Lifecycle
-    ) : FragmentStateAdapter(fragmentManager, lifecycle) {
-        override fun getItemCount() = 3
-        override fun createFragment(position: Int): Fragment {
-            return when (position) {
-                0 -> UserProfileDataFragment.newInstance(accountData)
-                1 -> CategoriesFragment.newInstance(accountData.voucherRequestTypes)
-                else -> ProductCategoriesFragment()
-            }
-        }
+private class UserProfileFragmentStateAdapter(
+    val accountData: AccountData,
+    fragmentManager: FragmentManager,
+    lifecycle: Lifecycle
+) : FragmentStateAdapter(fragmentManager, lifecycle) {
+    override fun getItemCount() = 3
+    override fun createFragment(
+        position: Int
+    ) = when (position) {
+        0 -> UserProfileDataFragment.newInstance(accountData)
+        1 -> CategoriesFragment.newInstance(accountData.voucherRequestTypes)
+        else -> ProductCategoriesFragment()
     }
 }

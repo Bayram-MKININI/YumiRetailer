@@ -11,6 +11,12 @@
         android:label="@string/scan_fragment_screen_label"
         tools:layout="@layout/scan_layout" />
 
+    <action
+        android:id="@+id/action_go_to_ScanFragment"
+        app:destination="@id/scan_fragment"
+        app:popUpTo="@id/scan_fragment"
+        app:popUpToInclusive="true" />
+
     <fragment
         android:id="@+id/user_profile_fragment"
         android:name="net.noliaware.yumi_retailer.feature_profile.presentation.controllers.UserProfileFragment"
@@ -32,6 +38,12 @@
             android:id="@+id/action_UserProfileFragment_to_ProductsListFragment"
             app:destination="@id/product_list_fragment" />
     </fragment>
+
+    <action
+        android:id="@+id/action_go_to_UserProfileFragment"
+        app:destination="@id/user_profile_fragment"
+        app:popUpTo="@id/user_profile_fragment"
+        app:popUpToInclusive="true" />
 
     <dialog
         android:id="@+id/bo_sign_in_fragment"
@@ -139,6 +151,12 @@
             app:destination="@id/read_outbox_mail_fragment" />
     </fragment>
 
+    <action
+        android:id="@+id/action_go_to_MessagingFragment"
+        app:destination="@id/messaging_fragment"
+        app:popUpTo="@id/messaging_fragment"
+        app:popUpToInclusive="true" />
+
     <dialog
         android:id="@+id/send_mail_fragment"
         android:name="net.noliaware.yumi_retailer.feature_message.presentation.controllers.SendMailFragment"
@@ -187,4 +205,10 @@
         android:name="net.noliaware.yumi_retailer.feature_alerts.presentation.controllers.AlertsFragment"
         android:label="@string/alerts_fragment_screen_label"
         tools:layout="@layout/alerts_layout" />
+
+    <action
+        android:id="@+id/action_go_to_AlertsFragment"
+        app:destination="@id/alerts_fragment"
+        app:popUpTo="@id/alerts_fragment"
+        app:popUpToInclusive="true" />
 </navigation>

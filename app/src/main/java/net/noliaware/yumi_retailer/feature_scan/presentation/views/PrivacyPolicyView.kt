@@ -21,7 +21,6 @@ import net.noliaware.yumi_retailer.commun.util.getStatusBarHeight
 import net.noliaware.yumi_retailer.commun.util.layoutToBottomLeft
 import net.noliaware.yumi_retailer.commun.util.layoutToTopLeft
 import net.noliaware.yumi_retailer.commun.util.measureWrapContent
-import net.noliaware.yumi_retailer.commun.util.weak
 import kotlin.math.roundToInt
 
 class PrivacyPolicyView @JvmOverloads constructor(
@@ -39,7 +38,7 @@ class PrivacyPolicyView @JvmOverloads constructor(
     private lateinit var offlineMessageTextView: TextView
     private lateinit var webView: WebView
     private lateinit var confirmationButton: View
-    var callback: PrivacyPolicyViewCallback? by weak()
+    var callback: PrivacyPolicyViewCallback? = null
 
     fun interface PrivacyPolicyViewCallback {
         fun onConfirmationButtonClicked()

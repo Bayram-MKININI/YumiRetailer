@@ -171,6 +171,7 @@ class SendMailFragment : AppCompatDialogFragment() {
     }
 
     override fun onDestroyView() {
+        sendMailView?.callback = null
         sendMailView = null
         super.onDestroyView()
     }

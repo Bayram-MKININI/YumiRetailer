@@ -154,6 +154,7 @@ class CategoriesFragment : Fragment() {
     }
 
     override fun onDestroyView() {
+        categoriesParentView?.getCategoriesView?.callback = null
         categoriesParentView = null
         super.onDestroyView()
     }

@@ -94,6 +94,7 @@ class ProductCategoriesFragment : Fragment() {
     }
 
     override fun onDestroyView() {
+        productCategoriesView?.callback = null
         productCategoriesView = null
         super.onDestroyView()
     }

@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.NavOptions
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -87,53 +86,27 @@ class HomeFragment : Fragment() {
         object : HomeMenuViewCallback {
             override fun onHomeButtonClicked() {
                 homeView?.selectHomeButton()
-                val navOption = NavOptions.Builder().setPopUpTo(
-                    R.id.scan_fragment,
-                    true
-                ).build()
-                homeNavController.navigate(
-                    R.id.scan_fragment,
-                    null,
-                    navOption
-                )
+                homeNavController.navigate(R.id.action_go_to_ScanFragment)
             }
 
             override fun onProfileButtonClicked() {
-                val navOption = NavOptions.Builder().setPopUpTo(
-                    R.id.user_profile_fragment,
-                    true
-                ).build()
                 homeNavController.navigate(
-                    R.id.user_profile_fragment,
-                    UserProfileFragmentArgs(args.accountData).toBundle(),
-                    navOption
+                    R.id.action_go_to_UserProfileFragment,
+                    UserProfileFragmentArgs(args.accountData).toBundle()
                 )
             }
 
             override fun onMailButtonClicked() {
                 homeView?.homeMenuView?.hideMailButtonBadge()
-                val navOption = NavOptions.Builder().setPopUpTo(
-                    R.id.messaging_fragment,
-                    true
-                ).build()
                 homeNavController.navigate(
-                    R.id.messaging_fragment,
-                    MessagingFragmentArgs(args.accountData.messageSubjects.toTypedArray()).toBundle(),
-                    navOption
+                    R.id.action_go_to_MessagingFragment,
+                    MessagingFragmentArgs(args.accountData.messageSubjects.toTypedArray()).toBundle()
                 )
             }
 
             override fun onNotificationButtonClicked() {
                 homeView?.homeMenuView?.hideNotificationButtonBadge()
-                val navOption = NavOptions.Builder().setPopUpTo(
-                    R.id.alerts_fragment,
-                    true
-                ).build()
-                homeNavController.navigate(
-                    R.id.alerts_fragment,
-                    null,
-                    navOption
-                )
+                homeNavController.navigate(R.id.action_go_to_AlertsFragment)
             }
         }
     }
@@ -152,6 +125,7 @@ class HomeFragment : Fragment() {
     }
 
     override fun onDestroyView() {
+        homeView?.homeMenuView?.callback = null
         homeView = null
         super.onDestroyView()
     }

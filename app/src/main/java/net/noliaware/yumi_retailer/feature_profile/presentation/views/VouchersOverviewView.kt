@@ -16,7 +16,6 @@ import net.noliaware.yumi_retailer.commun.util.layoutToBottomLeft
 import net.noliaware.yumi_retailer.commun.util.layoutToTopLeft
 import net.noliaware.yumi_retailer.commun.util.measureWrapContent
 import net.noliaware.yumi_retailer.commun.util.removeOverScroll
-import net.noliaware.yumi_retailer.commun.util.weak
 import net.noliaware.yumi_retailer.feature_profile.presentation.views.VoucherCountView.VoucherCountViewAdapter
 
 class VouchersOverviewView @JvmOverloads constructor(
@@ -38,8 +37,8 @@ class VouchersOverviewView @JvmOverloads constructor(
     private lateinit var cancelledTabView: ClipartTabView
     private lateinit var contentView: View
     private lateinit var viewPager: ViewPager2
+    var callback: VouchersOverviewViewCallback? = null
 
-    var callback: VouchersOverviewViewCallback? by weak()
     val getViewPager get() = viewPager
 
     fun interface VouchersOverviewViewCallback {

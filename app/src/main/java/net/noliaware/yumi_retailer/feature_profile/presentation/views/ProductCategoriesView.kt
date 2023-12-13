@@ -17,7 +17,6 @@ import net.noliaware.yumi_retailer.commun.util.convertDpToPx
 import net.noliaware.yumi_retailer.commun.util.inflate
 import net.noliaware.yumi_retailer.commun.util.layoutToTopLeft
 import net.noliaware.yumi_retailer.commun.util.measureWrapContent
-import net.noliaware.yumi_retailer.commun.util.weak
 import net.noliaware.yumi_retailer.feature_profile.presentation.views.ProductCategoryItemView.ProductCategoryItemViewAdapter
 
 class ProductCategoriesView @JvmOverloads constructor(
@@ -31,7 +30,7 @@ class ProductCategoriesView @JvmOverloads constructor(
     private lateinit var shimmerRecyclerView: RecyclerView
     private lateinit var recyclerView: RecyclerView
     private lateinit var recyclerAdapter: BaseAdapter<ProductCategoryItemViewAdapter>
-    var callback: ProductCategoriesViewCallback? by weak()
+    var callback: ProductCategoriesViewCallback? = null
 
     fun interface ProductCategoriesViewCallback {
         fun onProductCategoryClickedAtIndex(index: Int)
