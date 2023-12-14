@@ -78,6 +78,7 @@
     <string name="consumed_vouchers">Coupons consommés</string>
     <string name="price_format">%s€</string>
     <string name="usable_start_date">Utilisable à partir du %s</string>
+    <string name="on_hold">En attente</string>
     <string name="usage_date">Utilisé le %s</string>
     <string name="cancellation_date">Annulé le %s</string>
     <string name="usable_end_date">Utilisable jusqu\'au %s</string>
@@ -101,6 +102,7 @@
     <string name="voucher_value">Valeur du coupon: %s</string>
     <string name="voucher_available">DISPONIBLE</string>
     <string name="voucher_non_available">NON DISPONIBLE</string>
+    <string name="voucher_on_hold">EN ATTENTE</string>
     <string name="voucher_non_retrievable">NON RÉCUPÉRABLE</string>
     <string name="voucher_used">UTILISÉ</string>
     <string name="voucher_canceled">ANNULÉ</string>

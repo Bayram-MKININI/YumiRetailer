@@ -41,7 +41,9 @@ import net.noliaware.yumi_retailer.commun.util.redirectToLoginScreenFromSharedEv
 import net.noliaware.yumi_retailer.commun.util.safeNavigate
 import net.noliaware.yumi_retailer.feature_login.domain.model.VoucherRequestType
 import net.noliaware.yumi_retailer.feature_profile.domain.model.Voucher
-import net.noliaware.yumi_retailer.feature_profile.domain.model.VoucherDeliveryStatus
+import net.noliaware.yumi_retailer.feature_profile.domain.model.VoucherDeliveryStatus.AVAILABLE
+import net.noliaware.yumi_retailer.feature_profile.domain.model.VoucherDeliveryStatus.NON_AVAILABLE
+import net.noliaware.yumi_retailer.feature_profile.domain.model.VoucherDeliveryStatus.ON_HOLD
 import net.noliaware.yumi_retailer.feature_profile.domain.model.VoucherStatus.CANCELLED
 import net.noliaware.yumi_retailer.feature_profile.domain.model.VoucherStatus.INEXISTENT
 import net.noliaware.yumi_retailer.feature_profile.domain.model.VoucherStatus.USABLE
@@ -267,12 +269,12 @@ class VoucherDetailsFragment : AppCompatDialogFragment() {
     ) = when (voucher.voucherStatus) {
         USABLE -> {
             when (voucher.voucherDeliveryStatus) {
-                VoucherDeliveryStatus.AVAILABLE -> getString(R.string.voucher_available)
-                VoucherDeliveryStatus.NON_AVAILABLE -> getString(R.string.voucher_non_available)
+                AVAILABLE -> getString(R.string.voucher_available)
+                ON_HOLD -> getString(R.string.voucher_on_hold)
+                NON_AVAILABLE -> getString(R.string.voucher_non_available)
                 else -> ""
             }
         }
-
         USED -> getString(R.string.voucher_used)
         CANCELLED -> getString(R.string.voucher_canceled)
         INEXISTENT -> getString(R.string.voucher_inexistent)
