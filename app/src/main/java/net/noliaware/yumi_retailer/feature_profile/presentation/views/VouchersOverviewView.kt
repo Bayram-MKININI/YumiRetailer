@@ -49,17 +49,12 @@ class VouchersOverviewView @JvmOverloads constructor(
         val color: Int,
         val iconName: String?,
         val availableVouchersCount: Int = 0,
-        val availableVouchersGain: String,
-        val availableGainAvailable: Boolean = false,
+        val availableVouchersGain: String?,
         val expectedVouchersCount: Int = 0,
-        val expectedVouchersGain: String,
-        val expectedGainAvailable: Boolean = false,
         val consumedVouchersCount: Int = 0,
-        val consumedVouchersGain: String,
-        val consumedGainAvailable: Boolean = false,
+        val consumedVouchersGain: String?,
         val cancelledVouchersCount: Int = 0,
-        val cancelledVouchersGain: String,
-        val cancelledGainAvailable: Boolean = false
+        val cancelledVouchersGain: String?
     )
 
     override fun onFinishInflate() {
@@ -134,23 +129,19 @@ class VouchersOverviewView @JvmOverloads constructor(
             VoucherCountViewAdapter(
                 title = context.getString(R.string.available_vouchers),
                 count = vouchersOverviewAdapter.availableVouchersCount.formatNumber(),
-                gainAvailable = vouchersOverviewAdapter.availableGainAvailable,
                 gain = vouchersOverviewAdapter.availableVouchersGain
             )
         )
         expectedVoucherCountView.fillViewWithData(
             VoucherCountViewAdapter(
                 title = context.getString(R.string.expected_vouchers),
-                count = vouchersOverviewAdapter.expectedVouchersCount.formatNumber(),
-                gainAvailable = vouchersOverviewAdapter.expectedGainAvailable,
-                gain = vouchersOverviewAdapter.expectedVouchersGain
+                count = vouchersOverviewAdapter.expectedVouchersCount.formatNumber()
             )
         )
         consumedVoucherCountView.fillViewWithData(
             VoucherCountViewAdapter(
                 title = context.getString(R.string.consumed_vouchers),
                 count = vouchersOverviewAdapter.consumedVouchersCount.formatNumber(),
-                gainAvailable = vouchersOverviewAdapter.consumedGainAvailable,
                 gain = vouchersOverviewAdapter.consumedVouchersGain
             )
         )
@@ -158,7 +149,6 @@ class VouchersOverviewView @JvmOverloads constructor(
             VoucherCountViewAdapter(
                 title = context.getString(R.string.cancelled_vouchers),
                 count = vouchersOverviewAdapter.cancelledVouchersCount.formatNumber(),
-                gainAvailable = vouchersOverviewAdapter.cancelledGainAvailable,
                 gain = vouchersOverviewAdapter.cancelledVouchersGain
             )
         )

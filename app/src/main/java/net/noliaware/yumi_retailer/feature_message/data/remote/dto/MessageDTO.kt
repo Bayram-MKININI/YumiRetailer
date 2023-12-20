@@ -38,7 +38,7 @@ data class MessageDTO(
         messagePriority = Priority.fromValue(messagePriority),
         messageSubject = messageSubject,
         messagePreview = messagePreview,
-        isMessageRead = messageReadStatus == 1,
+        messageHasBeenRead = messageReadStatus?.let { it == 1 },
         messageBody = messageBody
     )
 }

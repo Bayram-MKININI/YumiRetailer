@@ -55,7 +55,7 @@ class MessageAdapter(
         },
         time = resolveTime(message.messageDate, message.messageTime),
         body = message.messagePreview.orEmpty(),
-        opened = message.isMessageRead
+        opened = message.messageHasBeenRead
     )
 
     private fun resolveTime(messageDateStr: String, messageTimeStr: String): String {

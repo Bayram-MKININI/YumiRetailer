@@ -25,17 +25,13 @@ class ProductPagingSource(
     private val categoryId: String
 ) : PagingSource<Int, Product>() {
 
-    override fun getRefreshKey(state: PagingState<Int, Product>): Int? {
-        return state.anchorPosition?.let { anchorPosition ->
-            state.closestPageToPosition(anchorPosition)?.prevKey?.plus(1)
-                ?: state.closestPageToPosition(anchorPosition)?.nextKey?.minus(1)
-        }
-    }
+    override fun getRefreshKey(
+        state: PagingState<Int, Product>
+    ): Nothing? = null
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Product> {
         try {
-            // Start refresh at page 1 if undefined.
-            val nextPage = params.key ?: 0
+            val position = params.key ?: 0
 
             val timestamp = currentTimeInMillis()
             val randomString = randomString()
@@ -48,7 +44,12 @@ class ProductPagingSource(
                     methodName = GET_PRODUCT_LIST_BY_CATEGORY,
                     randomString = randomString
                 ),
-                params = generateWSParams(categoryId, nextPage, GET_PRODUCT_LIST_BY_CATEGORY)
+                params = generateWSParams(
+                    categoryId = categoryId,
+                    offset = position,
+                    loadSize = params.loadSize,
+                    tokenKey = GET_PRODUCT_LIST_BY_CATEGORY
+                )
             )
 
             val serviceError = resolvePaginatedListErrorIfAny(
@@ -61,18 +62,22 @@ class ProductPagingSource(
                 throw PaginationException(serviceError)
             }
 
-            val productRank = remoteData.data?.productDTOList?.lastOrNull()?.productRank ?: nextPage
-
             val moreItemsAvailable = remoteData.data?.productDTOList?.lastOrNull()?.let { voucherDTO ->
-                    voucherDTO.productRank < voucherDTO.productCount
-                }
+                voucherDTO.productRank < voucherDTO.productCount
+            }
 
-            val canLoadMore = moreItemsAvailable == true
+            val nextKey = if (moreItemsAvailable == true) {
+                // initial load size = 3 * NETWORK_PAGE_SIZE
+                // ensure we're not requesting duplicating items, at the 2nd request
+                position + (params.loadSize / LIST_PAGE_SIZE)
+            } else {
+                null
+            }
 
             return LoadResult.Page(
                 data = remoteData.data?.productDTOList?.map { it.toProduct() }.orEmpty(),
                 prevKey = null,// Only paging forward.
-                nextKey = if (canLoadMore) productRank else null
+                nextKey = nextKey
             )
         } catch (ex: Exception) {
             return handlePagingSourceError(ex)
@@ -82,11 +87,12 @@ class ProductPagingSource(
     private fun generateWSParams(
         categoryId: String,
         offset: Int,
+        loadSize: Int,
         tokenKey: String
     ) = mutableMapOf(
         CATEGORY_ID to categoryId,
-        LIMIT to LIST_PAGE_SIZE.toString(),
-        OFFSET to offset.toString()
+        OFFSET to offset.toString(),
+        LIMIT to loadSize.toString()
     ).also {
         it += getCommonWSParams(sessionData, tokenKey)
     }.toMap()

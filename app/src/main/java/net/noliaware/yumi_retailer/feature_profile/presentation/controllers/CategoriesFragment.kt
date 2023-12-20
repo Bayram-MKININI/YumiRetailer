@@ -86,56 +86,41 @@ class CategoriesFragment : Fragment() {
                 iconName = category.categoryIcon,
                 title = category.categoryShortLabel,
                 consumedCount = category.usedVoucherCount,
-                consumedGain = getString(
-                    R.string.price_format,
-                    category.usedVoucherAmount.formatNumber()
-                ),
-                consumedGainAvailable = category.usedVoucherAmount > 0f,
+                consumedGain = mapVoucherAmount(category.usedVoucherAmount),
                 remainingCount = category.assignedVoucherCount,
-                remainingGain = getString(
-                    R.string.price_format,
-                    remainingGainAmount.formatNumber()
-                ),
-                remainingGainAvailable = remainingGainAmount > 0f
+                remainingGain = mapVoucherAmount(remainingGainAmount)
             ).also {
                 categoryItemViewAdapters.add(it)
             }
         }
 
-        val availableVouchersGainAmount = categories.sumOf { it.availableVoucherAmount.toDouble() }
-        val expectedVouchersGainAmount = categories.sumOf { it.expectedVoucherAmount.toDouble() }
-        val consumedVouchersGainAmount = categories.sumOf { it.usedVoucherAmount.toDouble() }
-        val cancelledVouchersGainAmount = categories.sumOf { it.cancelledVoucherAmount.toDouble() }
+        val availableVouchersGainAmount = categories.sumOf { it.availableVoucherAmount.toDouble() }.toFloat()
+        val consumedVouchersGainAmount = categories.sumOf { it.usedVoucherAmount.toDouble() }.toFloat()
+        val cancelledVouchersGainAmount = categories.sumOf { it.cancelledVoucherAmount.toDouble() }.toFloat()
 
         categoriesParentView?.fillViewWithData(
             CategoriesViewAdapter(
                 availableVouchersCount = categories.sumOf { it.availableVoucherCount },
-                availableVouchersGain = getString(
-                    R.string.price_format,
-                    availableVouchersGainAmount.formatNumber()
-                ),
-                availableGainAvailable = availableVouchersGainAmount > 0,
+                availableVouchersGain = mapVoucherAmount(availableVouchersGainAmount),
                 expectedVouchersCount = categories.sumOf { it.expectedVoucherCount },
-                expectedVouchersGain = getString(
-                    R.string.price_format,
-                    expectedVouchersGainAmount.formatNumber()
-                ),
-                expectedGainAvailable = expectedVouchersGainAmount > 0,
                 consumedVouchersCount = categories.sumOf { it.usedVoucherCount },
-                consumedVouchersGain = getString(
-                    R.string.price_format,
-                    consumedVouchersGainAmount.formatNumber()
-                ),
-                consumedGainAvailable = consumedVouchersGainAmount > 0,
+                consumedVouchersGain = mapVoucherAmount(consumedVouchersGainAmount),
                 cancelledVouchersCount = categories.sumOf { it.cancelledVoucherCount },
-                cancelledVouchersGain = getString(
-                    R.string.price_format,
-                    cancelledVouchersGainAmount.formatNumber()
-                ),
-                cancelledGainAvailable = cancelledVouchersGainAmount > 0,
+                cancelledVouchersGain = mapVoucherAmount(cancelledVouchersGainAmount),
                 categoryItemViewAdapters = categoryItemViewAdapters
             )
         )
+    }
+
+    private fun mapVoucherAmount(
+        vouchersAmount: Float
+    ) = if (vouchersAmount > 0f) {
+        getString(
+            R.string.price_format,
+            vouchersAmount.formatNumber()
+        )
+    } else {
+        null
     }
 
     private val categoriesViewCallback: CategoriesViewCallback by lazy {

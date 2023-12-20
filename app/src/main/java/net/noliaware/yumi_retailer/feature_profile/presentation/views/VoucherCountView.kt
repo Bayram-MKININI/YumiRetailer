@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import net.noliaware.yumi_retailer.R
 import net.noliaware.yumi_retailer.commun.util.convertDpToPx
@@ -25,8 +26,7 @@ class VoucherCountView @JvmOverloads constructor(
     data class VoucherCountViewAdapter(
         val title: String,
         val count: String,
-        val gainAvailable: Boolean,
-        val gain: String = ""
+        val gain: String? = null
     )
 
     init {
@@ -46,9 +46,11 @@ class VoucherCountView @JvmOverloads constructor(
     fun fillViewWithData(voucherCountViewAdapter: VoucherCountViewAdapter) {
         titleTextView.text = voucherCountViewAdapter.title
         countTextView.text = voucherCountViewAdapter.count
-        gainTextView.isVisible = voucherCountViewAdapter.gainAvailable
-        if (gainTextView.isVisible) {
-            gainTextView.text = voucherCountViewAdapter.gain
+        voucherCountViewAdapter.gain?.also { gain ->
+            gainTextView.isVisible = true
+            gainTextView.text = gain
+        } ?: run {
+            gainTextView.isGone = true
         }
     }
 

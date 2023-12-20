@@ -29,8 +29,12 @@ class MessageItemView @JvmOverloads constructor(
         context.getFontFromResources(R.font.omnes_regular)
     }
 
-    private val notOpenedTypeFace by lazy {
+    private val notOpenedSubjectTypeFace by lazy {
         context.getFontFromResources(R.font.omnes_semibold_regular)
+    }
+
+    private val notOpenedBodyTypeFace by lazy {
+        context.getFontFromResources(R.font.omnes_medium)
     }
 
     data class MessageItemViewAdapter(
@@ -39,7 +43,7 @@ class MessageItemView @JvmOverloads constructor(
         val subject: String = "",
         val time: String = "",
         val body: String = "",
-        val opened: Boolean = false
+        val opened: Boolean?
     )
 
     override fun onFinishInflate() {
@@ -59,10 +63,14 @@ class MessageItemView @JvmOverloads constructor(
         subjectTextView.text = messageItemViewAdapter.subject
         timeTextView.text = messageItemViewAdapter.time
         bodyTextView.text = messageItemViewAdapter.body
-        if (messageItemViewAdapter.opened) {
-            subjectTextView.typeface = openedTypeFace
-        } else {
-            subjectTextView.typeface = notOpenedTypeFace
+        messageItemViewAdapter.opened?.let { messageIsOpened ->
+            if (messageIsOpened) {
+                subjectTextView.typeface = openedTypeFace
+                bodyTextView.typeface = openedTypeFace
+            } else {
+                subjectTextView.typeface = notOpenedSubjectTypeFace
+                bodyTextView.typeface = notOpenedBodyTypeFace
+            }
         }
     }
 
@@ -73,9 +81,8 @@ class MessageItemView @JvmOverloads constructor(
         iconImageView.measureWrapContent()
         timeTextView.measureWrapContent()
 
-        val subjectTextMaxWidth =
-            viewWidth - (timeTextView.measuredWidth + iconImageView.measuredWidth +
-                    convertDpToPx(32))
+        val subjectTextMaxWidth = viewWidth - (timeTextView.measuredWidth + iconImageView.measuredWidth +
+                convertDpToPx(32))
         subjectTextView.measure(
             MeasureSpec.makeMeasureSpec(subjectTextMaxWidth, MeasureSpec.AT_MOST),
             MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED)

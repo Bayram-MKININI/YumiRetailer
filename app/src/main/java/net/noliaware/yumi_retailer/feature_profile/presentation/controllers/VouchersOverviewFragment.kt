@@ -83,32 +83,26 @@ class VouchersOverviewFragment : AppCompatDialogFragment() {
                     color = category.categoryColor,
                     iconName = category.categoryIcon,
                     availableVouchersCount = category.availableVoucherCount,
-                    availableVouchersGain = getString(
-                        R.string.price_format,
-                        category.availableVoucherAmount.formatNumber()
-                    ),
-                    availableGainAvailable = category.availableVoucherAmount > 0,
+                    availableVouchersGain = mapVoucherAmount(category.availableVoucherAmount),
                     expectedVouchersCount = category.expectedVoucherCount,
-                    expectedVouchersGain = getString(
-                        R.string.price_format,
-                        category.expectedVoucherAmount.formatNumber()
-                    ),
-                    expectedGainAvailable = category.expectedVoucherAmount > 0,
                     consumedVouchersCount = category.usedVoucherCount,
-                    consumedVouchersGain = getString(
-                        R.string.price_format,
-                        category.usedVoucherAmount.formatNumber()
-                    ),
-                    consumedGainAvailable = category.usedVoucherAmount > 0,
+                    consumedVouchersGain = mapVoucherAmount(category.usedVoucherAmount),
                     cancelledVouchersCount = category.cancelledVoucherCount,
-                    cancelledVouchersGain = getString(
-                        R.string.price_format,
-                        category.cancelledVoucherAmount.formatNumber()
-                    ),
-                    cancelledGainAvailable = category.cancelledVoucherAmount > 0
+                    cancelledVouchersGain = mapVoucherAmount(category.cancelledVoucherAmount)
                 )
             )
         }
+    }
+
+    private fun mapVoucherAmount(
+        vouchersAmount: Float
+    ) = if (vouchersAmount > 0) {
+        getString(
+            R.string.price_format,
+            vouchersAmount.formatNumber()
+        )
+    } else {
+        null
     }
 
     private val vouchersOverviewViewCallback: VouchersOverviewViewCallback by lazy {

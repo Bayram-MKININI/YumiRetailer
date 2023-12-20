@@ -38,9 +38,7 @@ data class CategoryDTO(
     @Json(name = "usedVoucherAmount")
     val usedVoucherAmount: String?,
     @Json(name = "expectedVoucherCount")
-    val expectedVoucherCount: Int?,
-    @Json(name = "expectedVoucherAmount")
-    val expectedVoucherAmount: String?
+    val expectedVoucherCount: Int?
 ) {
     fun toCategory() = Category(
         categoryId = categoryId,
@@ -58,7 +56,6 @@ data class CategoryDTO(
         usedVoucherAmount = usedVoucherAmount?.toFloat() ?: 0F,
         cancelledVoucherCount = canceledVoucherCount ?: 0,
         cancelledVoucherAmount = canceledVoucherAmount?.toFloat() ?: 0F,
-        expectedVoucherCount = expectedVoucherCount ?: 0,
-        expectedVoucherAmount = expectedVoucherAmount?.toFloat() ?: 0F
+        expectedVoucherCount = expectedVoucherCount ?: 0
     )
 }

@@ -28,11 +28,9 @@ class CategoryItemView @JvmOverloads constructor(
         val iconName: String = "",
         val title: String = "",
         val consumedCount: Int = 0,
-        val consumedGain: String,
-        val consumedGainAvailable: Boolean,
+        val consumedGain: String?,
         val remainingCount: Int = 0,
-        val remainingGain: String,
-        val remainingGainAvailable: Boolean
+        val remainingGain: String?
     )
 
     override fun onFinishInflate() {
@@ -54,7 +52,6 @@ class CategoryItemView @JvmOverloads constructor(
             VoucherCountViewAdapter(
                 title = context.getString(R.string.vouchers_consumed),
                 count = categoryItemViewAdapter.consumedCount.formatNumber(),
-                gainAvailable = categoryItemViewAdapter.consumedGainAvailable,
                 gain = categoryItemViewAdapter.consumedGain
             )
         )
@@ -62,7 +59,6 @@ class CategoryItemView @JvmOverloads constructor(
             VoucherCountViewAdapter(
                 title = context.getString(R.string.vouchers_remaining),
                 count = categoryItemViewAdapter.remainingCount.formatNumber(),
-                gainAvailable = categoryItemViewAdapter.remainingGainAvailable,
                 gain = categoryItemViewAdapter.remainingGain
             )
         )

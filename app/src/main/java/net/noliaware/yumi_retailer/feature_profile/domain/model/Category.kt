@@ -22,6 +22,5 @@ data class Category(
     val usedVoucherAmount: Float,
     val cancelledVoucherCount: Int,
     val cancelledVoucherAmount: Float,
-    val expectedVoucherCount: Int,
-    val expectedVoucherAmount: Float
+    val expectedVoucherCount: Int
 ) : Parcelable

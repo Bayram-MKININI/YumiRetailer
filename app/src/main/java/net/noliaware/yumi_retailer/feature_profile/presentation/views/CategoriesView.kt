@@ -35,17 +35,12 @@ class CategoriesView @JvmOverloads constructor(
 
     data class CategoriesViewAdapter(
         val availableVouchersCount: Int = 0,
-        val availableVouchersGain: String,
-        val availableGainAvailable: Boolean = false,
+        val availableVouchersGain: String?,
         val expectedVouchersCount: Int = 0,
-        val expectedVouchersGain: String,
-        val expectedGainAvailable: Boolean = false,
         val consumedVouchersCount: Int = 0,
-        val consumedVouchersGain: String,
-        val consumedGainAvailable: Boolean = false,
+        val consumedVouchersGain: String?,
         val cancelledVouchersCount: Int = 0,
-        val cancelledVouchersGain: String,
-        val cancelledGainAvailable: Boolean = false,
+        val cancelledVouchersGain: String?,
         val categoryItemViewAdapters: List<CategoryItemViewAdapter>
     )
 
@@ -90,23 +85,19 @@ class CategoriesView @JvmOverloads constructor(
             VoucherCountView.VoucherCountViewAdapter(
                 title = context.getString(R.string.available),
                 count = categoriesViewAdapter.availableVouchersCount.formatNumber(),
-                gainAvailable = categoriesViewAdapter.availableGainAvailable,
                 gain = categoriesViewAdapter.availableVouchersGain
             )
         )
         expectedVoucherCountView.fillViewWithData(
             VoucherCountView.VoucherCountViewAdapter(
                 title = context.getString(R.string.expected),
-                count = categoriesViewAdapter.expectedVouchersCount.formatNumber(),
-                gainAvailable = categoriesViewAdapter.expectedGainAvailable,
-                gain = categoriesViewAdapter.expectedVouchersGain
+                count = categoriesViewAdapter.expectedVouchersCount.formatNumber()
             )
         )
         consumedVoucherCountView.fillViewWithData(
             VoucherCountView.VoucherCountViewAdapter(
                 title = context.getString(R.string.consumed),
                 count = categoriesViewAdapter.consumedVouchersCount.formatNumber(),
-                gainAvailable = categoriesViewAdapter.consumedGainAvailable,
                 gain = categoriesViewAdapter.consumedVouchersGain
             )
         )
@@ -114,7 +105,6 @@ class CategoriesView @JvmOverloads constructor(
             VoucherCountView.VoucherCountViewAdapter(
                 title = context.getString(R.string.cancelled),
                 count = categoriesViewAdapter.cancelledVouchersCount.formatNumber(),
-                gainAvailable = categoriesViewAdapter.cancelledGainAvailable,
                 gain = categoriesViewAdapter.cancelledVouchersGain
             )
         )
