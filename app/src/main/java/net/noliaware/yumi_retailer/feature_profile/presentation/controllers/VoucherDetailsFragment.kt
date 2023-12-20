@@ -196,7 +196,6 @@ class VoucherDetailsFragment : AppCompatDialogFragment() {
                 wordsToStyle = listOf(creationDate)
             )
         }
-
         USED -> {
             val usageDate = voucher.voucherUseDate?.parseDateToFormat(SHORT_DATE_FORMAT).orEmpty()
             val usageTime = voucher.voucherUseTime?.parseTimeToFormat(HOURS_TIME_FORMAT).orEmpty()
@@ -208,12 +207,9 @@ class VoucherDetailsFragment : AppCompatDialogFragment() {
                 wordsToStyle = listOf(usageDate, usageTime)
             )
         }
-
         CANCELLED -> {
-            val cancellationDate =
-                voucher.voucherUseDate?.parseDateToFormat(SHORT_DATE_FORMAT).orEmpty()
-            val cancellationTime =
-                voucher.voucherUseTime?.parseTimeToFormat(HOURS_TIME_FORMAT).orEmpty()
+            val cancellationDate = voucher.voucherUseDate?.parseDateToFormat(SHORT_DATE_FORMAT).orEmpty()
+            val cancellationTime = voucher.voucherUseTime?.parseTimeToFormat(HOURS_TIME_FORMAT).orEmpty()
             decorateTextWithFont(
                 originalText = getString(
                     R.string.cancellation_date,
@@ -222,7 +218,6 @@ class VoucherDetailsFragment : AppCompatDialogFragment() {
                 wordsToStyle = listOf(cancellationDate, cancellationTime)
             )
         }
-
         else -> SpannableString("")
     }
 
