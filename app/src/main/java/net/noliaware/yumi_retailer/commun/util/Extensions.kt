@@ -264,8 +264,7 @@ fun Fragment.handleSharedEvent(
                             dialog.dismiss()
                         }
                         .setCancelable(false)
-                        .create()
-                        .apply {
+                        .create().apply {
                             setCanceledOnTouchOutside(false)
                             show()
                         }
@@ -561,10 +560,8 @@ fun String.parseHexColor() = if (isEmpty()) {
 @CheckResult
 fun Drawable.tint(
     @ColorInt color: Int
-): Drawable {
-    val tintedDrawable = DrawableCompat.wrap(this).mutate()
-    DrawableCompat.setTint(tintedDrawable, color)
-    return tintedDrawable
+) = DrawableCompat.wrap(this).mutate().apply {
+    DrawableCompat.setTint(this, color)
 }
 
 fun Number.formatNumber(): String = NumberFormat.getNumberInstance(Locale.getDefault()).format(this)

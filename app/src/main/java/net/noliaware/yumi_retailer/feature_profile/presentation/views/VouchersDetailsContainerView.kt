@@ -81,8 +81,7 @@ class VouchersDetailsContainerView @JvmOverloads constructor(
                 vouchersDetailsView.requestSpinner.adapter.count,
                 false
             )
-            vouchersDetailsView.requestSpinner.onItemSelectedListener =
-                onSpinnerItemSelectedListener
+            vouchersDetailsView.requestSpinner.onItemSelectedListener = onSpinnerItemSelectedListener
         }
         vouchersDetailsView.ongoingRequestsButton.setOnClickListener(onButtonClickListener)
         vouchersDetailsView.moreTextView.setOnClickListener(onButtonClickListener)
