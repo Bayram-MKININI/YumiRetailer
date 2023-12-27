@@ -87,12 +87,7 @@ class MainActivity : AppCompatActivity() {
                     checkCameraPermission()
                 }
                 .setCancelable(false)
-                .create()
-                .apply {
-                    setCanceledOnTouchOutside(false)
-                    show()
-                }
-
+                .show()
             false
         }
 

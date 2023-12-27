@@ -77,11 +77,9 @@ class ScanFragment : Fragment() {
                     }
                 }.setNegativeButton(R.string.cancel) { dialog, _ ->
                     dialog.dismiss()
-                }.setCancelable(false)
-                .create().apply {
-                    setCanceledOnTouchOutside(false)
-                    show()
                 }
+                .setCancelable(false)
+                .show()
         }
     }
 
