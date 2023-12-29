@@ -86,6 +86,7 @@ import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
 import java.security.SecureRandom
 import java.text.NumberFormat
+import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -224,24 +225,22 @@ suspend inline fun <reified T : Any> FlowCollector<Resource<T>>.handleRemoteCall
 
 fun String.parseDateToFormat(
     destFormat: String
-) = parseDateStringToFormat(this, DATE_SOURCE_FORMAT, destFormat).orEmpty()
+) = parseDateStringToFormat(DATE_SOURCE_FORMAT, destFormat).orEmpty()
 
 fun String.parseTimeToFormat(
     destFormat: String
-) = parseDateStringToFormat(this, TIME_SOURCE_FORMAT, destFormat).orEmpty()
+) = parseDateStringToFormat(TIME_SOURCE_FORMAT, destFormat).orEmpty()
 
-private fun parseDateStringToFormat(
-    sourceDate: String,
+fun String.parseDateStringToFormat(
     sourceFormat: String,
     destFormat: String
-): String? {
-    val sourceFormatter = SimpleDateFormat(sourceFormat, Locale.FRANCE)
-    val date = sourceFormatter.parse(sourceDate)
-    val destFormatter = SimpleDateFormat(destFormat, Locale.FRANCE)
-    date?.let {
-        return destFormatter.format(it)
+) = try {
+    SimpleDateFormat(sourceFormat, Locale.FRANCE).parse(this)?.let {
+        SimpleDateFormat(destFormat, Locale.FRANCE).format(it)
     }
-    return null
+} catch (e: ParseException) {
+    e.recordNonFatal()
+    null
 }
 
 fun Int.parseSecondsToMinutesString(): String = SimpleDateFormat(

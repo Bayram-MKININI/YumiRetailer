@@ -1,5 +1,6 @@
 package net.noliaware.yumi_retailer.feature_profile.presentation.controllers
 
+import android.app.DatePickerDialog
 import android.content.DialogInterface
 import android.os.Bundle
 import android.text.SpannableString
@@ -14,16 +15,13 @@ import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.google.android.material.datepicker.CalendarConstraints
-import com.google.android.material.datepicker.DateValidatorPointForward
-import com.google.android.material.datepicker.MaterialDatePicker.Builder.dateRangePicker
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import net.noliaware.yumi_retailer.R
 import net.noliaware.yumi_retailer.commun.DateTime.DATE_SOURCE_FORMAT
 import net.noliaware.yumi_retailer.commun.DateTime.HOURS_TIME_FORMAT
+import net.noliaware.yumi_retailer.commun.DateTime.NUMERICAL_DATE_FORMAT
 import net.noliaware.yumi_retailer.commun.DateTime.SHORT_DATE_FORMAT
-import net.noliaware.yumi_retailer.commun.FragmentKeys.DATE_RANGE_PICKER_KEY
 import net.noliaware.yumi_retailer.commun.FragmentKeys.REFRESH_VOUCHER_DETAILS_REQUEST_KEY
 import net.noliaware.yumi_retailer.commun.FragmentKeys.REFRESH_VOUCHER_LIST_REQUEST_KEY
 import net.noliaware.yumi_retailer.commun.util.DecoratedText
@@ -35,8 +33,10 @@ import net.noliaware.yumi_retailer.commun.util.getFontFromResources
 import net.noliaware.yumi_retailer.commun.util.handleSharedEvent
 import net.noliaware.yumi_retailer.commun.util.navDismiss
 import net.noliaware.yumi_retailer.commun.util.openWebPage
+import net.noliaware.yumi_retailer.commun.util.parseDateStringToFormat
 import net.noliaware.yumi_retailer.commun.util.parseDateToFormat
 import net.noliaware.yumi_retailer.commun.util.parseTimeToFormat
+import net.noliaware.yumi_retailer.commun.util.recordNonFatal
 import net.noliaware.yumi_retailer.commun.util.redirectToLoginScreenFromSharedEvent
 import net.noliaware.yumi_retailer.commun.util.safeNavigate
 import net.noliaware.yumi_retailer.feature_login.domain.model.VoucherRequestType
@@ -50,14 +50,15 @@ import net.noliaware.yumi_retailer.feature_profile.domain.model.VoucherStatus.US
 import net.noliaware.yumi_retailer.feature_profile.domain.model.VoucherStatus.USED
 import net.noliaware.yumi_retailer.feature_profile.presentation.adapters.VoucherRequestsAdapter
 import net.noliaware.yumi_retailer.feature_profile.presentation.views.VoucherAmendAvailabilityView
-import net.noliaware.yumi_retailer.feature_profile.presentation.views.VoucherAmendAvailabilityView.VoucherAmendAvailabilityViewAdapter
+import net.noliaware.yumi_retailer.feature_profile.presentation.views.VoucherAmendAvailabilityView.VoucherAmendAvailabilityViewCallback
 import net.noliaware.yumi_retailer.feature_profile.presentation.views.VoucherRequestView
 import net.noliaware.yumi_retailer.feature_profile.presentation.views.VoucherRequestView.VoucherRequestViewAdapter
 import net.noliaware.yumi_retailer.feature_profile.presentation.views.VouchersDetailsContainerView
 import net.noliaware.yumi_retailer.feature_profile.presentation.views.VouchersDetailsContainerView.VouchersDetailsViewAdapter
 import net.noliaware.yumi_retailer.feature_profile.presentation.views.VouchersDetailsContainerView.VouchersDetailsViewCallback
+import java.text.ParseException
 import java.text.SimpleDateFormat
-import java.util.Date
+import java.util.Calendar
 import java.util.Locale
 
 @AndroidEntryPoint
@@ -224,7 +225,7 @@ class VoucherDetailsFragment : AppCompatDialogFragment() {
     private fun mapStartDate(voucherStartDate: String?): SpannableString {
         val startDate = voucherStartDate?.parseDateToFormat(SHORT_DATE_FORMAT).orEmpty()
         return decorateTextWithFont(
-            originalText = getString(R.string.usable_start_date, startDate),
+            originalText = getString(R.string.usable_start_date_value, startDate),
             wordsToStyle = listOf(startDate)
         )
     }
@@ -232,7 +233,7 @@ class VoucherDetailsFragment : AppCompatDialogFragment() {
     private fun mapEndDate(voucherExpiryDate: String?): SpannableString {
         val expiryDate = voucherExpiryDate?.parseDateToFormat(SHORT_DATE_FORMAT).orEmpty()
         return decorateTextWithFont(
-            originalText = getString(R.string.usable_end_date, expiryDate),
+            originalText = getString(R.string.usable_end_date_value, expiryDate),
             wordsToStyle = listOf(expiryDate)
         )
     }
@@ -315,7 +316,12 @@ class VoucherDetailsFragment : AppCompatDialogFragment() {
             }
 
             override fun onAmendDatesButtonClicked() {
-                displayDialogForRangePicker()
+                viewModel.getVoucherEventsHelper.stateData?.let {
+                    displayDialogForUpdateAvailability(
+                        it.voucherStartDate,
+                        it.voucherExpiryDate
+                    )
+                }
             }
         }
     }
@@ -345,62 +351,100 @@ class VoucherDetailsFragment : AppCompatDialogFragment() {
             setNegativeButton(R.string.cancel) { dialog, _ ->
                 dialog.dismiss()
             }
-        }.create().show()
-    }
-
-    private fun displayDialogForRangePicker() {
-        dateRangePicker().apply {
-            setTitleText(R.string.date_range)
-            setCalendarConstraints(
-                CalendarConstraints.Builder()
-                    .setValidator(DateValidatorPointForward.now())
-                    .build()
-            )
-        }.build().also {
-            it.addOnPositiveButtonClickListener { selection ->
-                val startDate = selection.first
-                val endDate = selection.second
-                val sdf = SimpleDateFormat(DATE_SOURCE_FORMAT, Locale.getDefault())
-                val startDateString = sdf.format(Date(startDate))
-                val endDateString = sdf.format(Date(endDate))
-                displayDialogForUpdateAvailability(startDateString, endDateString)
-            }
-            it.show(childFragmentManager, DATE_RANGE_PICKER_KEY)
-        }
+        }.show()
     }
 
     private fun displayDialogForUpdateAvailability(
-        startDate: String,
-        endDate: String,
+        startDate: String?,
+        endDate: String?,
     ) {
         MaterialAlertDialogBuilder(
             requireContext(),
             R.style.MaterialAlertDialog_rounded
         ).apply {
-            val voucherAmendAvailabilityView = layoutInflater.inflate(
+
+            val dialogView = layoutInflater.inflate(
                 R.layout.voucher_amend_availability_layout,
                 null
             ) as VoucherAmendAvailabilityView
-            voucherAmendAvailabilityView.fillViewWithData(
-                VoucherAmendAvailabilityViewAdapter(
-                    startDate = mapStartDate(startDate),
-                    endDate = mapEndDate(endDate)
+
+            dialogView.apply {
+                setStartDate(
+                    startDate?.parseDateToFormat(NUMERICAL_DATE_FORMAT).orEmpty()
                 )
-            )
-            setView(voucherAmendAvailabilityView)
+                setEndDate(
+                    endDate?.parseDateToFormat(NUMERICAL_DATE_FORMAT).orEmpty()
+                )
+                callback = object : VoucherAmendAvailabilityViewCallback {
+                    override fun onStartDateInputClicked() {
+                        displayDatePickerForDate(
+                            startDate.orEmpty()
+                        ) {
+                            dialogView.setStartDate(it)
+                        }
+                    }
+                    override fun onEndDateInputClicked() {
+                        displayDatePickerForDate(
+                            endDate.orEmpty()
+                        ) {
+                            dialogView.setEndDate(it)
+                        }
+                    }
+                }
+            }
+
+            setView(dialogView)
+
             setPositiveButton(R.string.send) { dialog, _ ->
                 viewModel.callSetVoucherAvailabilityDates(
-                    voucherStartDate = startDate,
-                    voucherEndDate = endDate,
-                    voucherComment = voucherAmendAvailabilityView.getUserComment()
+                    voucherStartDate = dialogView.getStartDate().parseSelectedDate(),
+                    voucherEndDate = dialogView.getEndDate().parseSelectedDate(),
+                    voucherComment = dialogView.getUserComment()
                 )
                 dialog.dismiss()
             }
-
             setNegativeButton(R.string.cancel) { dialog, _ ->
                 dialog.dismiss()
             }
-        }.create().show()
+        }.show()
+    }
+
+    private fun String.parseSelectedDate() = parseDateStringToFormat(
+        NUMERICAL_DATE_FORMAT,
+        DATE_SOURCE_FORMAT
+    ).orEmpty()
+
+    private fun displayDatePickerForDate(
+        date: String,
+        selection: (String) -> Unit
+    ) {
+        val cldr = Calendar.getInstance().apply {
+            try {
+                time = SimpleDateFormat(
+                    DATE_SOURCE_FORMAT,
+                    Locale.FRANCE
+                ).parse(date) ?: return
+            } catch (e: ParseException) {
+                e.recordNonFatal()
+                return
+            }
+        }
+        DatePickerDialog(
+            requireContext(),
+            { _, selectedYear, monthOfYear, dayOfMonth ->
+                selection(
+                    getString(
+                        R.string.selected_date_format,
+                        dayOfMonth,
+                        monthOfYear + 1,
+                        selectedYear
+                    )
+                )
+            },
+            cldr.get(Calendar.YEAR),
+            cldr.get(Calendar.MONTH),
+            cldr.get(Calendar.DAY_OF_MONTH)
+        ).show()
     }
 
     override fun onDismiss(dialog: DialogInterface) {

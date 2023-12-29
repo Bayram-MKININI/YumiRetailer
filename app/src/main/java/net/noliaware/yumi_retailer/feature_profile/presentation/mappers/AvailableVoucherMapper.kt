@@ -41,7 +41,7 @@ class AvailableVoucherMapper @Inject constructor() : VoucherMapper {
         NON_AVAILABLE -> {
             val startDate = voucher.voucherStartDate?.parseDateToFormat(SHORT_DATE_FORMAT).orEmpty()
             context.getString(
-                R.string.usable_start_date,
+                R.string.usable_start_date_value,
                 startDate
             ).decorateWords(
                 wordsToDecorate = listOf(
@@ -52,7 +52,7 @@ class AvailableVoucherMapper @Inject constructor() : VoucherMapper {
         else -> {
             val expiryDate = voucher.voucherExpiryDate?.parseDateToFormat(SHORT_DATE_FORMAT).orEmpty()
             context.getString(
-                R.string.usable_end_date,
+                R.string.usable_end_date_value,
                 expiryDate
             ).decorateWords(
                 wordsToDecorate = listOf(

@@ -77,20 +77,24 @@
     <string name="cancelled_vouchers">Coupons annulés</string>
     <string name="consumed_vouchers">Coupons consommés</string>
     <string name="price_format">%s€</string>
-    <string name="usable_start_date">Utilisable à partir du %s</string>
+    <string name="usable_start_date_value">Utilisable à partir du %s</string>
     <string name="on_hold">En attente</string>
     <string name="usage_date">Utilisé le %s</string>
     <string name="cancellation_date">Annulé le %s</string>
-    <string name="usable_end_date">Utilisable jusqu\'au %s</string>
+    <string name="usable_end_date_value">Utilisable jusqu\'au %s</string>
 
     //Vouchers
     <string name="voucher_number">Numéro: %s</string>
     <string name="created_in">Crée le %s</string>
     <string name="more">Voir plus</string>
     <string name="availability_dates">Dates de disponibilité</string>
+    <string name="usable_start_date">Utilisable à partir du</string>
+    <string name="usable_end_date">Utilisable jusqu\'au</string>
+    <string name="selected_date_format">%02d/%02d/%d</string>
     <string name="amend">Modifier</string>
     <string name="date_range">Choisir une plage de dates:</string>
     <string name="new_availability">Nouvelle disponibilité</string>
+    <string name="date_hint">jj/mm/aaaa</string>
     <string name="comment">Commentaire</string>
     <string name="send">Envoyer</string>
     <string name="requests_in_progress">Demandes en cours</string>

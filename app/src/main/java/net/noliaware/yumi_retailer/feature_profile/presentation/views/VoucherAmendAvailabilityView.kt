@@ -1,7 +1,6 @@
 package net.noliaware.yumi_retailer.feature_profile.presentation.views
 
 import android.content.Context
-import android.text.SpannableString
 import android.util.AttributeSet
 import android.view.ViewGroup
 import android.widget.EditText
@@ -21,13 +20,16 @@ class VoucherAmendAvailabilityView @JvmOverloads constructor(
 
     private lateinit var titleTextView: TextView
     private lateinit var startDateTextView: TextView
+    private lateinit var startDateInput: EditText
     private lateinit var endDateTextView: TextView
+    private lateinit var endDateInput: EditText
     private lateinit var commentInput: EditText
+    var callback: VoucherAmendAvailabilityViewCallback? = null
 
-    data class VoucherAmendAvailabilityViewAdapter(
-        val startDate: SpannableString,
-        val endDate: SpannableString
-    )
+    interface VoucherAmendAvailabilityViewCallback {
+        fun onStartDateInputClicked()
+        fun onEndDateInputClicked()
+    }
 
     override fun onFinishInflate() {
         super.onFinishInflate()
@@ -36,14 +38,32 @@ class VoucherAmendAvailabilityView @JvmOverloads constructor(
 
     private fun initView() {
         titleTextView = findViewById(R.id.title_text_view)
+
         startDateTextView = findViewById(R.id.start_date_text_view)
+        startDateInput = findViewById(R.id.start_date_input)
+        startDateInput.setOnClickListener {
+            callback?.onStartDateInputClicked()
+        }
+
         endDateTextView = findViewById(R.id.end_date_text_view)
+        endDateInput = findViewById(R.id.end_date_input)
+        endDateInput.setOnClickListener {
+            callback?.onEndDateInputClicked()
+        }
+
         commentInput = findViewById(R.id.comment_input)
     }
 
-    fun fillViewWithData(adapter: VoucherAmendAvailabilityViewAdapter) {
-        startDateTextView.text = adapter.startDate
-        endDateTextView.text = adapter.endDate
+    fun getStartDate() = startDateInput.text.toString()
+
+    fun setStartDate(startDate: String) {
+        startDateInput.setText(startDate)
+    }
+
+    fun getEndDate() = endDateInput.text.toString()
+
+    fun setEndDate(endDate: String) {
+        endDateInput.setText(endDate)
     }
 
     fun getUserComment() = commentInput.text.toString()
@@ -57,7 +77,16 @@ class VoucherAmendAvailabilityView @JvmOverloads constructor(
         )
 
         startDateTextView.measureWrapContent()
+        startDateInput.measure(
+            MeasureSpec.makeMeasureSpec(viewWidth * 4 / 10, MeasureSpec.AT_MOST),
+            MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED)
+        )
+
         endDateTextView.measureWrapContent()
+        endDateInput.measure(
+            MeasureSpec.makeMeasureSpec(viewWidth * 4 / 10, MeasureSpec.AT_MOST),
+            MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED)
+        )
 
         val commentInputWidth = viewWidth * 95 / 100
         val commentInputHeight = (commentInputWidth / GOLDEN_RATIO).roundToInt()
@@ -67,7 +96,7 @@ class VoucherAmendAvailabilityView @JvmOverloads constructor(
         )
 
         val contentMeasuredHeight = titleTextView.measuredHeight + startDateTextView.measuredHeight +
-                endDateTextView.measuredHeight + commentInput.measuredHeight + convertDpToPx(55)
+                    startDateInput.measuredHeight + commentInput.measuredHeight + convertDpToPx(55)
 
         setMeasuredDimension(
             MeasureSpec.makeMeasureSpec(viewWidth, MeasureSpec.EXACTLY),
@@ -89,14 +118,24 @@ class VoucherAmendAvailabilityView @JvmOverloads constructor(
             titleTextView.bottom + convertDpToPx(15)
         )
 
-        endDateTextView.layoutToTopLeft(
-            titleTextView.left,
+        startDateInput.layoutToTopLeft(
+            (viewWidth / 2 - startDateInput.measuredWidth) / 2,
             startDateTextView.bottom + convertDpToPx(10)
+        )
+
+        endDateTextView.layoutToTopLeft(
+            viewWidth / 2 + convertDpToPx(20),
+            startDateTextView.top
+        )
+
+        endDateInput.layoutToTopLeft(
+            viewWidth / 2 + (viewWidth / 2 - endDateInput.measuredWidth) / 2,
+            endDateTextView.bottom + convertDpToPx(10)
         )
 
         commentInput.layoutToTopLeft(
             (viewWidth - commentInput.measuredWidth) / 2,
-            endDateTextView.bottom + convertDpToPx(15)
+            startDateInput.bottom + convertDpToPx(15)
         )
     }
 }

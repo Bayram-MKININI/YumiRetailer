@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <net.noliaware.yumi_retailer.feature_profile.presentation.views.VoucherAmendAvailabilityView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -19,18 +18,46 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/omnes_regular"
+        android:text="@string/usable_start_date"
         android:textColor="@color/grey_2"
-        android:textSize="15sp"
-        tools:text="Utilisable à partir du 04 déc. 2023" />
+        android:textSize="14sp" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/start_date_input"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rectangle_rounded_grey1"
+        android:cursorVisible="false"
+        android:focusable="false"
+        android:fontFamily="@font/omnes_medium"
+        android:hint="@string/date_hint"
+        android:maxLength="10"
+        android:padding="10dp"
+        android:textColor="@color/grey_4"
+        android:textSize="15sp" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/end_date_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/omnes_regular"
+        android:text="@string/usable_end_date"
         android:textColor="@color/grey_2"
-        android:textSize="14sp"
-        tools:text="Utilisable jusqu'au 15 déc. 2023" />
+        android:textSize="14sp" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/end_date_input"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rectangle_rounded_grey1"
+        android:cursorVisible="false"
+        android:focusable="false"
+        android:fontFamily="@font/omnes_medium"
+        android:hint="@string/date_hint"
+        android:maxLength="10"
+        android:padding="10dp"
+        android:textColor="@color/grey_4"
+        android:textSize="15sp" />
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/comment_input"
