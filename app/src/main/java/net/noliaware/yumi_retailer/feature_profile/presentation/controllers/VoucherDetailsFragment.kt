@@ -340,7 +340,8 @@ class VoucherDetailsFragment : AppCompatDialogFragment() {
             setNegativeButton(R.string.cancel) { dialog, _ ->
                 dialog.dismiss()
             }
-        }.show()
+        }
+        .show()
     }
 
     private fun displayDialogForUpdateAvailability(

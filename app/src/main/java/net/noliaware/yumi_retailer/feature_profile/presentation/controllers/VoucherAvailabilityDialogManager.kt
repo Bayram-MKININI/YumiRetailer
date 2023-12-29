@@ -87,7 +87,8 @@ class VoucherAvailabilityDialogManager(private val context: Context) {
             setNegativeButton(R.string.cancel) { dialog, _ ->
                 dialog.dismiss()
             }
-        }.show()
+        }
+        .show()
     }
 
     private fun String.parseSelectedDate() = this.parseDateStringToFormat(
@@ -128,6 +129,7 @@ class VoucherAvailabilityDialogManager(private val context: Context) {
             cldr.get(Calendar.DAY_OF_MONTH)
         ).apply {
             datePicker.minDate = minDateTimestamp
-        }.show()
+        }
+        .show()
     }
 }
