@@ -1,6 +1,5 @@
 package net.noliaware.yumi_retailer.feature_profile.presentation.controllers
 
-import android.app.DatePickerDialog
 import android.content.DialogInterface
 import android.os.Bundle
 import android.text.SpannableString
@@ -18,9 +17,7 @@ import androidx.navigation.fragment.navArgs
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import net.noliaware.yumi_retailer.R
-import net.noliaware.yumi_retailer.commun.DateTime.DATE_SOURCE_FORMAT
 import net.noliaware.yumi_retailer.commun.DateTime.HOURS_TIME_FORMAT
-import net.noliaware.yumi_retailer.commun.DateTime.NUMERICAL_DATE_FORMAT
 import net.noliaware.yumi_retailer.commun.DateTime.SHORT_DATE_FORMAT
 import net.noliaware.yumi_retailer.commun.FragmentKeys.REFRESH_VOUCHER_DETAILS_REQUEST_KEY
 import net.noliaware.yumi_retailer.commun.FragmentKeys.REFRESH_VOUCHER_LIST_REQUEST_KEY
@@ -33,10 +30,8 @@ import net.noliaware.yumi_retailer.commun.util.getFontFromResources
 import net.noliaware.yumi_retailer.commun.util.handleSharedEvent
 import net.noliaware.yumi_retailer.commun.util.navDismiss
 import net.noliaware.yumi_retailer.commun.util.openWebPage
-import net.noliaware.yumi_retailer.commun.util.parseDateStringToFormat
 import net.noliaware.yumi_retailer.commun.util.parseDateToFormat
 import net.noliaware.yumi_retailer.commun.util.parseTimeToFormat
-import net.noliaware.yumi_retailer.commun.util.recordNonFatal
 import net.noliaware.yumi_retailer.commun.util.redirectToLoginScreenFromSharedEvent
 import net.noliaware.yumi_retailer.commun.util.safeNavigate
 import net.noliaware.yumi_retailer.feature_login.domain.model.VoucherRequestType
@@ -49,17 +44,11 @@ import net.noliaware.yumi_retailer.feature_profile.domain.model.VoucherStatus.IN
 import net.noliaware.yumi_retailer.feature_profile.domain.model.VoucherStatus.USABLE
 import net.noliaware.yumi_retailer.feature_profile.domain.model.VoucherStatus.USED
 import net.noliaware.yumi_retailer.feature_profile.presentation.adapters.VoucherRequestsAdapter
-import net.noliaware.yumi_retailer.feature_profile.presentation.views.VoucherAmendAvailabilityView
-import net.noliaware.yumi_retailer.feature_profile.presentation.views.VoucherAmendAvailabilityView.VoucherAmendAvailabilityViewCallback
 import net.noliaware.yumi_retailer.feature_profile.presentation.views.VoucherRequestView
 import net.noliaware.yumi_retailer.feature_profile.presentation.views.VoucherRequestView.VoucherRequestViewAdapter
 import net.noliaware.yumi_retailer.feature_profile.presentation.views.VouchersDetailsContainerView
 import net.noliaware.yumi_retailer.feature_profile.presentation.views.VouchersDetailsContainerView.VouchersDetailsViewAdapter
 import net.noliaware.yumi_retailer.feature_profile.presentation.views.VouchersDetailsContainerView.VouchersDetailsViewCallback
-import java.text.ParseException
-import java.text.SimpleDateFormat
-import java.util.Calendar
-import java.util.Locale
 
 @AndroidEntryPoint
 class VoucherDetailsFragment : AppCompatDialogFragment() {
@@ -358,93 +347,18 @@ class VoucherDetailsFragment : AppCompatDialogFragment() {
         startDate: String?,
         endDate: String?,
     ) {
-        MaterialAlertDialogBuilder(
-            requireContext(),
-            R.style.MaterialAlertDialog_rounded
-        ).apply {
-
-            val dialogView = layoutInflater.inflate(
-                R.layout.voucher_amend_availability_layout,
-                null
-            ) as VoucherAmendAvailabilityView
-
-            dialogView.apply {
-                setStartDate(
-                    startDate?.parseDateToFormat(NUMERICAL_DATE_FORMAT).orEmpty()
-                )
-                setEndDate(
-                    endDate?.parseDateToFormat(NUMERICAL_DATE_FORMAT).orEmpty()
-                )
-                callback = object : VoucherAmendAvailabilityViewCallback {
-                    override fun onStartDateInputClicked() {
-                        displayDatePickerForDate(
-                            startDate.orEmpty()
-                        ) {
-                            dialogView.setStartDate(it)
-                        }
-                    }
-                    override fun onEndDateInputClicked() {
-                        displayDatePickerForDate(
-                            endDate.orEmpty()
-                        ) {
-                            dialogView.setEndDate(it)
-                        }
-                    }
-                }
-            }
-
-            setView(dialogView)
-
-            setPositiveButton(R.string.send) { dialog, _ ->
-                viewModel.callSetVoucherAvailabilityDates(
-                    voucherStartDate = dialogView.getStartDate().parseSelectedDate(),
-                    voucherEndDate = dialogView.getEndDate().parseSelectedDate(),
-                    voucherComment = dialogView.getUserComment()
-                )
-                dialog.dismiss()
-            }
-            setNegativeButton(R.string.cancel) { dialog, _ ->
-                dialog.dismiss()
-            }
-        }.show()
-    }
-
-    private fun String.parseSelectedDate() = parseDateStringToFormat(
-        NUMERICAL_DATE_FORMAT,
-        DATE_SOURCE_FORMAT
-    ).orEmpty()
-
-    private fun displayDatePickerForDate(
-        date: String,
-        selection: (String) -> Unit
-    ) {
-        val cldr = Calendar.getInstance().apply {
-            try {
-                time = SimpleDateFormat(
-                    DATE_SOURCE_FORMAT,
-                    Locale.FRANCE
-                ).parse(date) ?: return
-            } catch (e: ParseException) {
-                e.recordNonFatal()
-                return
-            }
+        VoucherAvailabilityDialogManager(
+            requireContext()
+        ).displayDialogForUpdateAvailability(
+            startDate,
+            endDate
+        ) { newStartDate, newEndDate, comment ->
+            viewModel.callSetVoucherAvailabilityDates(
+                voucherStartDate = newStartDate,
+                voucherEndDate = newEndDate,
+                voucherComment = comment
+            )
         }
-        DatePickerDialog(
-            requireContext(),
-            { _, selectedYear, monthOfYear, dayOfMonth ->
-                selection(
-                    getString(
-                        R.string.selected_date_format,
-                        dayOfMonth,
-                        monthOfYear + 1,
-                        selectedYear
-                    )
-                )
-            },
-            cldr.get(Calendar.YEAR),
-            cldr.get(Calendar.MONTH),
-            cldr.get(Calendar.DAY_OF_MONTH)
-        ).show()
     }
 
     override fun onDismiss(dialog: DialogInterface) {
