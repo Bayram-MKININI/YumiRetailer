@@ -128,7 +128,6 @@ class VoucherAvailabilityDialogManager(private val context: Context) {
             cldr.get(Calendar.DAY_OF_MONTH)
         ).apply {
             datePicker.minDate = minDateTimestamp
-        }
-        .show()
+        }.show()
     }
 }
