@@ -82,6 +82,7 @@
     <string name="usage_date">Utilisé le %s</string>
     <string name="cancellation_date">Annulé le %s</string>
     <string name="usable_end_date_value">Utilisable jusqu\'au %s</string>
+    <string name="usable_single_date_value">Utilisable le %s</string>
 
     //Vouchers
     <string name="voucher_number">Numéro: %s</string>
@@ -95,6 +96,7 @@
     <string name="date_range">Choisir une plage de dates:</string>
     <string name="new_availability">Nouvelle disponibilité</string>
     <string name="date_hint">jj/mm/aaaa</string>
+    <string name="start_date_before_end_date">La date de début doit être fixée avant la date de fin</string>
     <string name="comment">Commentaire</string>
     <string name="send">Envoyer</string>
     <string name="requests_in_progress">Demandes en cours</string>

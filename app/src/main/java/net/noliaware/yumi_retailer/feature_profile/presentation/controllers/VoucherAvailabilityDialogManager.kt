@@ -10,6 +10,7 @@ import net.noliaware.yumi_retailer.commun.DateTime.NUMERICAL_DATE_FORMAT
 import net.noliaware.yumi_retailer.commun.util.parseDateStringToFormat
 import net.noliaware.yumi_retailer.commun.util.parseDateToFormat
 import net.noliaware.yumi_retailer.commun.util.recordNonFatal
+import net.noliaware.yumi_retailer.commun.util.toast
 import net.noliaware.yumi_retailer.feature_profile.presentation.views.VoucherAmendAvailabilityView
 import net.noliaware.yumi_retailer.feature_profile.presentation.views.VoucherAmendAvailabilityView.VoucherAmendAvailabilityViewCallback
 import java.text.ParseException
@@ -23,11 +24,6 @@ class VoucherAvailabilityDialogManager(private val context: Context) {
     private val calendarInstance = Calendar.getInstance()
     private var minStartTimestamp = calendarInstance.timeInMillis
     private var minEndTimestamp = calendarInstance.timeInMillis
-
-    init {
-        calendarInstance.add(Calendar.DATE, 1)
-        minEndTimestamp = calendarInstance.timeInMillis
-    }
 
     fun displayDialogForUpdateAvailability(
         startDate: String?,
@@ -51,25 +47,25 @@ class VoucherAvailabilityDialogManager(private val context: Context) {
                         displayDatePicker(
                             startDate.orEmpty(),
                             minStartTimestamp
-                        ) {
+                        ) { newStartDate ->
                             calendarInstance.apply {
                                 time = SimpleDateFormat(
                                     NUMERICAL_DATE_FORMAT,
                                     Locale.FRANCE
-                                ).parse(it) ?: Date()
-                                add(Calendar.DATE, 1)
-                                minEndTimestamp = timeInMillis
+                                ).parse(newStartDate) ?: Date()
+                                minEndTimestamp = calendarInstance.timeInMillis
                             }
-                            dialogView.setStartDate(it)
+                            dialogView.setStartDate(newStartDate)
                         }
                     }
 
                     override fun onEndDateInputClicked() {
+                        // minEndTimestamp should not be before minStartTimestamp
                         displayDatePicker(
                             endDate.orEmpty(),
                             minEndTimestamp
-                        ) {
-                            dialogView.setEndDate(it)
+                        ) { newEndDate ->
+                            dialogView.setEndDate(newEndDate)
                         }
                     }
                 }
@@ -77,21 +73,22 @@ class VoucherAvailabilityDialogManager(private val context: Context) {
 
             setView(dialogView)
 
-            setPositiveButton(R.string.send) { dialog, _ ->
-                val newStartDate = dialogView.getStartDate().parseSelectedDate()
-                val newEndDate = dialogView.getEndDate().parseSelectedDate()
-                val comment = dialogView.getUserComment()
-                onUpdate(newStartDate, newEndDate, comment)
-                dialog.dismiss()
+            setPositiveButton(R.string.send) { _, _ ->
+                val newStartDate = dialogView.getStartDate().parseSelectedDateToStandardFormat()
+                val newEndDate = dialogView.getEndDate().parseSelectedDateToStandardFormat()
+                if (newEndDate >= newStartDate) {
+                    val comment = dialogView.getUserComment()
+                    onUpdate(newStartDate, newEndDate, comment)
+                } else {
+                    context.toast(R.string.start_date_before_end_date)
+                }
             }
-            setNegativeButton(R.string.cancel) { dialog, _ ->
-                dialog.dismiss()
-            }
+            setNegativeButton(R.string.cancel, null)
         }
         .show()
     }
 
-    private fun String.parseSelectedDate() = this.parseDateStringToFormat(
+    private fun String.parseSelectedDateToStandardFormat() = this.parseDateStringToFormat(
         NUMERICAL_DATE_FORMAT,
         DATE_SOURCE_FORMAT
     ).orEmpty()

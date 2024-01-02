@@ -128,10 +128,12 @@ class VouchersDetailsView @JvmOverloads constructor(
             availabilityDatesTextView.isVisible = true
             datesBackgroundView.isVisible = true
             startDateTextView.isVisible = true
-            endDateTextView.isVisible = true
             amendDatesLayout.isVisible = true
             startDateTextView.text = vouchersDetailsViewAdapter.startDate
-            endDateTextView.text = vouchersDetailsViewAdapter.endDate
+            vouchersDetailsViewAdapter.endDate?.let {
+                endDateTextView.isVisible = true
+                endDateTextView.text = it
+            }
         }
     }
 
@@ -198,23 +200,34 @@ class VouchersDetailsView @JvmOverloads constructor(
             moreTextView.measureWrapContent()
         }
 
-        availabilityDatesTextView.measureWrapContent()
-        startDateTextView.measureWrapContent()
-        endDateTextView.measureWrapContent()
+        if (availabilityDatesTextView.isVisible) {
+            availabilityDatesTextView.measureWrapContent()
+        }
 
-        amendDatesLayout.measureWrapContent()
+        if (startDateTextView.isVisible) {
+            startDateTextView.measureWrapContent()
+        }
 
-        val datesBackgroundViewHeight =
-            startDateTextView.measuredHeight + endDateTextView.measuredHeight +
-                    amendDatesLayout.measuredHeight / 2 + convertDpToPx(40)
+        if (endDateTextView.isVisible) {
+            endDateTextView.measureWrapContent()
+        }
 
-        datesBackgroundView.measure(
-            MeasureSpec.makeMeasureSpec(viewWidth * 9 / 10, MeasureSpec.EXACTLY),
-            MeasureSpec.makeMeasureSpec(datesBackgroundViewHeight, MeasureSpec.EXACTLY)
-        )
+        if (amendDatesLayout.isVisible) {
+            amendDatesLayout.measureWrapContent()
+        }
 
-        val contentMeasuredHeight =
-            titleFillableTextWidget.measuredHeight + voucherDateFillableTextWidget.measuredHeight +
+        if (datesBackgroundView.isVisible) {
+            val datesBackgroundViewHeight = startDateTextView.measuredHeight +
+                    endDateTextView.sizeForVisible {
+                        endDateTextView.measuredHeight + convertDpToPx(10)
+                    } + amendDatesLayout.measuredHeight / 2 + convertDpToPx(30)
+            datesBackgroundView.measure(
+                MeasureSpec.makeMeasureSpec(viewWidth * 9 / 10, MeasureSpec.EXACTLY),
+                MeasureSpec.makeMeasureSpec(datesBackgroundViewHeight, MeasureSpec.EXACTLY)
+            )
+        }
+
+        val contentMeasuredHeight = titleFillableTextWidget.measuredHeight + voucherDateFillableTextWidget.measuredHeight +
                     voucherNumberFillableTextWidget.measuredHeight +
                     ongoingRequestsButton.sizeForVisible {
                         ongoingRequestsButton.measuredHeight + convertDpToPx(10)

@@ -75,9 +75,7 @@ class ScanFragment : Fragment() {
                     if ((activity as MainActivity).checkIfCameraPermissionIsGranted()) {
                         viewModel.callUseVoucherByCode(scannedQRCode)
                     }
-                }.setNegativeButton(R.string.cancel) { dialog, _ ->
-                    dialog.dismiss()
-                }
+                }.setNegativeButton(R.string.cancel, null)
                 .setCancelable(false)
                 .show()
         }

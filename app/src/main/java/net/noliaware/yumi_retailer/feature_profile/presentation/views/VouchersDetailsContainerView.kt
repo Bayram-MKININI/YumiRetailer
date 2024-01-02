@@ -47,7 +47,7 @@ class VouchersDetailsContainerView @JvmOverloads constructor(
         val voucherDescription: String? = null,
         val voucherPrice: SpannableString,
         val moreActionAvailable: Boolean,
-        val startDate: SpannableString?,
+        val startDate: SpannableString,
         val endDate: SpannableString?,
         val amendDatesAvailable: Boolean,
         val voucherStatus: String = ""

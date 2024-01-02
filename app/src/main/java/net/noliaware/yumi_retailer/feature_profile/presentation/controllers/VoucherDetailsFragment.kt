@@ -158,8 +158,8 @@ class VoucherDetailsFragment : AppCompatDialogFragment() {
                 voucherPrice = mapVoucherPrice(voucher),
                 moreActionAvailable = voucher.productWebpage?.isNotEmpty() == true,
                 amendDatesAvailable = voucher.voucherStatus == USABLE,
-                startDate = mapStartDate(voucher.voucherStartDate),
-                endDate = mapEndDate(voucher.voucherExpiryDate),
+                startDate = mapStartDate(voucher),
+                endDate = mapEndDate(voucher),
                 voucherStatus = mapVoucherStatus(voucher)
             )
         )
@@ -211,16 +211,24 @@ class VoucherDetailsFragment : AppCompatDialogFragment() {
         else -> SpannableString("")
     }
 
-    private fun mapStartDate(voucherStartDate: String?): SpannableString {
-        val startDate = voucherStartDate?.parseDateToFormat(SHORT_DATE_FORMAT).orEmpty()
+    private fun mapStartDate(voucher: Voucher): SpannableString {
+        val startDate = voucher.voucherStartDate?.parseDateToFormat(SHORT_DATE_FORMAT).orEmpty()
+        val textResId = if (voucher.voucherStartDate == voucher.voucherExpiryDate) {
+            R.string.usable_single_date_value
+        } else {
+            R.string.usable_start_date_value
+        }
         return decorateTextWithFont(
-            originalText = getString(R.string.usable_start_date_value, startDate),
+            originalText = getString(textResId, startDate),
             wordsToStyle = listOf(startDate)
         )
     }
 
-    private fun mapEndDate(voucherExpiryDate: String?): SpannableString {
-        val expiryDate = voucherExpiryDate?.parseDateToFormat(SHORT_DATE_FORMAT).orEmpty()
+    private fun mapEndDate(voucher: Voucher): SpannableString? {
+        if (voucher.voucherStartDate == voucher.voucherExpiryDate) {
+            return null
+        }
+        val expiryDate = voucher.voucherExpiryDate?.parseDateToFormat(SHORT_DATE_FORMAT).orEmpty()
         return decorateTextWithFont(
             originalText = getString(R.string.usable_end_date_value, expiryDate),
             wordsToStyle = listOf(expiryDate)
@@ -330,16 +338,13 @@ class VoucherDetailsFragment : AppCompatDialogFragment() {
                 )
             )
             setView(voucherRequestView)
-            setPositiveButton(R.string.send) { dialog, _ ->
+            setPositiveButton(R.string.send) { _, _ ->
                 viewModel.callSendVoucherRequestWithTypeId(
                     voucherRequestTypeId = selectedRequestType.requestTypeId,
                     voucherRequestComment = voucherRequestView.getUserComment()
                 )
-                dialog.dismiss()
             }
-            setNegativeButton(R.string.cancel) { dialog, _ ->
-                dialog.dismiss()
-            }
+            setNegativeButton(R.string.cancel, null)
         }
         .show()
     }
