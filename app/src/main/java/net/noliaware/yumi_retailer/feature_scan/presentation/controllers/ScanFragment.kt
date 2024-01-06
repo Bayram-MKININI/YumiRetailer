@@ -68,7 +68,7 @@ class ScanFragment : Fragment() {
         scannedQRCode: String
     ) {
         context?.let {
-            MaterialAlertDialogBuilder(it)
+            MaterialAlertDialogBuilder(it, R.style.AlertDialog)
                 .setTitle(R.string.scan_finished)
                 .setMessage(R.string.use_scanned_voucher)
                 .setPositiveButton(R.string.validate) { _, _ ->

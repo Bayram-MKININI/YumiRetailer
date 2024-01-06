@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.Spinner
 import android.widget.TextView
 import androidx.appcompat.widget.LinearLayoutCompat
+import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import net.noliaware.yumi_retailer.R
 import net.noliaware.yumi_retailer.commun.presentation.views.FillableTextWidget
@@ -133,7 +134,7 @@ class VouchersDetailsView @JvmOverloads constructor(
             vouchersDetailsViewAdapter.endDate?.let {
                 endDateTextView.isVisible = true
                 endDateTextView.text = it
-            }
+            } ?: run { endDateTextView.isGone = true }
         }
     }
 

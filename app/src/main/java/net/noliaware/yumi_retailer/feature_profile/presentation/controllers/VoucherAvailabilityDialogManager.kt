@@ -32,7 +32,7 @@ class VoucherAvailabilityDialogManager(private val context: Context) {
     ) {
         MaterialAlertDialogBuilder(
             context,
-            R.style.MaterialAlertDialog_rounded
+            R.style.AlertDialog
         ).apply {
             val dialogView = LayoutInflater.from(context).inflate(
                 R.layout.voucher_amend_availability_layout,

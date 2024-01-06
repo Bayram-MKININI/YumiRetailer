@@ -326,7 +326,7 @@ class VoucherDetailsFragment : AppCompatDialogFragment() {
     private fun displayDialogForRequestType(selectedRequestType: VoucherRequestType) {
         MaterialAlertDialogBuilder(
             requireContext(),
-            R.style.MaterialAlertDialog_rounded
+            R.style.AlertDialog
         ).apply {
             val voucherRequestView = layoutInflater.inflate(
                 R.layout.voucher_request_layout,

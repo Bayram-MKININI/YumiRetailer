@@ -130,11 +130,10 @@ class SendMailFragment : AppCompatDialogFragment() {
             override fun onSendMailClicked(text: String) {
                 args.message?.let {
                     sendMailReply(text)
-                } ?: run {
-                    val selectedPriorityIndex = sendMailView?.getSelectedPriorityIndex() ?: 0
-                    val priority = Priority.entries[selectedPriorityIndex].value
-                    sendNewMail(priority, text)
-                }
+                } ?: sendNewMail(
+                    priority = Priority.entries[sendMailView?.getSelectedPriorityIndex() ?: 0].value,
+                    text = text
+                )
             }
         }
     }
