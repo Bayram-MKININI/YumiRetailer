@@ -18,9 +18,9 @@ import net.noliaware.yumi_retailer.commun.util.layoutToTopLeft
 import net.noliaware.yumi_retailer.commun.util.layoutToTopRight
 import net.noliaware.yumi_retailer.commun.util.measureWrapContent
 import net.noliaware.yumi_retailer.commun.util.sizeForVisible
-import net.noliaware.yumi_retailer.feature_profile.presentation.views.VouchersDetailsContainerView.VouchersDetailsViewAdapter
+import net.noliaware.yumi_retailer.feature_profile.presentation.views.VoucherDetailsContainerView.VoucherDetailsViewAdapter
 
-class VouchersDetailsView @JvmOverloads constructor(
+class VoucherDetailsView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyle: Int = 0
@@ -105,33 +105,33 @@ class VouchersDetailsView @JvmOverloads constructor(
         amendDatesLayout = findViewById(R.id.amend_dates_layout)
     }
 
-    fun fillViewWithData(vouchersDetailsViewAdapter: VouchersDetailsViewAdapter) {
+    fun fillViewWithData(voucherDetailsViewAdapter: VoucherDetailsViewAdapter) {
 
-        titleFillableTextWidget.setText(vouchersDetailsViewAdapter.title)
-        crossOutView.isVisible = vouchersDetailsViewAdapter.titleCrossed
-        requestSpinner.isVisible = vouchersDetailsViewAdapter.requestsAvailable
-        voucherNumberFillableTextWidget.setText(vouchersDetailsViewAdapter.voucherNumber)
-        voucherDateFillableTextWidget.setText(vouchersDetailsViewAdapter.voucherDate)
-        ongoingRequestsButton.isVisible = vouchersDetailsViewAdapter.ongoingRequestsAvailable
+        titleFillableTextWidget.setText(voucherDetailsViewAdapter.title)
+        crossOutView.isVisible = voucherDetailsViewAdapter.titleCrossed
+        requestSpinner.isVisible = voucherDetailsViewAdapter.requestsAvailable
+        voucherNumberFillableTextWidget.setText(voucherDetailsViewAdapter.voucherNumber)
+        voucherDateFillableTextWidget.setText(voucherDetailsViewAdapter.voucherDate)
+        ongoingRequestsButton.isVisible = voucherDetailsViewAdapter.ongoingRequestsAvailable
 
-        vouchersDetailsViewAdapter.voucherDescription?.let {
+        voucherDetailsViewAdapter.voucherDescription?.let {
             descriptionFillableTextWidget.isVisible = true
-            descriptionFillableTextWidget.setText(vouchersDetailsViewAdapter.voucherDescription)
+            descriptionFillableTextWidget.setText(voucherDetailsViewAdapter.voucherDescription)
         }
 
-        priceFillableTextWidget.setText(vouchersDetailsViewAdapter.voucherPrice)
+        priceFillableTextWidget.setText(voucherDetailsViewAdapter.voucherPrice)
 
-        if (vouchersDetailsViewAdapter.moreActionAvailable) {
+        if (voucherDetailsViewAdapter.moreActionAvailable) {
             moreTextView.isVisible = true
         }
 
-        if (vouchersDetailsViewAdapter.amendDatesAvailable) {
+        if (voucherDetailsViewAdapter.amendDatesAvailable) {
             availabilityDatesTextView.isVisible = true
             datesBackgroundView.isVisible = true
             startDateTextView.isVisible = true
             amendDatesLayout.isVisible = true
-            startDateTextView.text = vouchersDetailsViewAdapter.startDate
-            vouchersDetailsViewAdapter.endDate?.let {
+            startDateTextView.text = voucherDetailsViewAdapter.startDate
+            voucherDetailsViewAdapter.endDate?.let {
                 endDateTextView.isVisible = true
                 endDateTextView.text = it
             } ?: run { endDateTextView.isGone = true }

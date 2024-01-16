@@ -46,14 +46,14 @@ import net.noliaware.yumi_retailer.feature_profile.domain.model.VoucherStatus.US
 import net.noliaware.yumi_retailer.feature_profile.presentation.adapters.VoucherRequestsAdapter
 import net.noliaware.yumi_retailer.feature_profile.presentation.views.VoucherRequestView
 import net.noliaware.yumi_retailer.feature_profile.presentation.views.VoucherRequestView.VoucherRequestViewAdapter
-import net.noliaware.yumi_retailer.feature_profile.presentation.views.VouchersDetailsContainerView
-import net.noliaware.yumi_retailer.feature_profile.presentation.views.VouchersDetailsContainerView.VouchersDetailsViewAdapter
-import net.noliaware.yumi_retailer.feature_profile.presentation.views.VouchersDetailsContainerView.VouchersDetailsViewCallback
+import net.noliaware.yumi_retailer.feature_profile.presentation.views.VoucherDetailsContainerView
+import net.noliaware.yumi_retailer.feature_profile.presentation.views.VoucherDetailsContainerView.VoucherDetailsViewAdapter
+import net.noliaware.yumi_retailer.feature_profile.presentation.views.VoucherDetailsContainerView.VoucherDetailsViewCallback
 
 @AndroidEntryPoint
 class VoucherDetailsFragment : AppCompatDialogFragment() {
 
-    private var vouchersDetailsContainerView: VouchersDetailsContainerView? = null
+    private var voucherDetailsContainerView: VoucherDetailsContainerView? = null
     private val args by navArgs<VoucherDetailsFragmentArgs>()
     private val viewModel by viewModels<VoucherDetailsFragmentViewModel>()
 
@@ -67,12 +67,12 @@ class VoucherDetailsFragment : AppCompatDialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? = inflater.inflate(
-        R.layout.vouchers_details_layout,
+        R.layout.voucher_details_layout,
         container,
         false
     ).apply {
-        vouchersDetailsContainerView = this as VouchersDetailsContainerView
-        vouchersDetailsContainerView?.callback = vouchersDetailsViewCallback
+        voucherDetailsContainerView = this as VoucherDetailsContainerView
+        voucherDetailsContainerView?.callback = voucherDetailsViewCallback
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -80,8 +80,8 @@ class VoucherDetailsFragment : AppCompatDialogFragment() {
         setUpFragmentListener()
         collectFlows()
         setUpRequestsDropdownView()
-        vouchersDetailsContainerView?.activateLoading(true)
-        vouchersDetailsContainerView?.setUpViewLook(
+        voucherDetailsContainerView?.activateLoading(true)
+        voucherDetailsContainerView?.setUpViewLook(
             color = args.categoryUI.categoryColor,
             iconName = args.categoryUI.categoryIcon
         )
@@ -98,7 +98,7 @@ class VoucherDetailsFragment : AppCompatDialogFragment() {
 
     private fun collectFlows() {
         viewModel.getVoucherEventsHelper.eventFlow.collectLifecycleAware(viewLifecycleOwner) { sharedEvent ->
-            vouchersDetailsContainerView?.activateLoading(false)
+            voucherDetailsContainerView?.activateLoading(false)
             handleSharedEvent(sharedEvent)
             redirectToLoginScreenFromSharedEvent(sharedEvent)
         }
@@ -106,7 +106,7 @@ class VoucherDetailsFragment : AppCompatDialogFragment() {
             when (viewState) {
                 is LoadingState -> Unit
                 is DataState -> viewState.data?.let { voucher ->
-                    vouchersDetailsContainerView?.activateLoading(false)
+                    voucherDetailsContainerView?.activateLoading(false)
                     bindViewToData(voucher)
                 }
             }
@@ -146,8 +146,8 @@ class VoucherDetailsFragment : AppCompatDialogFragment() {
     }
 
     private fun bindViewToData(voucher: Voucher) {
-        vouchersDetailsContainerView?.fillViewWithData(
-            VouchersDetailsViewAdapter(
+        voucherDetailsContainerView?.fillViewWithData(
+            VoucherDetailsViewAdapter(
                 title = voucher.productLabel.orEmpty(),
                 titleCrossed = voucher.voucherStatus != USABLE,
                 voucherDate = mapVoucherDate(voucher),
@@ -275,7 +275,7 @@ class VoucherDetailsFragment : AppCompatDialogFragment() {
     }
 
     private fun setUpRequestsDropdownView() {
-        vouchersDetailsContainerView?.getRequestSpinner?.adapter = VoucherRequestsAdapter(
+        voucherDetailsContainerView?.getRequestSpinner?.adapter = VoucherRequestsAdapter(
             requireContext(),
             (args.requestTypes?.map { voucherRequestType ->
                 voucherRequestType.requestTypeLabel
@@ -283,8 +283,8 @@ class VoucherDetailsFragment : AppCompatDialogFragment() {
         )
     }
 
-    private val vouchersDetailsViewCallback: VouchersDetailsViewCallback by lazy {
-        object : VouchersDetailsViewCallback {
+    private val voucherDetailsViewCallback: VoucherDetailsViewCallback by lazy {
+        object : VoucherDetailsViewCallback {
             override fun onBackButtonClicked() {
                 navDismiss()
             }
@@ -378,8 +378,8 @@ class VoucherDetailsFragment : AppCompatDialogFragment() {
     }
 
     override fun onDestroyView() {
-        vouchersDetailsContainerView?.callback = null
-        vouchersDetailsContainerView = null
+        voucherDetailsContainerView?.callback = null
+        voucherDetailsContainerView = null
         super.onDestroyView()
     }
 }

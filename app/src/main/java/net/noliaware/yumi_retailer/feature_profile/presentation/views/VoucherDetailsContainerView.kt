@@ -19,7 +19,7 @@ import net.noliaware.yumi_retailer.commun.util.layoutToBottomLeft
 import net.noliaware.yumi_retailer.commun.util.layoutToTopLeft
 import net.noliaware.yumi_retailer.commun.util.measureWrapContent
 
-class VouchersDetailsContainerView @JvmOverloads constructor(
+class VoucherDetailsContainerView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyle: Int = 0
@@ -31,13 +31,13 @@ class VouchersDetailsContainerView @JvmOverloads constructor(
     private lateinit var categoryImageView: ImageView
     private lateinit var parentContentView: View
     private lateinit var shimmerView: ShimmerFrameLayout
-    private lateinit var vouchersDetailsView: VouchersDetailsView
+    private lateinit var voucherDetailsView: VoucherDetailsView
     private lateinit var voucherStatusTextView: TextView
-    var callback: VouchersDetailsViewCallback? = null
+    var callback: VoucherDetailsViewCallback? = null
 
-    val getRequestSpinner get() = vouchersDetailsView.requestSpinner
+    val getRequestSpinner get() = voucherDetailsView.requestSpinner
 
-    data class VouchersDetailsViewAdapter(
+    data class VoucherDetailsViewAdapter(
         val title: String = "",
         val titleCrossed: Boolean = false,
         val voucherDate: SpannableString?,
@@ -53,7 +53,7 @@ class VouchersDetailsContainerView @JvmOverloads constructor(
         val voucherStatus: String = ""
     )
 
-    interface VouchersDetailsViewCallback {
+    interface VoucherDetailsViewCallback {
         fun onBackButtonClicked()
         fun onRequestSelectedAtIndex(index: Int)
         fun onOngoingRequestsClicked()
@@ -75,17 +75,17 @@ class VouchersDetailsContainerView @JvmOverloads constructor(
 
         parentContentView = findViewById(R.id.parent_content_layout)
         shimmerView = findViewById(R.id.shimmer_view)
-        vouchersDetailsView = shimmerView.findViewById(R.id.content_layout)
+        voucherDetailsView = shimmerView.findViewById(R.id.content_layout)
         post {
-            vouchersDetailsView.requestSpinner.setSelection(
-                vouchersDetailsView.requestSpinner.adapter.count,
+            voucherDetailsView.requestSpinner.setSelection(
+                voucherDetailsView.requestSpinner.adapter.count,
                 false
             )
-            vouchersDetailsView.requestSpinner.onItemSelectedListener = onSpinnerItemSelectedListener
+            voucherDetailsView.requestSpinner.onItemSelectedListener = onSpinnerItemSelectedListener
         }
-        vouchersDetailsView.ongoingRequestsButton.setOnClickListener(onButtonClickListener)
-        vouchersDetailsView.moreTextView.setOnClickListener(onButtonClickListener)
-        vouchersDetailsView.amendDatesLayout.setOnClickListener(onButtonClickListener)
+        voucherDetailsView.ongoingRequestsButton.setOnClickListener(onButtonClickListener)
+        voucherDetailsView.moreTextView.setOnClickListener(onButtonClickListener)
+        voucherDetailsView.amendDatesLayout.setOnClickListener(onButtonClickListener)
 
         voucherStatusTextView = parentContentView.findViewById(R.id.voucher_status_text_view)
     }
@@ -112,7 +112,7 @@ class VouchersDetailsContainerView @JvmOverloads constructor(
                 val lastPosition = parent?.count ?: 0
                 if (position < lastPosition) {
                     callback?.onRequestSelectedAtIndex(position)
-                    vouchersDetailsView.requestSpinner.setSelection(lastPosition, false)
+                    voucherDetailsView.requestSpinner.setSelection(lastPosition, false)
                 }
             }
 
@@ -129,9 +129,9 @@ class VouchersDetailsContainerView @JvmOverloads constructor(
         categoryImageView.setImageResource(context.drawableIdByName(iconName))
     }
 
-    fun fillViewWithData(vouchersDetailsViewAdapter: VouchersDetailsViewAdapter) {
-        vouchersDetailsView.fillViewWithData(vouchersDetailsViewAdapter)
-        voucherStatusTextView.text = vouchersDetailsViewAdapter.voucherStatus
+    fun fillViewWithData(voucherDetailsViewAdapter: VoucherDetailsViewAdapter) {
+        voucherDetailsView.fillViewWithData(voucherDetailsViewAdapter)
+        voucherStatusTextView.text = voucherDetailsViewAdapter.voucherStatus
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {

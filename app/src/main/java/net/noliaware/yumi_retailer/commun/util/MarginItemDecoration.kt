@@ -2,8 +2,8 @@ package net.noliaware.yumi_retailer.commun.util
 
 import android.graphics.Rect
 import android.view.View
-import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 
 const val VERTICAL = 0
 const val GRID = 1
@@ -19,7 +19,7 @@ class MarginItemDecoration(
         parent: RecyclerView,
         state: RecyclerView.State
     ) {
-        val position = parent.getChildViewHolder(view).adapterPosition
+        val position = parent.getChildViewHolder(view).bindingAdapterPosition
         val itemCount = state.itemCount
         val layoutManager = parent.layoutManager
         setSpacingForDirection(outRect, layoutManager, position, itemCount)
@@ -32,9 +32,7 @@ class MarginItemDecoration(
         itemCount: Int
     ) {
         when (displayMode) {
-
             VERTICAL -> {
-
                 outRect.set(
                     spacing,
                     spacing,
@@ -45,7 +43,6 @@ class MarginItemDecoration(
                         0
                 )
             }
-
             GRID -> if (layoutManager is GridLayoutManager) {
                 outRect.set(spacing, spacing, spacing, spacing)
             }

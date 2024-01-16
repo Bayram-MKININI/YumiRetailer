@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<net.noliaware.yumi_retailer.feature_profile.presentation.views.VouchersDetailsContainerView
+<net.noliaware.yumi_retailer.feature_profile.presentation.views.VoucherDetailsContainerView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -51,7 +51,7 @@
                 android:overScrollMode="never"
                 android:paddingVertical="20dp">
 
-                <net.noliaware.yumi_retailer.feature_profile.presentation.views.VouchersDetailsView
+                <net.noliaware.yumi_retailer.feature_profile.presentation.views.VoucherDetailsView
                     android:id="@+id/content_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
@@ -213,7 +213,7 @@
                             android:textColor="@android:color/white"
                             android:textSize="18sp" />
                     </androidx.appcompat.widget.LinearLayoutCompat>
-                </net.noliaware.yumi_retailer.feature_profile.presentation.views.VouchersDetailsView>
+                </net.noliaware.yumi_retailer.feature_profile.presentation.views.VoucherDetailsView>
             </androidx.core.widget.NestedScrollView>
         </com.facebook.shimmer.ShimmerFrameLayout>
 
@@ -232,4 +232,4 @@
             tools:text="@string/voucher_used" />
 
     </net.noliaware.yumi_retailer.commun.presentation.views.ElevatedCardView>
-</net.noliaware.yumi_retailer.feature_profile.presentation.views.VouchersDetailsContainerView>
+</net.noliaware.yumi_retailer.feature_profile.presentation.views.VoucherDetailsContainerView>
