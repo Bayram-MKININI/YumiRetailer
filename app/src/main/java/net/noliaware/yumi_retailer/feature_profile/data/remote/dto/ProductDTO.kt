@@ -36,9 +36,9 @@ data class ProductDTO(
     @Json(name = "canceledVoucherAmount")
     val cancelledVoucherAmount: String,
     @Json(name = "productRank")
-    val productRank: Int,
+    val productRank: Int?,
     @Json(name = "productCount")
-    val productCount: Int
+    val productCount: Int?
 ) {
     fun toProduct() = Product(
         productId = productId,

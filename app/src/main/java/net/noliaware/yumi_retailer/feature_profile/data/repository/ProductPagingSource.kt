@@ -4,7 +4,6 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import net.noliaware.yumi_retailer.commun.ApiConstants.GET_PRODUCT_LIST_BY_CATEGORY
 import net.noliaware.yumi_retailer.commun.ApiParameters.LIMIT
-import net.noliaware.yumi_retailer.commun.ApiParameters.LIST_PAGE_SIZE
 import net.noliaware.yumi_retailer.commun.ApiParameters.OFFSET
 import net.noliaware.yumi_retailer.commun.Args.CATEGORY_ID
 import net.noliaware.yumi_retailer.commun.data.remote.RemoteApi
@@ -27,11 +26,11 @@ class ProductPagingSource(
 
     override fun getRefreshKey(
         state: PagingState<Int, Product>
-    ): Nothing? = null
+    ) = null
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Product> {
         try {
-            val position = params.key ?: 0
+            val offset = params.key ?: 0
 
             val timestamp = currentTimeInMillis()
             val randomString = randomString()
@@ -46,7 +45,7 @@ class ProductPagingSource(
                 ),
                 params = generateWSParams(
                     categoryId = categoryId,
-                    offset = position,
+                    offset = offset,
                     loadSize = params.loadSize,
                     tokenKey = GET_PRODUCT_LIST_BY_CATEGORY
                 )
@@ -62,22 +61,20 @@ class ProductPagingSource(
                 throw PaginationException(serviceError)
             }
 
-            val moreItemsAvailable = remoteData.data?.productDTOList?.lastOrNull()?.let { voucherDTO ->
-                voucherDTO.productRank < voucherDTO.productCount
-            }
+            val lastProductRank = remoteData.data?.productDTOList?.lastOrNull()?.productRank ?: offset
 
-            val nextKey = if (moreItemsAvailable == true) {
-                // initial load size = 3 * NETWORK_PAGE_SIZE
-                // ensure we're not requesting duplicating items, at the 2nd request
-                position + (params.loadSize / LIST_PAGE_SIZE)
-            } else {
-                null
+            val moreItemsAvailable = remoteData.data?.productDTOList?.lastOrNull()?.let { productDTO ->
+                if (productDTO.productRank != null && productDTO.productCount != null) {
+                    productDTO.productRank < productDTO.productCount
+                } else {
+                    false
+                }
             }
 
             return LoadResult.Page(
                 data = remoteData.data?.productDTOList?.map { it.toProduct() }.orEmpty(),
                 prevKey = null,// Only paging forward.
-                nextKey = nextKey
+                nextKey = if (moreItemsAvailable == true) lastProductRank else null
             )
         } catch (ex: Exception) {
             return handlePagingSourceError(ex)
